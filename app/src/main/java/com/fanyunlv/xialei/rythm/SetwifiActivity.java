@@ -1,12 +1,12 @@
 package com.fanyunlv.xialei.rythm;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +19,7 @@ import android.widget.EditText;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SetwifiActivity extends Activity {
+public class SetwifiActivity extends AppCompatActivity {
 
     private final String TAG = "Rythm";
 
@@ -38,7 +38,7 @@ public class SetwifiActivity extends Activity {
         setContentView(R.layout.activity_setwifi);
         database = RythmDatabase.getInstance(this);
 
-        ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         Log.i(TAG, "onCreate: actionbar ="+actionBar);
         actionBar.setDisplayHomeAsUpEnabled(true);
         dBhelper = DBhelper.getInstance(SetwifiActivity.this);

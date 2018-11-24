@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/normal_padding"
+    >
+    <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <TextView
+        android:text="@string/wifimode"
+        style="@style/RythmTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/wifinametext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/RythmTextSmallStyle"
+    />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <TextView
+        android:text="@string/setedwifiname"
+        style="@style/RythmTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/black_wifi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/RythmTextSmallStyle"
+    />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/setwifi_btn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/RythmTextStyle"
+        android:text="@string/setwifibtn"
+        />
+
+    </LinearLayout>
+</LinearLayout>

@@ -1,4 +1,4 @@
-package com.fanyunlv.xialei.rythm;
+package com.fanyunlv.xialei.rythm.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,11 +11,10 @@ import android.view.ViewGroup;
 /**
  * Created by xialei on 2018/11/24.
  */
-public class FunctionFragment extends Fragment {
+public class LocationFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //return super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.function_fragment, container, false);
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 }

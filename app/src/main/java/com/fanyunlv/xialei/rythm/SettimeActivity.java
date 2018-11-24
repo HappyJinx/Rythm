@@ -1,10 +1,11 @@
 package com.fanyunlv.xialei.rythm;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +16,7 @@ import android.view.MenuItem;
 import android.widget.TimePicker;
 
 
-public class SettimeActivity extends Activity {
+public class SettimeActivity extends AppCompatActivity {
 
     private final String TAG = "Rythm";
 
@@ -27,7 +28,7 @@ public class SettimeActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settime);
 
-        ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         Log.i(TAG, "onCreate: actionbar ="+actionBar);
         actionBar.setDisplayHomeAsUpEnabled(true);
         dBhelper =  DBhelper.getInstance(SettimeActivity.this);

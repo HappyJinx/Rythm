@@ -40,10 +40,16 @@
     </receiver>
 
     <activity android:name=".SettimeActivity">
-
+      <intent-filter >
+        <action android:name="xialei.action.start.settime" />
+        <category android:name="android.intent.category.DEFAULT" />
+      </intent-filter>
     </activity>
     <activity android:name=".SetwifiActivity">
-
+      <intent-filter >
+        <action android:name="xialei.action.start.setwifi" />
+        <category android:name="android.intent.category.DEFAULT" />
+      </intent-filter>
     </activity>
 
     <activity android:name=".welcome.WelcomeActivity" />
