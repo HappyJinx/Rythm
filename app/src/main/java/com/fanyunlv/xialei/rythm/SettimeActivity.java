@@ -2,8 +2,11 @@ package com.fanyunlv.xialei.rythm;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -27,7 +30,11 @@ public class SettimeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settime);
-
+        if (!((NotificationManager) getSystemService(NOTIFICATION_SERVICE))
+                .isNotificationPolicyAccessGranted()) {
+            Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+            startActivity(intent);
+        }
         ActionBar actionBar = getSupportActionBar();
         Log.i(TAG, "onCreate: actionbar ="+actionBar);
         actionBar.setDisplayHomeAsUpEnabled(true);

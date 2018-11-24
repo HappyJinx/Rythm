@@ -100,11 +100,7 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.main_activity);
 //
 //        mhandler = new currenthandler();
-//        if (!((NotificationManager) getSystemService(NOTIFICATION_SERVICE))
-//                .isNotificationPolicyAccessGranted()) {
-//            Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
-//            startActivity(intent);
-//        }
+
 //        initReceiver();
 //        inittimer();
 
