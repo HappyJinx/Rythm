@@ -1,0 +1,19 @@
+<resources>
+  <string name="app_name">Rythm</string>
+  <string name="currentmode">当前模式:</string>
+  <string name="currenttie">当前时间:</string>
+  <string name="settime">设置的检查时间:</string>
+  <string name="settimebtn">设置时间</string>
+  <string name="setwifibtn">设置WIFI</string>
+  <string name="settimechoose">选择想要检查的时间</string>
+  <string name="setwifichoose">设置想要检查的WIFI</string>
+  <string name="deleteitem">删除</string>
+  <string name="additem">添加</string>
+
+  <string name="wifimode">当前WIFI:</string>
+  <string name="setedwifiname">禁止相似的WIFI:</string>
+
+  <string name="next">下一步</string>
+  <string name="previous">上一步</string>
+  <string name="begin">开始</string>
+</resources>

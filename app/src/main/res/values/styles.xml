@@ -1,0 +1,16 @@
+<resources>
+
+  <!-- Base application theme. -->
+  <style name="AppTheme" parent="android:Theme.Material.Light">
+    <!-- Customize your theme here. -->
+  </style>
+
+  <style name="RythmTextStyle">
+    <item name="android:textSize">25sp</item>
+    <item name="android:textColor">@android:color/holo_blue_dark</item>
+  </style>
+  <style name="RythmTextSmallStyle">
+    <item name="android:textSize">20sp</item>
+    <item name="android:textColor">@android:color/holo_blue_dark</item>
+  </style>
+</resources>
