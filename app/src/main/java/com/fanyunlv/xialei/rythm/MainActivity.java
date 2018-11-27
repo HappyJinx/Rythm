@@ -4,10 +4,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v4.app.*;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -19,8 +21,10 @@ import com.fanyunlv.xialei.rythm.fragments.WifiFragment;
 import com.fanyunlv.xialei.rythm.function.FunctionFragment;
 import com.fanyunlv.xialei.rythm.sharedpreference.SharePrefUtil;
 import com.fanyunlv.xialei.rythm.utils.FragmentUtil;
+import com.fanyunlv.xialei.rythm.utils.PermissionUtil;
 import com.fanyunlv.xialei.rythm.welcome.WelcomeFragment;
 
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity{
 
     private FragmentManager fragmentManager;
     private FragmentUtil fragmentUtil;
+    private PermissionUtil permissionUtil;
 
     private Handler mhandler ;
 
@@ -108,8 +113,10 @@ public class MainActivity extends AppCompatActivity{
         fragmentManager = getSupportFragmentManager();
         fragmentUtil = new FragmentUtil(fragmentManager);
         sharePrefUtil = SharePrefUtil.getInstance(this);
+        permissionUtil = PermissionUtil.getInstance(this);
         initFragments();
         initReceiver();
+
 //        inittimer();
     }
     @Override
@@ -151,8 +158,27 @@ public class MainActivity extends AppCompatActivity{
         Fragment fragment = fragmentManager.findFragmentByTag(name);
         Log.i(TAG, "onFragmentSelect 1 name ="+name);
         if (fragment != null) {
-            Log.i(TAG, "onFragmentSelect 2");
+            if (name.equals("location")) {
+                if(!permissionUtil.checkHaspermissions()){
+                    permissionUtil.requestLocationPermissions(3);
+                    return;
+                }
+            }
             fragmentUtil.showNewFragment(name);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.i(TAG, "onRequestPermissionsResult ");
+        if (requestCode == 3) {
+            for (int i=0;i<grantResults.length; i++){
+                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+            }
+            fragmentUtil.showNewFragment("location");
         }
     }
 

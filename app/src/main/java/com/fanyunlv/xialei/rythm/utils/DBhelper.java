@@ -1,9 +1,13 @@
-package com.fanyunlv.xialei.rythm;
+package com.fanyunlv.xialei.rythm.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import com.fanyunlv.xialei.rythm.MyLocation;
+import com.fanyunlv.xialei.rythm.TimeItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +17,7 @@ import java.util.List;
  */
 
 public class DBhelper {
+    private static final String TAG = DBhelper.class.getSimpleName();
 
     public static DBhelper dBhelper;
     private Context context;
@@ -53,6 +58,17 @@ public class DBhelper {
         db.insert(RythmDatabase.Tables.WIFITABLE, null, values);
     }
 
+    public void insertLocation(MyLocation myLocation) {
+        ContentValues values = new ContentValues();
+        values.put(RythmDatabase.LOCATIONTABLE.NAME,myLocation.getName());
+        values.put(RythmDatabase.LOCATIONTABLE.LONGT,myLocation.getLongti());
+        values.put(RythmDatabase.LOCATIONTABLE.LATI,myLocation.getLati());
+        insertLocation(values);
+    }
+    public void insertLocation(ContentValues values) {
+        db.insert(RythmDatabase.Tables.LOCATIONTABLE, null, values);
+    }
+
     public void insertdb(String tablename, ContentValues values) {
         db.insert(tablename, null, values);
     }
@@ -68,9 +84,29 @@ public class DBhelper {
                 new String[]{name});
     }
 
+    public void deletelocation(MyLocation myLocation) {
+        Log.i("deletelocation", "deletelocation ");
+        if (myLocation == null) {
+            db.delete(RythmDatabase.Tables.LOCATIONTABLE,null,null);
+            return;
+        }
+        db.delete(RythmDatabase.Tables.LOCATIONTABLE,
+                RythmDatabase.LOCATIONTABLE.NAME+"= ? and "+RythmDatabase.LOCATIONTABLE.LONGT+"= ? ",
+                new String[]{myLocation.getName(),Double.toString(myLocation.getLongti())});
+    }
+
+    public void deletelocation(int ID) {
+        Log.i("deletelocation", "deletelocation ID"+ID);
+
+        db.delete(RythmDatabase.Tables.LOCATIONTABLE,
+                RythmDatabase.LOCATIONTABLE._ID+"= ? ",
+                new String[]{Integer.toString(ID)});
+//        db.execSQL("delete from location where id="+ID);
+    }
+
 
     public void deleteitem(String tablename,int postion) {
-        db.delete(tablename, RythmDatabase.TimeColumes._ID+"=? and", new String[]{Integer.toString(postion)});
+        db.delete(tablename, RythmDatabase.TimeColumes._ID+"= ? and", new String[]{Integer.toString(postion)});
     }
 
     public Cursor querytime() {
@@ -78,6 +114,9 @@ public class DBhelper {
     }
     public Cursor querywifi() {
         return db.query(RythmDatabase.Tables.WIFITABLE, null, null,null,null,null,null);
+    }
+    public Cursor querylocation() {
+        return db.query(RythmDatabase.Tables.LOCATIONTABLE, null, null,null,null,null,null);
     }
 
     public String getSelectedTime() {
@@ -122,6 +161,20 @@ public class DBhelper {
         Cursor cursor = db.query(RythmDatabase.Tables.WIFITABLE, null, null, null, null,null, null);
         while (cursor.moveToNext()) {
             list.add(cursor.getString(1));
+        }
+        cursor.close();
+        return list;
+    }
+
+    public ArrayList<MyLocation> getLocationList() {
+        ArrayList<MyLocation> list = new ArrayList<>();
+        db = database.getWritableDatabase();
+        //Cursor cursor = db.query(RythmDatabase.Tables.LOCATIONTABLE, null, null, null, null,null, null);
+        Cursor cursor = querylocation();
+        Log.i(TAG, "getLocationList size ="+cursor.getCount());
+        while (cursor.moveToNext()) {
+//            cursor.getString(1), cursor.getDouble(2), cursor.getDouble(3)
+            list.add(new MyLocation(cursor.getString(1),cursor.getDouble(2),cursor.getDouble(3)));
         }
         cursor.close();
         return list;

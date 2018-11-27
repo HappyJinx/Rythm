@@ -1,12 +1,12 @@
-package com.fanyunlv.xialei.rythm;
+package com.fanyunlv.xialei.rythm.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.v4.util.Preconditions;
 import android.util.Log;
+
+import com.fanyunlv.xialei.rythm.MyLocation;
 
 /**
  * Created by admin on 2018/8/24.
@@ -24,6 +24,7 @@ public class RythmDatabase extends SQLiteOpenHelper {
     public interface Tables{
         static final String TIMETABLE = "time";
         static final String WIFITABLE = "wifi";
+        static final String LOCATIONTABLE = "location";
     }
     public interface TimeColumes{
         static final String _ID = "id";
@@ -33,6 +34,12 @@ public class RythmDatabase extends SQLiteOpenHelper {
     public interface WifiColumes{
         static final String _ID = "id";
         static final String NAME = "name";
+    }
+    public interface LOCATIONTABLE{
+        static final String _ID = "id";
+        static final String NAME = "name";
+        static final String LONGT = "longt";
+        static final String LATI = "lati";
     }
 
     public static RythmDatabase getInstance(Context context) {
@@ -67,6 +74,14 @@ public class RythmDatabase extends SQLiteOpenHelper {
 
         db.execSQL(sql2);
 
+        String sql3 = "create table "+Tables.LOCATIONTABLE+"("+
+                LOCATIONTABLE._ID+" integer primary key autoincrement,"+
+                LOCATIONTABLE.NAME+" text ,"+
+                LOCATIONTABLE.LONGT+" real ,"+
+                LOCATIONTABLE.LATI+" real)";
+
+        db.execSQL(sql3);
+
         mdb = db;
         insertItem(11,58);
         insertItem(17,58);
@@ -88,10 +103,20 @@ public class RythmDatabase extends SQLiteOpenHelper {
         mdb.insert(Tables.WIFITABLE,null,contentValues);
     }
 
+    private void insertLocation(MyLocation myLocation) {
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(LOCATIONTABLE.NAME,myLocation.getName());
+        contentValues.put(LOCATIONTABLE.LONGT,myLocation.getLongti());
+        contentValues.put(LOCATIONTABLE.LATI,myLocation.getLati());
+        mdb.insert(Tables.LOCATIONTABLE,null,contentValues);
+    }
+
     public void dropTables(SQLiteDatabase db) {
         //db.execSQL("DROP TABLE IF EXISTS " + Tables.TIMETABLE);
         db.execSQL("DROP TABLE IF EXISTS " + Tables.TIMETABLE+";");
         db.execSQL("DROP TABLE IF EXISTS " + Tables.WIFITABLE+";");
+        db.execSQL("DROP TABLE IF EXISTS " + Tables.LOCATIONTABLE+";");
     }
 
     @Override

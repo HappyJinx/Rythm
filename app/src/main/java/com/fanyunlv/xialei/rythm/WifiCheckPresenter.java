@@ -3,7 +3,8 @@ package com.fanyunlv.xialei.rythm;
 import android.content.Context;
 import android.net.wifi.WifiManager;
 
-import java.util.ArrayList;
+import com.fanyunlv.xialei.rythm.utils.DBhelper;
+
 import java.util.List;
 
 /**

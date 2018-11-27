@@ -4,18 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.fanyunlv.xialei.rythm.DBhelper;
-import com.fanyunlv.xialei.rythm.MainActivity;
+import com.fanyunlv.xialei.rythm.utils.DBhelper;
 import com.fanyunlv.xialei.rythm.R;
 import com.fanyunlv.xialei.rythm.RingmodePresenter;
-import com.fanyunlv.xialei.rythm.SettimeActivity;
 
 /**
  * Created by xialei on 2018/11/24.

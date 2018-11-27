@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.fanyunlv.xialei.rythm.utils.DBhelper;
+
 import java.util.ArrayList;
 import java.util.List;
 

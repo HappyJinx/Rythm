@@ -2,7 +2,6 @@ package com.fanyunlv.xialei.rythm;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -16,8 +15,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.fanyunlv.xialei.rythm.utils.DBhelper;
+import com.fanyunlv.xialei.rythm.utils.RythmDatabase;
 
 public class SetwifiActivity extends AppCompatActivity {
 

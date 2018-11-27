@@ -19,4 +19,6 @@
   <string name="next">下一步</string>
   <string name="previous">上一步</string>
   <string name="begin">开始</string>
+
+  <string name="add_location">添加定位信息</string>
 </resources>
