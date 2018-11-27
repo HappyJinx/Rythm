@@ -31,7 +31,6 @@ public class FunctionFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //return super.onCreateView(inflater, container, savedInstanceState);
         Log.i(TAG, "onCreateView ");
         functions = new ArrayList<>();
         functions.add(new XFunction("audio", true));

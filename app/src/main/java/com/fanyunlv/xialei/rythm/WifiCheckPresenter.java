@@ -37,6 +37,10 @@ public class WifiCheckPresenter {
     }
 
     public String getSSIDname() {
+        String name = wifiManager.getConnectionInfo().getSSID().replaceAll("\"", "");
+        if ("<unknown ssid>".equals(name)) {
+            return context.getResources().getString(R.string.none_wifi);
+        }
         return wifiManager.getConnectionInfo().getSSID().replaceAll("\"","");
     }
 
@@ -48,6 +52,10 @@ public class WifiCheckPresenter {
                 break;
             }
         }
+    }
+
+    public void addNewBlackWifi(String name) {
+        DBhelper.getInstance(context).insertwifi(name);
     }
 
 }

@@ -8,13 +8,15 @@
     <TextView
         android:id="@+id/function_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <android.support.v7.widget.AppCompatCheckBox
-        android:id="@+id/function_state"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
+        style="@style/RythmTextStyle"
         />
+
+    <!--<android.support.v7.widget.AppCompatCheckBox-->
+        <!--android:id="@+id/function_state"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--/>-->
 
 </RelativeLayout>

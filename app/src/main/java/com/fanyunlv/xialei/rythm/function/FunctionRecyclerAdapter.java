@@ -19,9 +19,7 @@ import java.util.ArrayList;
 public class FunctionRecyclerAdapter extends RecyclerView.Adapter<FunctionRecyclerAdapter.RecyclerHolder> {
 
     private ArrayList<XFunction> datas;
-
     private Context mContext;
-
 
     public FunctionRecyclerAdapter(ArrayList<XFunction> list, Context context) {
         datas = list;
@@ -38,7 +36,7 @@ public class FunctionRecyclerAdapter extends RecyclerView.Adapter<FunctionRecycl
     public void onBindViewHolder(RecyclerHolder holder, int position) {
         final String name = datas.get(position).getName();
         holder.functionName.setText(datas.get(position).getName());
-        holder.compatCheckBox.setChecked(datas.get(position).isIsenabled());
+        //holder.compatCheckBox.setChecked(datas.get(position).isIsenabled());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,12 +53,12 @@ public class FunctionRecyclerAdapter extends RecyclerView.Adapter<FunctionRecycl
     class RecyclerHolder extends RecyclerView.ViewHolder {
 
         public TextView functionName;
-        public AppCompatCheckBox compatCheckBox;
+        //public AppCompatCheckBox compatCheckBox;
 
         public RecyclerHolder(View itemView) {
             super(itemView);
             functionName = itemView.findViewById(R.id.function_name);
-            compatCheckBox = itemView.findViewById(R.id.function_state);
+            //compatCheckBox = itemView.findViewById(R.id.function_state);
         }
     }
 

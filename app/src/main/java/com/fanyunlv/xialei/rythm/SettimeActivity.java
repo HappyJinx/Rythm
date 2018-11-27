@@ -1,6 +1,5 @@
 package com.fanyunlv.xialei.rythm;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.TimePickerDialog;
@@ -40,7 +39,7 @@ public class SettimeActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         dBhelper =  DBhelper.getInstance(SettimeActivity.this);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerlist);
+        recyclerView = findViewById(R.id.recyclerlist);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));

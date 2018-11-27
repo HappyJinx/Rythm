@@ -25,15 +25,19 @@ public class WifiFragment extends BaseFragment implements View.OnClickListener{
     private TextView wifinametext;
     private TextView black_wifi;
     private Button setwifi_btn;
+    private Button addwifi_btn;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.wifi_fragment, container, false);
-        wifinametext = (TextView) view.findViewById(R.id.wifinametext);
-        black_wifi = (TextView) view.findViewById(R.id.black_wifi);
-        setwifi_btn = (Button) view.findViewById(R.id.setwifi_btn);
+        wifinametext = view.findViewById(R.id.wifinametext);
+        black_wifi = view.findViewById(R.id.black_wifi);
+        setwifi_btn = view.findViewById(R.id.setwifi_btn);
         setwifi_btn.setOnClickListener(this);
+        addwifi_btn = view.findViewById(R.id.addwifi_btn);
+        addwifi_btn.setOnClickListener(this);
         return view;
     }
 
@@ -49,14 +53,26 @@ public class WifiFragment extends BaseFragment implements View.OnClickListener{
         updateWifiString();
     }
 
-    private void updateWifiString() {
-        wifiCheckPresenter.handlewifi();
+    public void updateWifiString() {
+        handlewifi();
         wifinametext.setText(wifiCheckPresenter.getSSIDname());
         black_wifi.setText(DBhelper.getInstance(getContext()).getSelectedWifi());
     }
 
+    public void handlewifi() {
+        wifiCheckPresenter.handlewifi();
+    }
+
     @Override
     public void onClick(View v) {
-        getContext().startActivity(new Intent("xialei.action.start.setwifi"));
+        switch (v.getId()) {
+            case R.id.setwifi_btn:
+                getContext().startActivity(new Intent("xialei.action.start.setwifi"));
+                break;
+            case R.id.addwifi_btn:
+                wifiCheckPresenter.addNewBlackWifi(wifinametext.getText().toString());
+                updateWifiString();
+                break;
+        }
     }
 }

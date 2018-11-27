@@ -54,11 +54,15 @@ public class AudioFragment extends BaseFragment implements View.OnClickListener{
         updateTimeString();
     }
 
-    private void updateTimeString() {
-        ringmodePresenter.handletime();
+    public void updateTimeString() {
+        handleTimeChange();
         ringmodetext.setText(ringmodePresenter.getCurrentMode());
         currenttime.setText(ringmodePresenter.getTime());
         setchangeTime.setText(DBhelper.getInstance(getContext()).getSelectedTime());
+    }
+
+    public void handleTimeChange() {
+        ringmodePresenter.handletime();
     }
 
     @Override

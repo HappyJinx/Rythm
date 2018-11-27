@@ -3,11 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/normal_padding"
-    >
-    <LinearLayout
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    >
 
     <LinearLayout
         android:orientation="horizontal"
@@ -16,10 +13,11 @@
 
     <TextView
         android:text="@string/wifimode"
-        style="@style/RythmTextStyle"
+        style="@style/RythmTextSmallStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <TextView
+        android:layout_marginLeft="@dimen/normal_padding"
         android:id="@+id/wifinametext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,17 +27,19 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_marginTop="10dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
     <TextView
         android:text="@string/setedwifiname"
-        style="@style/RythmTextStyle"
+        style="@style/RythmTextSmallStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <TextView
+        android:layout_marginLeft="@dimen/normal_padding"
         android:id="@+id/black_wifi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,10 +51,16 @@
     <Button
         android:id="@+id/setwifi_btn"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        style="@style/RythmTextStyle"
+        android:layout_height="wrap_content"
+        style="@style/RythmTextSmallStyle"
         android:text="@string/setwifibtn"
         />
+    <Button
+        android:id="@+id/addwifi_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/RythmTextSmallStyle"
+        android:text="@string/addcurrentwifi"
+        />
 
-    </LinearLayout>
 </LinearLayout>

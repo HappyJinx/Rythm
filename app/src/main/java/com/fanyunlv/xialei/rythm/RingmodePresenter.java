@@ -46,9 +46,7 @@ public class RingmodePresenter {
         Calendar calendar = Calendar.getInstance();
         List<TimeItem> timeItemList = DBhelper.getInstance(context).getTimeList();
         for (TimeItem item : timeItemList) {
-
-            if ((calendar.get(Calendar.HOUR_OF_DAY) == item.getHour() && calendar.get(Calendar.MINUTE) == item.getMinute()))
-            {
+            if ((calendar.get(Calendar.HOUR_OF_DAY) == item.getHour() && calendar.get(Calendar.MINUTE) == item.getMinute())) {
                 audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
                 break;
             }
