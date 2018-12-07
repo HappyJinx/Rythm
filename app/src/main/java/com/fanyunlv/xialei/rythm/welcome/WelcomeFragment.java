@@ -37,6 +37,7 @@ public class WelcomeFragment extends Fragment implements OnClickListener, ViewPa
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getContext();
+        Log.i(TAG, "LineNum:40  Method:onCreate--> ");
     }
 
     @Nullable
@@ -62,6 +63,7 @@ public class WelcomeFragment extends Fragment implements OnClickListener, ViewPa
             Log.i(TAG, "onClick ");
             viewPager.setCurrentItem(mCurrentpostion-1,true);
         } else {
+            Log.i(TAG, "LineNum:66  Method:onClick--> ");
             if (mCurrentpostion + 1 == adapter.getCount()) {
                 //this means we can start app now
                 SharePrefUtil.getInstance(mContext).setFirstOpen(false);

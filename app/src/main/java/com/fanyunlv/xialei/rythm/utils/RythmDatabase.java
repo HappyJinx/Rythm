@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.fanyunlv.xialei.rythm.MyLocation;
+import com.fanyunlv.xialei.rythm.location.MyLocation;
 
 /**
  * Created by admin on 2018/8/24.
@@ -40,6 +40,7 @@ public class RythmDatabase extends SQLiteOpenHelper {
         static final String NAME = "name";
         static final String LONGT = "longt";
         static final String LATI = "lati";
+        static final String RADIOUS = "radios";
     }
 
     public static RythmDatabase getInstance(Context context) {
@@ -78,7 +79,8 @@ public class RythmDatabase extends SQLiteOpenHelper {
                 LOCATIONTABLE._ID+" integer primary key autoincrement,"+
                 LOCATIONTABLE.NAME+" text ,"+
                 LOCATIONTABLE.LONGT+" real ,"+
-                LOCATIONTABLE.LATI+" real)";
+                LOCATIONTABLE.LATI+" real ,"+
+                LOCATIONTABLE.RADIOUS+" real)";
 
         db.execSQL(sql3);
 
@@ -109,6 +111,7 @@ public class RythmDatabase extends SQLiteOpenHelper {
         contentValues.put(LOCATIONTABLE.NAME,myLocation.getName());
         contentValues.put(LOCATIONTABLE.LONGT,myLocation.getLongti());
         contentValues.put(LOCATIONTABLE.LATI,myLocation.getLati());
+        contentValues.put(LOCATIONTABLE.RADIOUS,myLocation.getLati());
         mdb.insert(Tables.LOCATIONTABLE,null,contentValues);
     }
 

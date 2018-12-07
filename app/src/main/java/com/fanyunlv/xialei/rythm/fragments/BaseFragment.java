@@ -9,7 +9,4 @@ import com.fanyunlv.xialei.rythm.MainActivity;
  */
 public class BaseFragment extends Fragment {
 
-    public void onBackPressed() {
-        ((MainActivity)getActivity()).returnTomain();
-    }
 }

@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.fanyunlv.xialei.rythm.MyLocation;
+import com.fanyunlv.xialei.rythm.location.MyLocation;
 import com.fanyunlv.xialei.rythm.TimeItem;
 
 import java.util.ArrayList;
@@ -63,6 +63,7 @@ public class DBhelper {
         values.put(RythmDatabase.LOCATIONTABLE.NAME,myLocation.getName());
         values.put(RythmDatabase.LOCATIONTABLE.LONGT,myLocation.getLongti());
         values.put(RythmDatabase.LOCATIONTABLE.LATI,myLocation.getLati());
+        values.put(RythmDatabase.LOCATIONTABLE.RADIOUS,myLocation.getRadios());
         insertLocation(values);
     }
     public void insertLocation(ContentValues values) {
@@ -174,7 +175,7 @@ public class DBhelper {
         Log.i(TAG, "getLocationList size ="+cursor.getCount());
         while (cursor.moveToNext()) {
 //            cursor.getString(1), cursor.getDouble(2), cursor.getDouble(3)
-            list.add(new MyLocation(cursor.getString(1),cursor.getDouble(2),cursor.getDouble(3)));
+            list.add(new MyLocation(cursor.getString(1),cursor.getDouble(2),cursor.getDouble(3),cursor.getDouble(4)));
         }
         cursor.close();
         return list;

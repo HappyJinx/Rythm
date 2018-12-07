@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fanyunlv.xialei.rythm.R;
+import com.fanyunlv.xialei.rythm.utils.FragmentUtil;
 
 import java.util.ArrayList;
 
@@ -33,9 +34,9 @@ public class FunctionFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView ");
         functions = new ArrayList<>();
-        functions.add(new XFunction("audio", true));
-        functions.add(new XFunction("wifi", true));
-        functions.add(new XFunction("location", true));
+        for (int i = 0; i < FragmentUtil.Fragments.length; i++) {
+            functions.add(new XFunction(FragmentUtil.Fragments[i], true));
+        }
 
         View contentview = inflater.inflate(R.layout.function_fragment, container, false);
         mrecyclerView = contentview.findViewById(R.id.function_list);
@@ -45,39 +46,9 @@ public class FunctionFragment extends Fragment {
         mrecyclerView.setLayoutManager(linearLayoutManager);
 //        DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL);
 //        itemDecoration.setDrawable(new ColorDrawable(Color.RED));
-        mrecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
+        mrecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));//attention this is vertical
 
         return contentview;
-    }
-
-    @Override
-    public void onResume() {
-        Log.i(TAG, "onResume ");
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        Log.i(TAG, "onPause ");
-        super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        Log.i(TAG, "onStop ");
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroy() {
-        Log.i(TAG, "onDestroy ");
-        super.onDestroy();
-    }
-
-    @Override
-    public void onDestroyView() {
-        Log.i(TAG, "onDestroyView ");
-        super.onDestroyView();
     }
 
     @Override

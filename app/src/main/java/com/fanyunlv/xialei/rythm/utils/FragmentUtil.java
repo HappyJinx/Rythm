@@ -13,6 +13,11 @@ public class FragmentUtil {
     private String lastShowFragment;
     private Fragment currentFragment;
 
+    public static final String[] Fragments = {
+            "Audio",
+            "Wifi",
+            "Location"
+    };
     public FragmentUtil(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
     }
@@ -41,21 +46,6 @@ public class FragmentUtil {
 
     public Fragment getCurrentFragment() {
         return currentFragment;
-    }
-
-    public void returnTomain() {
-        FragmentTransaction f = fragmentManager.beginTransaction();
-        if (lastShowFragment != null) {
-            f.hide(getfragment(lastShowFragment));
-        }
-        f.show(getfragment("function"));
-        f.commitNow();
-        currentFragment = getfragment("function");
-        setLastShowFragment("function");
-    }
-
-    public boolean isMainFragment() {
-        return "function".equals(lastShowFragment);
     }
 
 }
