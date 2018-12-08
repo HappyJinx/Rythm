@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.fanyunlv.xialei.rythm.TaskDetails;
 import com.fanyunlv.xialei.rythm.location.MyLocation;
 import com.fanyunlv.xialei.rythm.TimeItem;
 
@@ -46,6 +47,18 @@ public class DBhelper {
 
     public void insertdb(ContentValues values) {
         db.insert(RythmDatabase.Tables.TIMETABLE, null, values);
+    }
+
+    public void inserttaskDetails(TaskDetails details) {
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(RythmDatabase.TASK.CODE,details.getCode());
+        contentValues.put(RythmDatabase.TASK.AUDIO,details.isAudio()?1:0);
+        contentValues.put(RythmDatabase.TASK.WIFI,details.isWifi()?1:0);
+        contentValues.put(RythmDatabase.TASK.VOLUME,details.isVolume()?1:0);
+        contentValues.put(RythmDatabase.TASK.NFC,details.isNfc()?1:0);
+        db.insert(RythmDatabase.Tables.TASK,null,contentValues);
+
     }
 
     public void insertwifi(String name) {
@@ -96,6 +109,12 @@ public class DBhelper {
                 new String[]{myLocation.getName(),Double.toString(myLocation.getLongti())});
     }
 
+    public void deletetask(int code) {
+        db.delete(RythmDatabase.Tables.TASK,
+                RythmDatabase.TASK.CODE+"= ? ",
+                new String[]{Integer.toString(code)});
+    }
+
     public void deletelocation(int ID) {
         Log.i("deletelocation", "deletelocation ID"+ID);
 
@@ -118,6 +137,9 @@ public class DBhelper {
     }
     public Cursor querylocation() {
         return db.query(RythmDatabase.Tables.LOCATIONTABLE, null, null,null,null,null,null);
+    }
+    public Cursor querytask(int code) {
+        return db.query(RythmDatabase.Tables.TASK, null, RythmDatabase.TASK.CODE+"= ?",new String[]{Integer.toString(code)},null,null,null);
     }
 
     public String getSelectedTime() {

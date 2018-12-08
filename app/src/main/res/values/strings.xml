@@ -2,16 +2,18 @@
   <string name="app_name">Rythm</string>
   <string name="currentmode">铃声模式:</string>
   <string name="currenttie">当前时间:</string>
-  <string name="settime">自动调整的时间:</string>
+  <string name="settime">自动调整响铃的时间:</string>
   <string name="settimebtn">设置时间</string>
   <string name="setwifibtn">设置WIFI</string>
   <string name="settimechoose">选择想要检查的时间</string>
   <string name="setwifichoose">设置想要检查的WIFI</string>
   <string name="addcurrentwifi">把当前wifi拉入黑名单</string>
   <string name="none_wifi">未连接</string>
+  <string name="wifi_disable">已关闭</string>
 
   <string name="deleteitem">删除</string>
   <string name="additem">添加</string>
+  <string name="save_setting">保存</string>
 
   <string name="wifimode">已连接WIFI:</string>
   <string name="setedwifiname">WIFI黑名单:</string>
@@ -21,4 +23,8 @@
   <string name="begin">开始</string>
 
   <string name="add_location">添加定位信息</string>
+
+  <string name="setting_by_time">设置定时执行任务</string>
+  <string name="setting_by_location">设置定位执行任务</string>
+
 </resources>

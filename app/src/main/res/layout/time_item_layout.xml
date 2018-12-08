@@ -4,21 +4,39 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
-  <TextView
-    android:id="@+id/time_setted"
-    android:layout_alignParentStart="true"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    style="@style/RythmTextStyle"/>
+  <LinearLayout
+      android:orientation="vertical"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content">
+
+      <TextView
+        android:id="@+id/time_setted"
+        android:layout_alignParentStart="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        style="@style/RythmTextStyle"/>
+
+      <TextView
+          android:id="@+id/time_setted_info"
+          android:layout_alignParentStart="true"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:gravity="center"
+          android:textSize="15sp"
+          android:textColor="#757575"
+          />
+  </LinearLayout>
 
   <Button
     android:id="@+id/delete_item"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignParentEnd="true"
+    android:layout_marginBottom="20dp"
     android:gravity="center"
-    style="@style/RythmTextSmallStyle"
+    android:textColor="#757575"
+    android:textSize="16sp"
     android:text="@string/deleteitem"
     />
 

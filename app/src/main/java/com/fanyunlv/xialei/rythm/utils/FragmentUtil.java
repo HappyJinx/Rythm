@@ -14,9 +14,9 @@ public class FragmentUtil {
     private Fragment currentFragment;
 
     public static final String[] Fragments = {
-            "Audio",
-            "Wifi",
-            "Location"
+            "响铃模式",
+            "已连接Wifi",
+            "定位信息"
     };
     public FragmentUtil(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;

@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string-array name="Ringmodestring" >
-
     <item>"静音"</item>
     <item>"震动"</item>
-    <item>"响铃"</item>
-    <item>"不知道"</item>
+    <item>"正常响铃"</item>
+    <item>"未知"</item>
+  </string-array>
 
+  <string-array name="time_task_list">
+    <item>时间</item>
+    <item>开启响铃</item>
+    <item>禁止wifi</item>
+    <item>调节音量</item>
+    <item>开启NFC</item>
   </string-array>
 
 </resources>

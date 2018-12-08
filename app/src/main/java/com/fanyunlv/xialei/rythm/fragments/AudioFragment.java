@@ -64,6 +64,6 @@ public class AudioFragment extends BaseFragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        getContext().startActivity(new Intent("xialei.action.start.settime"));
+
     }
 }

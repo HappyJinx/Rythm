@@ -7,42 +7,32 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.*;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
-import com.baidu.location.BDNotifyListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
 import com.fanyunlv.xialei.rythm.fragments.AudioFragment;
-import com.fanyunlv.xialei.rythm.fragments.BaseFragment;
-import com.fanyunlv.xialei.rythm.location.LocationFragment;
 import com.fanyunlv.xialei.rythm.fragments.WifiFragment;
 import com.fanyunlv.xialei.rythm.function.FunctionFragment;
 import com.fanyunlv.xialei.rythm.location.LocationPresenter;
 import com.fanyunlv.xialei.rythm.sharedpreference.SharePrefUtil;
 import com.fanyunlv.xialei.rythm.utils.FragmentUtil;
 import com.fanyunlv.xialei.rythm.utils.PermissionUtil;
-import com.fanyunlv.xialei.rythm.welcome.WelcomeFragment;
+import com.fanyunlv.xialei.rythm.fragments.WelcomeFragment;
 
 
 public class MainActivity extends AppCompatActivity{
-
     public static final String TAG = "Rythm";
 
     private SharePrefUtil sharePrefUtil;
-
-    private FunctionFragment functionFragment;
-    private WelcomeFragment welcomeFragment;
-
     private FragmentManager fragmentManager;
     private FragmentUtil fragmentUtil;
     private PermissionUtil permissionUtil;
+
+    private ActionBar actionBar;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -72,6 +62,8 @@ public class MainActivity extends AppCompatActivity{
 //                WindowManager.LayoutParams. FLAG_FULLSCREEN);
         setContentView(R.layout.main_activity);
 
+        actionBar = getSupportActionBar();
+
         fragmentManager = getSupportFragmentManager();
         fragmentUtil = new FragmentUtil(fragmentManager);
         sharePrefUtil = SharePrefUtil.getInstance(this);
@@ -82,8 +74,19 @@ public class MainActivity extends AppCompatActivity{
 
         showContent();
         initReceiver();
+        //init baidu location service
+        LocationPresenter.getInstance(getApplicationContext()).initBaiduLoaction();
+    }
 
-        LocationPresenter.getInstance(getApplicationContext()).initBaiduLoaction(); // 开启定位
+    public void setTitle(int resid) {
+        actionBar.setTitle(resid);
+    }
+    public void hideActionbar(boolean hide) {
+        if (hide) {
+            actionBar.hide();
+        }else if (!actionBar.isShowing()){
+            actionBar.show();
+        }
     }
 
     public void showContent() {
@@ -97,7 +100,6 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void onFragmentSelect(String name) {
-        Log.i(TAG, "LineNum:97  Method:onFragmentSelect--> name ="+name);
         Intent intent = new Intent("com.android.rhythm.function");
         intent.putExtra(FunctionActivity.FRGMENT_TAG, name);
         startActivity(intent);
@@ -111,6 +113,7 @@ public class MainActivity extends AppCompatActivity{
             for (int i = 0; i < grantResults.length; i++) {
                 if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                     //permissionUtil.requestPermissions(10);
+                    Log.i(TAG, "LineNum:108  Method:onRequestPermissionsResult--> granted");
                 }
             }
         }
@@ -133,10 +136,10 @@ public class MainActivity extends AppCompatActivity{
         unregisterReceiver(receiver);
         super.onDestroy();
     }
-
     public void welComeFinished() {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.content_view,new FunctionFragment(),"function");
         transaction.commitNow();
     }
+
 }

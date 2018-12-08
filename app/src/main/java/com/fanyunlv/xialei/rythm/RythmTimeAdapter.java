@@ -1,6 +1,7 @@
 package com.fanyunlv.xialei.rythm;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,10 +24,12 @@ public class RythmTimeAdapter extends RecyclerView.Adapter<RythmTimeAdapter.Ryth
     private final String TAG = "Rythm";
     private List<TimeItem> timeitemlist = new ArrayList<>();
     private Context mcontext;
+    private DBhelper dBhelper;
 
-    public RythmTimeAdapter(Context context, List<TimeItem> itemlist){
+    public RythmTimeAdapter(Context context, List<TimeItem> itemlist ,DBhelper dBhelper){
         timeitemlist = itemlist;
         mcontext = context;
+        this.dBhelper = dBhelper;
     }
 
     public void replaceList(List<TimeItem> list) {
@@ -44,6 +47,8 @@ public class RythmTimeAdapter extends RecyclerView.Adapter<RythmTimeAdapter.Ryth
     @Override
     public void onBindViewHolder(RythmViewHolder holder, int position) {
         holder.item_time.setText(timeitemlist.get(position).toString());
+        Log.i(TAG, "LineNum:50  Method:onBindViewHolder--> ");
+        holder.item_time_info.setText(getTaskinfo(timeitemlist.get(position).getHour()*100+timeitemlist.get(position).getMinute()));
         holder.item_delete.setOnClickListener(this);
         holder.item_delete.setTag(position);
     }
@@ -60,6 +65,7 @@ public class RythmTimeAdapter extends RecyclerView.Adapter<RythmTimeAdapter.Ryth
                 Log.i(TAG, "onClick: v.getTag()="+(v.getTag()));
                 TimeItem timeItem = timeitemlist.get((int) v.getTag());
                 DBhelper.getInstance(mcontext).deleteitem(timeItem.getHour(),timeItem.getMinute());
+                DBhelper.getInstance(mcontext).deletetask(timeItem.getHour()*100+timeItem.getMinute());
                 timeitemlist.remove((int)v.getTag());
                 notifyDataSetChanged();
                 break;
@@ -68,12 +74,47 @@ public class RythmTimeAdapter extends RecyclerView.Adapter<RythmTimeAdapter.Ryth
 
     public class RythmViewHolder extends RecyclerView.ViewHolder {
         public TextView item_time;
+        public TextView item_time_info;
         public Button item_delete;
         public RythmViewHolder(View itemView) {
             super(itemView);
             item_time = itemView.findViewById(R.id.time_setted);
+            item_time_info = itemView.findViewById(R.id.time_setted_info);
             item_delete = itemView.findViewById(R.id.delete_item);
         }
+    }
+
+    public String getTaskinfo(int code) {
+        Cursor cursor = dBhelper.querytask(code);
+        if (cursor.getCount() == 0) {
+            return "无任务";
+        }
+        Log.i(TAG, "LineNum:91  Method:getTaskinfo--> cursor="+cursor.getCount());
+        StringBuffer stringBuffer = new StringBuffer();
+        if (cursor.moveToFirst()) {
+            int audio = cursor.getInt(2);
+            int wifi = cursor.getInt(3);
+            int volume = cursor.getInt(4);
+            int nfc = cursor.getInt(5);
+            Log.i(TAG, "LineNum:98  Method:getTaskinfo--> audio="+audio+"-wifi="+wifi);
+            if (audio == 1) {
+                stringBuffer.append(" 声音模式 ");
+            }
+            if (wifi == 1) {
+                stringBuffer.append(" 屏蔽wifi ");
+            }
+            if (volume == 1) {
+                stringBuffer.append(" 调节音量 ");
+            }
+            if (nfc == 1) {
+                stringBuffer.append(" 开关NFC ");
+            }
+            if (audio == 0 && wifi == 0 && volume == 0 && nfc == 0) {
+                stringBuffer.append(" 无任务 ");
+            }
+        }
+        cursor.close();
+        return stringBuffer.toString();
     }
 
 }

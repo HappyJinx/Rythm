@@ -3,7 +3,6 @@
   xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <item android:id="@+id/add_new"
-      android:icon="@mipmap/add"
       android:title="@string/additem"
       app:showAsAction="always"
     />

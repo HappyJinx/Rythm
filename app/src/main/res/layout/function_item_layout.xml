@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/normal_padding"
-    >
+    android:layout_height="50dp"
+    android:paddingHorizontal="10dp">
 
     <TextView
         android:id="@+id/function_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         style="@style/RythmTextStyle"
         />
 
-    <!--<android.support.v7.widget.AppCompatCheckBox-->
-        <!--android:id="@+id/function_state"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--/>-->
+    <TextView
+        android:id="@+id/state_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:textSize="16sp"
+        android:textColor="#757575"/>
 
 </RelativeLayout>

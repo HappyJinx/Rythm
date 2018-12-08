@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import com.fanyunlv.xialei.rythm.MainActivity;
 import com.fanyunlv.xialei.rythm.R;
+import com.fanyunlv.xialei.rythm.RingmodePresenter;
+import com.fanyunlv.xialei.rythm.WifiCheckPresenter;
+import com.fanyunlv.xialei.rythm.location.LocationPresenter;
 
 import java.util.ArrayList;
 
@@ -36,7 +39,8 @@ public class FunctionRecyclerAdapter extends RecyclerView.Adapter<FunctionRecycl
     public void onBindViewHolder(RecyclerHolder holder, int position) {
         final String name = datas.get(position).getName();
         holder.functionName.setText(datas.get(position).getName());
-        //holder.compatCheckBox.setChecked(datas.get(position).isIsenabled());
+
+        holder.staetinfo.setText(getstateInfo(position+1));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,13 +57,25 @@ public class FunctionRecyclerAdapter extends RecyclerView.Adapter<FunctionRecycl
     class RecyclerHolder extends RecyclerView.ViewHolder {
 
         public TextView functionName;
-        //public AppCompatCheckBox compatCheckBox;
+        public TextView staetinfo;
 
         public RecyclerHolder(View itemView) {
             super(itemView);
             functionName = itemView.findViewById(R.id.function_name);
-            //compatCheckBox = itemView.findViewById(R.id.function_state);
+            staetinfo = itemView.findViewById(R.id.state_info);
         }
+    }
+
+    public String getstateInfo(int position) {
+        switch (position) {
+            case 1:
+                return RingmodePresenter.getInstance(mContext).getCurrentMode();
+            case 2:
+                return WifiCheckPresenter.getInstance(mContext).getSSIDname();
+            case 3:
+                return LocationPresenter.getInstance(mContext).getLastLocationDecri();
+        }
+        return "";
     }
 
 }

@@ -5,26 +5,15 @@ package com.fanyunlv.xialei.rythm.function;
  */
 public class XFunction {
     private String name;
-    private boolean isenabled;
 
-    public XFunction(String name, boolean isenabled) {
+    public XFunction(String name) {
         this.name = name;
-        this.isenabled = isenabled;
     }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public boolean isIsenabled() {
-        return isenabled;
-    }
-
-    public void setIsenabled(boolean isenabled) {
-        this.isenabled = isenabled;
     }
 }

@@ -86,7 +86,6 @@ public class FunctionActivity extends AppCompatActivity {
 
     public void showFunction(String fragName) {
         Fragment fragment = hashMap.get(fragName);
-        Log.i(TAG, "LineNum:89  Method:showFunction--> fragName="+fragName);
         if (fragment == null) {
             return;
         }

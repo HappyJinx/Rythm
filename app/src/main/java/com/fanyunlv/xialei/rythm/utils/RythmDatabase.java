@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.fanyunlv.xialei.rythm.TaskDetails;
 import com.fanyunlv.xialei.rythm.location.MyLocation;
 
 /**
@@ -25,6 +26,7 @@ public class RythmDatabase extends SQLiteOpenHelper {
         static final String TIMETABLE = "time";
         static final String WIFITABLE = "wifi";
         static final String LOCATIONTABLE = "location";
+        static final String TASK = "task";
     }
     public interface TimeColumes{
         static final String _ID = "id";
@@ -41,6 +43,15 @@ public class RythmDatabase extends SQLiteOpenHelper {
         static final String LONGT = "longt";
         static final String LATI = "lati";
         static final String RADIOUS = "radios";
+    }
+
+    public interface TASK{
+        static final String _ID = "id";
+        static final String CODE = "code";
+        static final String AUDIO = "audio";
+        static final String WIFI = "wifi";
+        static final String VOLUME = "volume";
+        static final String NFC = "nfc";
     }
 
     public static RythmDatabase getInstance(Context context) {
@@ -84,9 +95,18 @@ public class RythmDatabase extends SQLiteOpenHelper {
 
         db.execSQL(sql3);
 
+        String sql4 = "create table "+Tables.TASK+"("+
+                TASK._ID+" integer primary key autoincrement,"+
+                TASK.CODE+" integer ,"+
+                TASK.AUDIO+" integer ,"+
+                TASK.WIFI+" integer ,"+
+                TASK.VOLUME+" integer ,"+
+                TASK.NFC+" integer)";
+
+        db.execSQL(sql4);
+
         mdb = db;
-        insertItem(11,58);
-        insertItem(17,58);
+
         insertWifi("Rainbow");
     }
 
@@ -114,12 +134,23 @@ public class RythmDatabase extends SQLiteOpenHelper {
         contentValues.put(LOCATIONTABLE.RADIOUS,myLocation.getLati());
         mdb.insert(Tables.LOCATIONTABLE,null,contentValues);
     }
+    private void insertLocation(TaskDetails taskDetails) {
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TASK.CODE,taskDetails.getCode());
+        contentValues.put(TASK.AUDIO,taskDetails.isAudio()?1:0);
+        contentValues.put(TASK.WIFI,taskDetails.isWifi()?1:0);
+        contentValues.put(TASK.VOLUME,taskDetails.isVolume()?1:0);
+        contentValues.put(TASK.NFC,taskDetails.isNfc()?1:0);
+        mdb.insert(Tables.TASK,null,contentValues);
+    }
 
     public void dropTables(SQLiteDatabase db) {
         //db.execSQL("DROP TABLE IF EXISTS " + Tables.TIMETABLE);
         db.execSQL("DROP TABLE IF EXISTS " + Tables.TIMETABLE+";");
         db.execSQL("DROP TABLE IF EXISTS " + Tables.WIFITABLE+";");
         db.execSQL("DROP TABLE IF EXISTS " + Tables.LOCATIONTABLE+";");
+        db.execSQL("DROP TABLE IF EXISTS " + Tables.TASK+";");
     }
 
     @Override

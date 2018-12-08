@@ -1,4 +1,4 @@
-package com.fanyunlv.xialei.rythm.welcome;
+package com.fanyunlv.xialei.rythm.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -36,8 +36,11 @@ public class WelcomeFragment extends Fragment implements OnClickListener, ViewPa
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = getContext();
-        Log.i(TAG, "LineNum:40  Method:onCreate--> ");
+        mContext = getActivity();
+
+
+        //hide action bar
+        ((MainActivity)mContext).hideActionbar(true);
     }
 
     @Nullable

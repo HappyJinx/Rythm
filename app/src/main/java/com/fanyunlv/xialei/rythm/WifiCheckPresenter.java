@@ -38,6 +38,9 @@ public class WifiCheckPresenter {
     }
 
     public String getSSIDname() {
+        if (!wifiManager.isWifiEnabled()) {
+            return context.getResources().getString(R.string.wifi_disable);
+        }
         String name = wifiManager.getConnectionInfo().getSSID().replaceAll("\"", "");
         if ("<unknown ssid>".equals(name)) {
             return context.getResources().getString(R.string.none_wifi);

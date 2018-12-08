@@ -32,6 +32,8 @@ public class LocationPresenter {
     public BDNotifyListener myNotifyListener2 = new MyNotifiListener();
     public BDNotifyListener myNotifyListener3 = new MyNotifiListener();
 
+    private BDLocation mLastKnowLocation;
+
     private LocationPresenter(Context context) {
         this.context = context;
         listeners = new ArrayList<>();
@@ -71,7 +73,6 @@ public class LocationPresenter {
         //设置位置提醒，四个参数分别是：纬度、精度、半径、坐标类型
 
         LocationClientOption option = new LocationClientOption();
-
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
         //可选，设置定位模式，默认高精度
         //LocationMode.Hight_Accuracy：高精度；
@@ -125,12 +126,30 @@ public class LocationPresenter {
         mLocationClient.start();//开始定位
     }
 
+    public void startFirstLocate() {
+        LocationClientOption option = new LocationClientOption();
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+        option.setCoorType("bd09ll");
+        option.setScanSpan(0);
+        option.setOpenGps(true);
+        option.setLocationNotify(false);
+        option.setIgnoreKillProcess(true);
+        option.SetIgnoreCacheException(true);
+        option.setWifiCacheTimeOut(5*60*1000);
+        option.setEnableSimulateGps(false);
+        option.setIsNeedAddress(true);
+        option.setIsNeedLocationDescribe(true);
+        mLocationClient.setLocOption(option);
+        mLocationClient.start();
+    }
+
     public class MyLocationListener extends BDAbstractLocationListener {
         @Override
         public void onReceiveLocation(BDLocation location) {
             for (LocationIistener lis : listeners) {
                 lis.onLocationReceived(location);
             }
+            Log.i(TAG, "LineNum:152  Method:onReceiveLocation--> ");
         }
     }
 
@@ -143,5 +162,13 @@ public class LocationPresenter {
                 lis.onLocationNeedNotify(bdLocation,v);
             }
         }
+    }
+
+    public String getLastLocationDecri() {
+        mLastKnowLocation = mLocationClient.getLastKnownLocation();
+        if (mLastKnowLocation == null) {
+            return "无";
+        }
+        return mLastKnowLocation.getLocationDescribe();
     }
 }
