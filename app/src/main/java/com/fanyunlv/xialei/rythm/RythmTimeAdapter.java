@@ -21,7 +21,7 @@ import java.util.List;
 
 public class RythmTimeAdapter extends RecyclerView.Adapter<RythmTimeAdapter.RythmViewHolder> implements View.OnClickListener{
 
-    private final String TAG = "Rythm";
+    private final String TAG = "RythmTimeAdapter";
     private List<TimeItem> timeitemlist = new ArrayList<>();
     private Context mcontext;
     private DBhelper dBhelper;
@@ -39,16 +39,16 @@ public class RythmTimeAdapter extends RecyclerView.Adapter<RythmTimeAdapter.Ryth
 
     @Override
     public RythmViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.time_item_layout,null);
+        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_full_item_layout,null);
         RythmViewHolder holder = new RythmViewHolder(item);
         return holder;
     }
 
     @Override
     public void onBindViewHolder(RythmViewHolder holder, int position) {
-        holder.item_time.setText(timeitemlist.get(position).toString());
+        holder.item_setted.setText(timeitemlist.get(position).toString());
         Log.i(TAG, "LineNum:50  Method:onBindViewHolder--> ");
-        holder.item_time_info.setText(getTaskinfo(timeitemlist.get(position).getHour()*100+timeitemlist.get(position).getMinute()));
+        holder.item_setted_info.setText(getTaskinfo(timeitemlist.get(position).getHour()*100+timeitemlist.get(position).getMinute()));
         holder.item_delete.setOnClickListener(this);
         holder.item_delete.setTag(position);
     }
@@ -73,13 +73,13 @@ public class RythmTimeAdapter extends RecyclerView.Adapter<RythmTimeAdapter.Ryth
     }
 
     public class RythmViewHolder extends RecyclerView.ViewHolder {
-        public TextView item_time;
-        public TextView item_time_info;
+        public TextView item_setted;
+        public TextView item_setted_info;
         public Button item_delete;
         public RythmViewHolder(View itemView) {
             super(itemView);
-            item_time = itemView.findViewById(R.id.time_setted);
-            item_time_info = itemView.findViewById(R.id.time_setted_info);
+            item_setted = itemView.findViewById(R.id.item_setted);
+            item_setted_info = itemView.findViewById(R.id.item_setted_info);
             item_delete = itemView.findViewById(R.id.delete_item);
         }
     }

@@ -52,6 +52,7 @@ public class DBhelper {
     public void inserttaskDetails(TaskDetails details) {
 
         ContentValues contentValues = new ContentValues();
+        contentValues.put(RythmDatabase.TASK.NAME,details.getName());
         contentValues.put(RythmDatabase.TASK.CODE,details.getCode());
         contentValues.put(RythmDatabase.TASK.AUDIO,details.isAudio()?1:0);
         contentValues.put(RythmDatabase.TASK.WIFI,details.isWifi()?1:0);
@@ -77,9 +78,11 @@ public class DBhelper {
         values.put(RythmDatabase.LOCATIONTABLE.LONGT,myLocation.getLongti());
         values.put(RythmDatabase.LOCATIONTABLE.LATI,myLocation.getLati());
         values.put(RythmDatabase.LOCATIONTABLE.RADIOUS,myLocation.getRadios());
+        values.put(RythmDatabase.LOCATIONTABLE.DESCRIB,myLocation.getDescription());
         insertLocation(values);
     }
     public void insertLocation(ContentValues values) {
+        Log.i(TAG, "LineNum:84  Method:insertLocation--> ");
         db.insert(RythmDatabase.Tables.LOCATIONTABLE, null, values);
     }
 
@@ -124,9 +127,15 @@ public class DBhelper {
 //        db.execSQL("delete from location where id="+ID);
     }
 
-
     public void deleteitem(String tablename,int postion) {
-        db.delete(tablename, RythmDatabase.TimeColumes._ID+"= ? and", new String[]{Integer.toString(postion)});
+        db.delete(tablename, RythmDatabase.TimeColumes._ID+"= ?", new String[]{Integer.toString(postion)});
+    }
+
+    public void deletetask(int postion) {
+        db.delete(RythmDatabase.Tables.TASK, RythmDatabase.TASK._ID+"= ? ", new String[]{Integer.toString(postion)});
+    }
+    public void deletetask(String tablename,int postion) {
+        db.delete(tablename, RythmDatabase.TASK._ID+"= ? ", new String[]{Integer.toString(postion)});
     }
 
     public Cursor querytime() {
@@ -140,6 +149,9 @@ public class DBhelper {
     }
     public Cursor querytask(int code) {
         return db.query(RythmDatabase.Tables.TASK, null, RythmDatabase.TASK.CODE+"= ?",new String[]{Integer.toString(code)},null,null,null);
+    }
+    public Cursor querytask(String name) {
+        return db.query(RythmDatabase.Tables.TASK, null, RythmDatabase.TASK.NAME+"= ?",new String[]{name},null,null,null);
     }
 
     public String getSelectedTime() {
@@ -194,10 +206,9 @@ public class DBhelper {
         db = database.getWritableDatabase();
         //Cursor cursor = db.query(RythmDatabase.Tables.LOCATIONTABLE, null, null, null, null,null, null);
         Cursor cursor = querylocation();
-        Log.i(TAG, "getLocationList size ="+cursor.getCount());
+        Log.i(TAG, "LineNum:198  Method:getLocationList--> cusor ="+cursor.getCount());
         while (cursor.moveToNext()) {
-//            cursor.getString(1), cursor.getDouble(2), cursor.getDouble(3)
-            list.add(new MyLocation(cursor.getString(1),cursor.getDouble(2),cursor.getDouble(3),cursor.getDouble(4)));
+            list.add(new MyLocation(cursor.getString(1),cursor.getDouble(2),cursor.getDouble(3),cursor.getDouble(4),cursor.getString(5)));
         }
         cursor.close();
         return list;
@@ -209,6 +220,25 @@ public class DBhelper {
         Cursor cursor = db.query(RythmDatabase.Tables.TIMETABLE, null, null, null, null,null, null);
         while (cursor.moveToNext()) {
             list.add(new TimeItem(cursor.getInt(1) ,cursor.getInt(2)));
+        }
+        cursor.close();
+        return list;
+    }
+
+    public ArrayList<TaskDetails> getTaskList() {
+        ArrayList<TaskDetails> list = new ArrayList<>();
+        db = database.getWritableDatabase();
+        //Cursor cursor = db.query(RythmDatabase.Tables.LOCATIONTABLE, null, null, null, null,null, null);
+        Cursor cursor = querylocation();
+        Log.i(TAG, "LineNum:198  Method:getLocationList--> cusor ="+cursor.getCount());
+        while (cursor.moveToNext()) {
+            String name = cursor.getString(1);
+            int code = cursor.getInt(1);
+            boolean audio = (cursor.getInt(2)==1);
+            boolean wifi = (cursor.getInt(3)==1);
+            boolean volume = (cursor.getInt(4)==1);
+            boolean nfc = (cursor.getInt(5)==1);
+            list.add(new TaskDetails(name,code,audio,wifi,volume,nfc));
         }
         cursor.close();
         return list;

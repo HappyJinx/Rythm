@@ -1,6 +1,5 @@
 package com.fanyunlv.xialei.rythm;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -16,14 +15,12 @@ import android.view.MenuItem;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by xialei on 2018/12/8.
  */
-public class TimeTaskActivity extends AppCompatActivity {
-    private static final String TAG = TimeTaskActivity.class.getSimpleName();
+public class ConfigTimeTaskActivity extends AppCompatActivity {
+    private static final String TAG = ConfigTimeTaskActivity.class.getSimpleName();
 
     private RecyclerView recyclerView;
     private RythmTimeTaskAdapter rythmAdapter;

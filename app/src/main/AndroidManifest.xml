@@ -67,20 +67,31 @@
       </intent-filter>
     </receiver>
 
-    <activity android:name=".SettimeActivity">
+    <activity android:name=".SettimeTaskActivity">
       <intent-filter>
         <action android:name="xialei.action.start.settime" />
         <category android:name="android.intent.category.DEFAULT" />
       </intent-filter>
     </activity>
+
+    <activity android:name=".ConfigTimeTaskActivity"/>
+
+
+    <activity android:name=".location.SetLocationTaskActivity">
+      <intent-filter>
+        <action android:name="xialei.action.start.setlocation" />
+        <category android:name="android.intent.category.DEFAULT" />
+      </intent-filter>
+    </activity>
+
+
+
     <activity android:name=".SetwifiActivity">
       <intent-filter>
         <action android:name="xialei.action.start.setwifi" />
         <category android:name="android.intent.category.DEFAULT" />
       </intent-filter>
     </activity>
-
-    <activity android:name=".TimeTaskActivity"/>
 
     <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"> </service>
   </application>

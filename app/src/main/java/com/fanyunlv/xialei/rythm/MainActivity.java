@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    public void showContent() {
+    public void showContent() { //main content
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         if (sharePrefUtil.isFirstOpen()) {
             transaction.add(R.id.content_view,new WelcomeFragment(), "welcome");

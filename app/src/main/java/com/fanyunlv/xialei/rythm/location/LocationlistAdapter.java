@@ -59,20 +59,18 @@ public class LocationlistAdapter extends BaseAdapter {
             holder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.location_item, parent, false);
             holder.locationinfo = convertView.findViewById(R.id.location_info);
-            holder.locationinfo.setText(datas.get(position).getName()+":  "+datas.get(position).getLongti()
-                    +"--"+datas.get(position).getLati());
+            holder.locationinfo.setText(datas.get(position).getName()+":  "+datas.get(position).getDescription());
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder) convertView.getTag();
-            holder.locationinfo.setText(datas.get(position).getName()+":  "+datas.get(position).getLongti()
-                    +"--"+datas.get(position).getLati());
+            holder.locationinfo.setText(datas.get(position).getName()+":  "+datas.get(position).getDescription());
         }
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 Log.i(TAG, "onLongClick ");
+                DBhelper.getInstance(context).deletelocation(getItem(position));
                 datas.remove(position);
-                DBhelper.getInstance(context).deletelocation(getItem(position-1));
                 notifyDataSetChanged();
                 return true;
             }

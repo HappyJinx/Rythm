@@ -171,7 +171,7 @@ public class RythmTimeTaskAdapter extends RecyclerView.Adapter<RythmTimeTaskAdap
         Log.i(TAG, "LineNum:149  Method:addtaskdetail--> hour=" + hour);
 
         TaskDetails taskDetails = new TaskDetails(hour*100+minute);
-
+        taskDetails.setName(""+taskDetails.getCode());
         taskDetails.setAudio(timeitemlist.get(1).isEnabled());
         taskDetails.setWifi(timeitemlist.get(2).isEnabled());
         taskDetails.setVolume(timeitemlist.get(3).isEnabled());

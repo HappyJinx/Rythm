@@ -2,27 +2,60 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/normal_padding"
     android:orientation="vertical"
     >
 
-    <TextView
-        android:id="@+id/location_info"
-        style="@style/RythmTextSmallStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <!--<TextView-->
+        <!--android:id="@+id/location_info"-->
+        <!--style="@style/RythmTextSmallStyle"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content" />-->
 
-    <Button
-        android:id="@+id/add_location"
+    <FrameLayout
+        android:layout_weight="7"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/RythmTextSmallStyle"
-        android:text="@string/add_location"
-        />
+        android:layout_height="0dp">
 
-    <ListView
-        android:id="@+id/location_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <com.baidu.mapapi.map.MapView
+            android:id="@+id/baidu_mapview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </com.baidu.mapapi.map.MapView>
+
+        <ImageButton
+            android:id="@+id/center_self"
+            android:layout_width="38dp"
+            android:layout_height="40dp"
+            android:layout_gravity="right|bottom"
+            android:layout_marginRight="6dp"
+            android:layout_marginBottom="80dp"
+            android:background="#f8fafafa"
+            android:src="@drawable/center_self"
+            android:scaleType="centerInside"
+            />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:padding="@dimen/normal_padding"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_weight="4"
+        android:layout_height="0dp">
+
+        <Button
+            android:id="@+id/add_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/RythmTextSmallStyle"
+            android:text="@string/add_location"
+            />
+
+        <ListView
+            android:id="@+id/location_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
 
 </LinearLayout>

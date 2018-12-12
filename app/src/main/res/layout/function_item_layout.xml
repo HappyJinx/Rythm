@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="50dp"
+    android:orientation="horizontal"
     android:paddingHorizontal="10dp">
 
     <TextView
         android:id="@+id/function_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_height="match_parent"
         style="@style/RythmTextStyle"
+        android:gravity="center_vertical"
         />
 
     <TextView
         android:id="@+id/state_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|right"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:ellipsize="marquee"
         android:textSize="16sp"
         android:textColor="#757575"/>
 
-</RelativeLayout>
+</LinearLayout>

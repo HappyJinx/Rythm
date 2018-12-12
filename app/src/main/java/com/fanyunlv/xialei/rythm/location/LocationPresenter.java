@@ -25,6 +25,8 @@ public class LocationPresenter {
 
     private ArrayList<LocationIistener> listeners;
 
+    private BDLocation bdLocation;
+
     //baidu location
     public LocationClient mLocationClient = null;
     private MyLocationListener myLocationListener = new MyLocationListener();
@@ -33,6 +35,8 @@ public class LocationPresenter {
     public BDNotifyListener myNotifyListener3 = new MyNotifiListener();
 
     private BDLocation mLastKnowLocation;
+
+    private final double R_EARTH=6370996.81;  //地球的半径
 
     private LocationPresenter(Context context) {
         this.context = context;
@@ -122,7 +126,6 @@ public class LocationPresenter {
         //更多LocationClientOption的配置，请参照类参考中LocationClientOption类的详细说明
 
         mLocationClient.startIndoorMode();
-
         mLocationClient.start();//开始定位
     }
 
@@ -146,6 +149,7 @@ public class LocationPresenter {
     public class MyLocationListener extends BDAbstractLocationListener {
         @Override
         public void onReceiveLocation(BDLocation location) {
+            bdLocation = location;
             for (LocationIistener lis : listeners) {
                 lis.onLocationReceived(location);
             }
@@ -164,11 +168,28 @@ public class LocationPresenter {
         }
     }
 
+    public BDLocation getLastKnowLocation() {
+        return bdLocation;
+    }
+
     public String getLastLocationDecri() {
         mLastKnowLocation = mLocationClient.getLastKnownLocation();
         if (mLastKnowLocation == null) {
             return "无";
         }
         return mLastKnowLocation.getLocationDescribe();
+    }
+
+    public double getDistance(BDLocation loc1,BDLocation loc2) {
+        return getDistance(loc1.getLatitude(), loc1.getLongitude(), loc2.getLatitude(), loc2.getLongitude());
+    }
+
+    /*
+     * 获取两点间x,y轴之间的距离
+     */
+    public double getDistance(double lat1, double lng1,double lat2, double lng2) {
+        double x = (lng2 - lng1)*Math.PI*R_EARTH*Math.cos(((lat1+lat2)/2)*Math.PI/180)/180;
+        double y = (lat2 - lat1)*Math.PI*R_EARTH/180;
+        return Math.hypot(x, y);   //得到两点之间的直线距离
     }
 }

@@ -5,6 +5,7 @@ package com.fanyunlv.xialei.rythm;
  */
 public class TaskDetails{
     public int code = 0;
+    public String name ;
     public boolean audio = false;
     public boolean wifi = false;
     public boolean volume = false;
@@ -14,12 +15,21 @@ public class TaskDetails{
         this.code = code;
     }
 
-    public TaskDetails(int code, boolean audio, boolean wifi, boolean volume, boolean nfc) {
+    public TaskDetails(String name, int code, boolean audio, boolean wifi, boolean volume, boolean nfc) {
+        this.name = name;
         this.code = code;
         this.audio = audio;
         this.wifi = wifi;
         this.volume = volume;
         this.nfc = nfc;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getCode() {

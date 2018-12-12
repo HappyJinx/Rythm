@@ -1,8 +1,6 @@
 package com.fanyunlv.xialei.rythm;
 
-import android.app.AlertDialog;
 import android.app.NotificationManager;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -15,14 +13,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.TimePicker;
 
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
 
 
-public class SettimeActivity extends AppCompatActivity {
+public class SettimeTaskActivity extends AppCompatActivity {
 
-    private final String TAG = "SettimeActivity";
+    private final String TAG = "SettimeTaskActivity";
 
     private RecyclerView recyclerView;
     private RythmTimeAdapter rythmAdapter;
@@ -64,7 +61,7 @@ public class SettimeActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.add_new:
 //                showTimepiackdialog();
-                Intent intent = new Intent(SettimeActivity.this,TimeTaskActivity.class);
+                Intent intent = new Intent(SettimeTaskActivity.this, ConfigTimeTaskActivity.class);
                 startActivityForResult(intent,128);
                 break;
             case android.R.id.home:

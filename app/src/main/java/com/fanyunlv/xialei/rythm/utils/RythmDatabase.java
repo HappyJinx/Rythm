@@ -43,11 +43,13 @@ public class RythmDatabase extends SQLiteOpenHelper {
         static final String LONGT = "longt";
         static final String LATI = "lati";
         static final String RADIOUS = "radios";
+        static final String DESCRIB = "describ";
     }
 
     public interface TASK{
         static final String _ID = "id";
         static final String CODE = "code";
+        static final String NAME = "name";
         static final String AUDIO = "audio";
         static final String WIFI = "wifi";
         static final String VOLUME = "volume";
@@ -91,12 +93,14 @@ public class RythmDatabase extends SQLiteOpenHelper {
                 LOCATIONTABLE.NAME+" text ,"+
                 LOCATIONTABLE.LONGT+" real ,"+
                 LOCATIONTABLE.LATI+" real ,"+
-                LOCATIONTABLE.RADIOUS+" real)";
+                LOCATIONTABLE.RADIOUS+" real ,"+
+                LOCATIONTABLE.DESCRIB+" text)";
 
         db.execSQL(sql3);
 
         String sql4 = "create table "+Tables.TASK+"("+
                 TASK._ID+" integer primary key autoincrement,"+
+                TASK.NAME+" text ,"+
                 TASK.CODE+" integer ,"+
                 TASK.AUDIO+" integer ,"+
                 TASK.WIFI+" integer ,"+
@@ -132,11 +136,13 @@ public class RythmDatabase extends SQLiteOpenHelper {
         contentValues.put(LOCATIONTABLE.LONGT,myLocation.getLongti());
         contentValues.put(LOCATIONTABLE.LATI,myLocation.getLati());
         contentValues.put(LOCATIONTABLE.RADIOUS,myLocation.getLati());
+        contentValues.put(LOCATIONTABLE.DESCRIB,myLocation.getDescription());
         mdb.insert(Tables.LOCATIONTABLE,null,contentValues);
     }
     private void insertLocation(TaskDetails taskDetails) {
 
         ContentValues contentValues = new ContentValues();
+        contentValues.put(TASK.NAME,taskDetails.getCode());
         contentValues.put(TASK.CODE,taskDetails.getCode());
         contentValues.put(TASK.AUDIO,taskDetails.isAudio()?1:0);
         contentValues.put(TASK.WIFI,taskDetails.isWifi()?1:0);

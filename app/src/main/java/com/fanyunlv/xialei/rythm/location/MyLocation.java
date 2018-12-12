@@ -10,6 +10,7 @@ public class MyLocation {
     private double longti;
     private double lati;
     private double radios;
+    private String description;
 
     public String getName() {
         return name;
@@ -19,11 +20,12 @@ public class MyLocation {
         this.name = name;
     }
 
-    public MyLocation(String name, double longti, double lati,double radios) {
+    public MyLocation(String name, double longti, double lati,double radios,String description) {
         this.name = name;
         this.longti = longti;
         this.lati = lati;
         this.radios = radios;
+        this.description = description;
     }
 
     public double getLongti() {
@@ -48,5 +50,13 @@ public class MyLocation {
 
     public void setRadios(double radios) {
         this.radios = radios;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
