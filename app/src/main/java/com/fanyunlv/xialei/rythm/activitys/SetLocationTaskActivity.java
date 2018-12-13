@@ -41,7 +41,7 @@ public class SetLocationTaskActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        locationTaskAdapter = new LocationTaskAdapter(this,dBhelper.getLocationList());
+        locationTaskAdapter = new LocationTaskAdapter(this);
         recyclerView.setAdapter(locationTaskAdapter);
     }
 
@@ -51,21 +51,10 @@ public class SetLocationTaskActivity extends AppCompatActivity {
         locationTaskAdapter.notifyDataSetChanged();
     }
 
-    //    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater inf = getMenuInflater();
-//        inf.inflate(R.menu.rythmmenu,menu);
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.i(TAG, "onOptionsItemSelected: id ="+item.getItemId());
         switch (item.getItemId()) {
-//            case R.id.add_new:
-//                Intent intent = new Intent(SetLocationTaskActivity.this, ConfigLocationTaskActivity.class);
-//                startActivityForResult(intent,1213);
-//                break;
             case android.R.id.home:
                 finish();
                 break;
@@ -77,6 +66,5 @@ public class SetLocationTaskActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.i(TAG, "LineNum:79  Method:onActivityResult--> code="+requestCode);
-
     }
 }

@@ -8,7 +8,10 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDNotifyListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.fanyunlv.xialei.rythm.beans.MyLocation;
+import com.fanyunlv.xialei.rythm.beans.TaskItems;
 import com.fanyunlv.xialei.rythm.interfaces.LocationIistener;
+import com.fanyunlv.xialei.rythm.utils.DBhelper;
 
 import java.util.ArrayList;
 
@@ -26,6 +29,8 @@ public class LocationPresenter {
 
     private BDLocation bdLocation;
 
+    private DBhelper dBhelper;
+
     //baidu location
     public LocationClient mLocationClient = null;
     private MyLocationListener myLocationListener = new MyLocationListener();
@@ -40,6 +45,7 @@ public class LocationPresenter {
     private LocationPresenter(Context context) {
         this.context = context;
         listeners = new ArrayList<>();
+        dBhelper = DBhelper.getInstance(context);
     }
 
     public static LocationPresenter getInstance(Context context) {
@@ -152,7 +158,14 @@ public class LocationPresenter {
             for (LocationIistener lis : listeners) {
                 lis.onLocationReceived(location);
             }
-            Log.i(TAG, "LineNum:152  Method:onReceiveLocation--> ");
+            ArrayList<TaskItems> ls = gettasks();
+            for (TaskItems task : ls) {
+//                getDistance(location, task.get);
+                int code = task.getTimecode();
+                MyLocation myLocation = getLocation(code);
+                double dis = getDistance(location.getLatitude(), location.getLongitude(), myLocation.getLati(), myLocation.getLongti());
+                Log.i(TAG, "LineNum:165  Method:onReceiveLocation--> code ="+code+" --dis ="+dis);
+            }
         }
     }
 
@@ -190,5 +203,17 @@ public class LocationPresenter {
         double x = (lng2 - lng1)*Math.PI*R_EARTH*Math.cos(((lat1+lat2)/2)*Math.PI/180)/180;
         double y = (lat2 - lat1)*Math.PI*R_EARTH/180;
         return Math.hypot(x, y);   //得到两点之间的直线距离
+    }
+
+    public ArrayList<MyLocation> getLocations() {
+        return  dBhelper.getLocationList();
+    }
+
+    public ArrayList<TaskItems> gettasks() {
+        return dBhelper.getLocatiosTaskList();
+    }
+
+    public MyLocation getLocation(int code) {
+        return dBhelper.getLocation(code);
     }
 }

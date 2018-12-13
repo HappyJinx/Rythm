@@ -40,6 +40,7 @@ public class RythmDatabase extends SQLiteOpenHelper {
     public interface LOCATIONTABLE{
         static final String _ID = "id";
         static final String NAME = "name";
+        static final String CODE = "code";
         static final String LONGT = "longt";
         static final String LATI = "lati";
         static final String RADIOUS = "radios";
@@ -91,6 +92,7 @@ public class RythmDatabase extends SQLiteOpenHelper {
         String sql3 = "create table "+Tables.LOCATIONTABLE+"("+
                 LOCATIONTABLE._ID+" integer primary key autoincrement,"+
                 LOCATIONTABLE.NAME+" text ,"+
+                LOCATIONTABLE.CODE+" integer ,"+
                 LOCATIONTABLE.LONGT+" real ,"+
                 LOCATIONTABLE.LATI+" real ,"+
                 LOCATIONTABLE.RADIOUS+" real ,"+
@@ -142,29 +144,6 @@ public class RythmDatabase extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(WifiColumes.NAME,name);
         mdb.insert(Tables.WIFITABLE,null,contentValues);
-    }
-
-    private void insertLocation(MyLocation myLocation) {
-
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(LOCATIONTABLE.NAME,myLocation.getName());
-        contentValues.put(LOCATIONTABLE.LONGT,myLocation.getLongti());
-        contentValues.put(LOCATIONTABLE.LATI,myLocation.getLati());
-        contentValues.put(LOCATIONTABLE.RADIOUS,myLocation.getLati());
-        contentValues.put(LOCATIONTABLE.DESCRIB,myLocation.getDescription());
-        mdb.insert(Tables.LOCATIONTABLE,null,contentValues);
-    }
-
-    private void insertLocation(TaskItems taskDetails) {
-
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(TASK.NAME,taskDetails.getName());
-        contentValues.put(TASK.CODE,taskDetails.getTimecode());
-        contentValues.put(TASK.AUDIO,taskDetails.getAudio());
-        contentValues.put(TASK.WIFI,taskDetails.getWifi());
-        contentValues.put(TASK.VOLUME,taskDetails.getVolume());
-        contentValues.put(TASK.NFC,taskDetails.getNfc());
-        mdb.insert(Tables.TASK,null,contentValues);
     }
 
     public void dropTables(SQLiteDatabase db) {

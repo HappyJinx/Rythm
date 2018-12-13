@@ -189,6 +189,7 @@ public class RythmTimeTaskAdapter extends RecyclerView.Adapter<RythmTimeTaskAdap
 
     public void addlocationTask(int code ) {
         TaskItems taskDetails = new TaskItems(code);
+        
         taskDetails.setName(taskDetails.getName());
         taskDetails.setAudio(taskList.get(0).getEnabled());
         taskDetails.setWifi(taskList.get(1).getEnabled());

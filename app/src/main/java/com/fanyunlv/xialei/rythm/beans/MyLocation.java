@@ -6,6 +6,7 @@ package com.fanyunlv.xialei.rythm.beans;
  */
 public class MyLocation {
     private String name;
+    private int code;
     private double longti;
     private double lati;
     private double radios;
@@ -19,12 +20,21 @@ public class MyLocation {
         this.name = name;
     }
 
-    public MyLocation(String name, double longti, double lati,double radios,String description) {
+    public MyLocation(String name,int code, double longti, double lati,double radios,String description) {
         this.name = name;
+        this.code = code;
         this.longti = longti;
         this.lati = lati;
         this.radios = radios;
         this.description = description;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
     }
 
     public double getLongti() {

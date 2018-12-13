@@ -29,10 +29,10 @@ public class LocationTaskAdapter extends RecyclerView.Adapter<LocationTaskAdapte
     private DBhelper dBhelper ;
     private String[] task_list;
 
-    public LocationTaskAdapter(Context context, ArrayList<MyLocation> taskDetails) {
+    public LocationTaskAdapter(Context context) {
         mcontext = context;
-        locationArrayList = taskDetails;
         dBhelper = DBhelper.getInstance(mcontext);
+        locationArrayList = dBhelper.getLocationList();
         task_list = mcontext.getResources().getStringArray(R.array.time_task_list);
     }
 

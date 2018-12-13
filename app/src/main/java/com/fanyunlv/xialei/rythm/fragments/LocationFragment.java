@@ -266,16 +266,21 @@ public class LocationFragment extends BaseFragment implements LocationIistener,V
 
             ContentValues values = new ContentValues();
             values.put(RythmDatabase.LOCATIONTABLE.NAME,locationnames[which]);
+            values.put(RythmDatabase.LOCATIONTABLE.CODE,getcode(bdLocation));
             values.put(RythmDatabase.LOCATIONTABLE.LONGT,bdLocation.getLongitude());
             values.put(RythmDatabase.LOCATIONTABLE.LATI,bdLocation.getLatitude());
             values.put(RythmDatabase.LOCATIONTABLE.RADIOUS,bdLocation.getRadius());
             values.put(RythmDatabase.LOCATIONTABLE.DESCRIB,bdLocation.getLocationDescribe());
-
             DBhelper.getInstance(mcontext).insertLocation(values);
+
             locations = DBhelper.getInstance(getContext()).getLocationList();
             adapter.setDatas(locations);
             adapter.notifyDataSetChanged();
+
             chooselocation.dismiss();
         }
+    }
+    public int getcode(BDLocation location) {
+        return ((int)((location.getLatitude() + location.getLongitude()) * 1000000)) % 1000000;
     }
 }

@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.fanyunlv.xialei.rythm.beans.TaskItems;
 import com.fanyunlv.xialei.rythm.beans.MyLocation;
+import com.fanyunlv.xialei.rythm.beans.TaskStateItem;
 import com.fanyunlv.xialei.rythm.beans.TimeItem;
 
 import java.util.ArrayList;
@@ -72,15 +73,7 @@ public class DBhelper {
         db.insert(RythmDatabase.Tables.WIFITABLE, null, values);
     }
 
-    public void insertLocation(MyLocation myLocation) {
-        ContentValues values = new ContentValues();
-        values.put(RythmDatabase.LOCATIONTABLE.NAME,myLocation.getName());
-        values.put(RythmDatabase.LOCATIONTABLE.LONGT,myLocation.getLongti());
-        values.put(RythmDatabase.LOCATIONTABLE.LATI,myLocation.getLati());
-        values.put(RythmDatabase.LOCATIONTABLE.RADIOUS,myLocation.getRadios());
-        values.put(RythmDatabase.LOCATIONTABLE.DESCRIB,myLocation.getDescription());
-        insertLocation(values);
-    }
+
     public void insertLocation(ContentValues values) {
         Log.i(TAG, "LineNum:84  Method:insertLocation--> ");
         db.insert(RythmDatabase.Tables.LOCATIONTABLE, null, values);
@@ -144,8 +137,14 @@ public class DBhelper {
     public Cursor querylocation() {
         return db.query(RythmDatabase.Tables.LOCATIONTABLE, null, null,null,null,null,null);
     }
+    public Cursor querylocation(int code ) {
+        return db.query(RythmDatabase.Tables.LOCATIONTABLE, null, RythmDatabase.LOCATIONTABLE.CODE+"= ?",new String[]{Integer.toString(code)},null,null,null);
+    }
     public Cursor querytask(int code) {
         return db.query(RythmDatabase.Tables.TASK, null, RythmDatabase.TASK.CODE+"= ?",new String[]{Integer.toString(code)},null,null,null);
+    }
+    public Cursor querytask() {
+        return db.query(RythmDatabase.Tables.TASK, null, null,null,null,null,null);
     }
 
     public String getSelectedTime() {
@@ -200,12 +199,33 @@ public class DBhelper {
         db = database.getWritableDatabase();
         //Cursor cursor = db.query(RythmDatabase.Tables.LOCATIONTABLE, null, null, null, null,null, null);
         Cursor cursor = querylocation();
-        Log.i(TAG, "LineNum:198  Method:getLocationList--> cusor ="+cursor.getCount());
         while (cursor.moveToNext()) {
-            list.add(new MyLocation(cursor.getString(1),cursor.getDouble(2),cursor.getDouble(3),cursor.getDouble(4),cursor.getString(5)));
+            list.add(new MyLocation(
+                    cursor.getString(1),
+                    cursor.getInt(2),
+                    cursor.getDouble(3),
+                    cursor.getDouble(4),
+                    cursor.getDouble(5),
+                    cursor.getString(6)
+            ));
         }
         cursor.close();
         return list;
+    }
+
+    public MyLocation getLocation(int code) {
+        Cursor cursor = querylocation(code);
+        cursor.moveToFirst();
+        MyLocation myLocation = new MyLocation(
+                cursor.getString(1),
+                cursor.getInt(2),
+                cursor.getDouble(3),
+                cursor.getDouble(4),
+                cursor.getDouble(5),
+                cursor.getString(6)
+        );
+        cursor.close();
+        return myLocation;
     }
 
     public List<TimeItem> getTimeList() {
@@ -219,21 +239,42 @@ public class DBhelper {
         return list;
     }
 
-    public ArrayList<TaskItems> getLocationTaskList() {
+    public ArrayList<TaskItems> getLocatiosTaskList() {
         ArrayList<TaskItems> list = new ArrayList<>();
         db = database.getWritableDatabase();
-        //Cursor cursor = db.query(RythmDatabase.Tables.LOCATIONTABLE, null, null, null, null,null, null);
-        Cursor cursor = querylocation();
+        Cursor cursor = querytask();
+        Log.i(TAG, "LineNum:229  Method:getLocatiosTaskList--> cursoe="+cursor.getCount());
         while (cursor.moveToNext()) {
-            String name = cursor.getString(1);
-            int code = cursor.getInt(1);
-            int audio = cursor.getInt(2);
-            int wifi = cursor.getInt(3);
-            int volume = cursor.getInt(4);
-            int nfc = cursor.getInt(5);
-            list.add(new TaskItems(name,code,audio,wifi,volume,nfc));
+            if (cursor.getInt(2) > 10000) {
+                list.add(new TaskItems(
+                        cursor.getString(1),
+                        cursor.getInt(2),
+                        cursor.getInt(3),
+                        cursor.getInt(4),
+                        cursor.getInt(5),
+                        cursor.getInt(6)
+                        ));
+            }
         }
         cursor.close();
         return list;
     }
+//    public List<TaskItems> getTimesTaskList() {
+//        ArrayList<TaskItems> list = new ArrayList<>();
+//        db = database.getWritableDatabase();
+//        Cursor cursor = querytask();
+//        while (cursor.moveToNext()) {
+//            if (cursor.getInt(1) < 10000) {
+//                list.add(new TaskItems(
+//                        cursor.getString(1),
+//                        cursor.getInt(2),
+//                        cursor.getInt(3),
+//                        cursor.getInt(4),
+//                        cursor.getInt(5)
+//                ));
+//            }
+//        }
+//        cursor.close();
+//        return list;
+//    }
 }
