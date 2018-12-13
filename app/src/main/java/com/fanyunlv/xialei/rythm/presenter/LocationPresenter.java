@@ -12,20 +12,26 @@ import com.fanyunlv.xialei.rythm.beans.MyLocation;
 import com.fanyunlv.xialei.rythm.beans.TaskItems;
 import com.fanyunlv.xialei.rythm.interfaces.LocationIistener;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
+import com.fanyunlv.xialei.rythm.utils.DBhelper.OnDBchangedListener;
+import com.fanyunlv.xialei.rythm.utils.TaskUtil;
 
 import java.util.ArrayList;
 
 /**
  * Created by xialei on 2018/12/7.
  */
-public class LocationPresenter {
+public class LocationPresenter implements OnDBchangedListener{
     private static final String TAG = LocationPresenter.class.getSimpleName();
+
+    private static double DISTANCE_THRESHOLD = 100.00;
 
     private static LocationPresenter sPresener;
 
     private Context context;
 
     private ArrayList<LocationIistener> listeners;
+
+    private ArrayList<TaskItems> taskItems;
 
     private BDLocation bdLocation;
 
@@ -46,6 +52,8 @@ public class LocationPresenter {
         this.context = context;
         listeners = new ArrayList<>();
         dBhelper = DBhelper.getInstance(context);
+        dBhelper.addListener(this);
+        taskItems = gettasks();
     }
 
     public static LocationPresenter getInstance(Context context) {
@@ -158,13 +166,21 @@ public class LocationPresenter {
             for (LocationIistener lis : listeners) {
                 lis.onLocationReceived(location);
             }
-            ArrayList<TaskItems> ls = gettasks();
-            for (TaskItems task : ls) {
-//                getDistance(location, task.get);
-                int code = task.getTimecode();
-                MyLocation myLocation = getLocation(code);
-                double dis = getDistance(location.getLatitude(), location.getLongitude(), myLocation.getLati(), myLocation.getLongti());
-                Log.i(TAG, "LineNum:165  Method:onReceiveLocation--> code ="+code+" --dis ="+dis);
+
+            //check if we are close to a place
+            checkDistance(bdLocation);
+        }
+    }
+
+    public void checkDistance(BDLocation bdLocation) {
+        if (taskItems.size() > 0) {
+            //check distance
+            for (TaskItems task : taskItems) {
+                double dis = getDistance(bdLocation.getLatitude(), bdLocation.getLongitude(), getLocation(task.getCode()).getLati(), getLocation(task.getCode()).getLongti());
+                if (dis <= DISTANCE_THRESHOLD) {
+                    Log.i(TAG, "LineNum:165  Method:onReceiveLocation-->dis ="+dis);
+                    TaskUtil.getInstance(context).handleTask(task);
+                }
             }
         }
     }
@@ -215,5 +231,10 @@ public class LocationPresenter {
 
     public MyLocation getLocation(int code) {
         return dBhelper.getLocation(code);
+    }
+
+    @Override
+    public void onDBchanged() {
+        taskItems = gettasks();
     }
 }

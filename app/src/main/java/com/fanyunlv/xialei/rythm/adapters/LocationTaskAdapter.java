@@ -103,9 +103,9 @@ public class LocationTaskAdapter extends RecyclerView.Adapter<LocationTaskAdapte
         int id = v.getId();
         Log.i("location", "LineNum:52  Method:onClick--> id ="+id+"--postion ="+postion);
         if (id == R.id.delete_item) {
-            dBhelper.deletelocation(locationArrayList.get(postion));
+//            dBhelper.deletelocation(locationArrayList.get(postion));
             dBhelper.deletetask(getcode(locationArrayList.get(postion)));
-            locationArrayList.remove(postion);
+//            locationArrayList.remove(postion);
             notifyDataSetChanged();
         } else if (id == R.id.sett_item) {
             Intent intent = new Intent("xialei.action.start.configlocation");

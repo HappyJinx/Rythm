@@ -39,7 +39,7 @@ public class FunctionFragment extends Fragment implements LocationIistener,View.
 
     private Button setting_by_time;
     private Button setting_by_location;
-    private BDLocation bdLocation;
+//    private BDLocation bdLocation;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,10 +93,8 @@ public class FunctionFragment extends Fragment implements LocationIistener,View.
     @Override
     public void onLocationReceived(BDLocation location) {
         madapter.notifyDataSetChanged();
-        bdLocation = location;
         Log.i(TAG, "LineNum:96  Method:onLocationReceived--> handle task");
-        RingmodePresenter.getInstance(getContext()).handletime();
-        WifiCheckPresenter.getInstance(getContext()).handlewifi();
+        RingmodePresenter.getInstance(getContext()).checkTimeTask();
     }
 
     @Override

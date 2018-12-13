@@ -5,6 +5,7 @@ import android.net.wifi.WifiManager;
 
 import com.fanyunlv.xialei.rythm.R;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
+import com.fanyunlv.xialei.rythm.utils.DBhelper.OnDBchangedListener;
 
 import java.util.List;
 
@@ -12,11 +13,16 @@ import java.util.List;
  * Created by admin on 2018/8/22.
  */
 
-public class WifiCheckPresenter {
+public class WifiCheckPresenter implements OnDBchangedListener {
     public static WifiCheckPresenter sWifiCheckPresenter;
 
     private Context context;
     private WifiManager wifiManager;
+    private DBhelper dBhelper;
+    private List<String> list;
+
+    private int checkcoun = 0;
+    private final int COUNT_THREALD = 3;
 
     private WifiCheckPresenter(Context context) {
         this.context = context;
@@ -25,6 +31,9 @@ public class WifiCheckPresenter {
 
     private void init() {
         wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        dBhelper = DBhelper.getInstance(context);
+        dBhelper.addListener(this);
+        list = dBhelper.getWifiList();
     }
 
     public static WifiCheckPresenter getInstance(Context context) {
@@ -50,11 +59,22 @@ public class WifiCheckPresenter {
     }
 
     public void handlewifi() {
-        List<String> list = DBhelper.getInstance(context).getWifiList();
-        for (String item : list) {
-            if (getSSIDname().contains(item)) {
+        if (list.size() > 0) {
+            if (!wifiManager.isWifiEnabled()&& checkcoun != 0) {
+                enableWifi(true);
+                return;
+            }
+            if (checkcoun == COUNT_THREALD) {
+                checkcoun = 0;
                 enableWifi(false);
-                break;
+                return;
+            }
+            for (String item : list) {
+                if (getSSIDname().contains(item)) {
+                    checkcoun += 1;
+                    wifiManager.disconnect();
+                    break;
+                }
             }
         }
     }
@@ -63,4 +83,8 @@ public class WifiCheckPresenter {
         DBhelper.getInstance(context).insertwifi(name);
     }
 
+    @Override
+    public void onDBchanged() {
+        list = dBhelper.getWifiList();
+    }
 }

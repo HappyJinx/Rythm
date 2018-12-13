@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity{
 
             if (intent.getAction().equals(Intent.ACTION_TIME_TICK)) {
                 if (fragmentUtil.getCurrentFragment() instanceof AudioFragment) {
-                    RingmodePresenter.getInstance(context).handletime();
+                    RingmodePresenter.getInstance(context).checkTimeTask();
                 }
             } else if (intent.getAction().equals(WifiManager.RSSI_CHANGED_ACTION)
                     ||intent.getAction().equals(WifiManager.WIFI_STATE_CHANGED_ACTION)

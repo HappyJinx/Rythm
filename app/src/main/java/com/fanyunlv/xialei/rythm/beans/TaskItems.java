@@ -6,19 +6,19 @@ package com.fanyunlv.xialei.rythm.beans;
 public class TaskItems {
 
     public String name ;
-    public int timecode = 0;
+    public int code = 0;
     public int audio = 0;
     public int wifi = 0;
     public int volume = 0;
     public int nfc = 0;
 
-    public TaskItems(int timecode) {
-        this.timecode = timecode;
+    public TaskItems(int code) {
+        this.code = code;
     }
 
-    public TaskItems(String name, int timecode, int audio, int wifi, int volume, int nfc) {
+    public TaskItems(String name, int code, int audio, int wifi, int volume, int nfc) {
         this.name = name;
-        this.timecode = timecode;
+        this.code = code;
         this.audio = audio;
         this.wifi = wifi;
         this.volume = volume;
@@ -33,12 +33,12 @@ public class TaskItems {
         this.name = name;
     }
 
-    public int getTimecode() {
-        return timecode;
+    public int getCode() {
+        return code;
     }
 
-    public void setTimecode(int timecode) {
-        this.timecode = timecode;
+    public void setCode(int code) {
+        this.code = code;
     }
 
     public int getAudio() {
