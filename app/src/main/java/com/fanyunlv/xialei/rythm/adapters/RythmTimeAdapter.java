@@ -29,16 +29,16 @@ public class RythmTimeAdapter extends RecyclerView.Adapter<RythmTimeAdapter.Ryth
     private DBhelper dBhelper;
     private String[] task_list;
 
-    public RythmTimeAdapter(Context context, List<TimeItem> itemlist ,DBhelper dBhelper){
-        timeitemlist = itemlist;
+    public RythmTimeAdapter(Context context, DBhelper dBhelper){
         mcontext = context;
         this.dBhelper = dBhelper;
+        timeitemlist = dBhelper.getTimeList();
         task_list = mcontext.getResources().getStringArray(R.array.time_task_list);
     }
 
-    public void replaceList(List<TimeItem> list) {
-        timeitemlist.clear();
-        timeitemlist.addAll(list);
+    public void freshList() {
+        timeitemlist = dBhelper.getTimeList();
+        notifyDataSetChanged();
     }
 
     @Override

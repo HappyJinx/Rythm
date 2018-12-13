@@ -46,7 +46,7 @@ public class SettimeTaskActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        rythmAdapter = new RythmTimeAdapter(this,dBhelper.getTimeList(),dBhelper);
+        rythmAdapter = new RythmTimeAdapter(this,dBhelper);
         recyclerView.setAdapter(rythmAdapter);
     }
 
@@ -62,7 +62,6 @@ public class SettimeTaskActivity extends AppCompatActivity {
         Log.i(TAG, "onOptionsItemSelected: id ="+item.getItemId());
         switch (item.getItemId()) {
             case R.id.add_new:
-//                showTimepiackdialog();
                 Intent intent = new Intent(SettimeTaskActivity.this, ConfigTimeTaskActivity.class);
                 startActivityForResult(intent,128);
                 break;
@@ -74,11 +73,8 @@ public class SettimeTaskActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.i(TAG, "LineNum:79  Method:onActivityResult--> code="+requestCode);
-        rythmAdapter.replaceList(dBhelper.getTimeList());
-        rythmAdapter.notifyDataSetChanged();
+    protected void onResume() {
+        super.onResume();
+        rythmAdapter.freshList();
     }
-
 }
