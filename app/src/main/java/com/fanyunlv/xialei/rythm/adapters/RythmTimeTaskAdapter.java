@@ -111,7 +111,8 @@ public class RythmTimeTaskAdapter extends RecyclerView.Adapter<RythmTimeTaskAdap
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         Log.i(TAG, "LineNum:102  Method:onCheckedChanged--> button="+buttonView.getTag());
-
+        TaskStateItem item = taskList.get((int) buttonView.getTag());
+        item.setEnabled(isChecked?1:0);
     }
 
     public class RythmViewHolder extends RecyclerView.ViewHolder {
