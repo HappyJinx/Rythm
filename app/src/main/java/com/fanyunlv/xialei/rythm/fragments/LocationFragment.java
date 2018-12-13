@@ -1,4 +1,4 @@
-package com.fanyunlv.xialei.rythm.location;
+package com.fanyunlv.xialei.rythm.fragments;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -30,9 +30,9 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.fanyunlv.xialei.rythm.adapters.LocationlistAdapter;
 import com.fanyunlv.xialei.rythm.interfaces.LocationIistener;
 import com.fanyunlv.xialei.rythm.beans.MyLocation;
-import com.fanyunlv.xialei.rythm.fragments.BaseFragment;
 import com.fanyunlv.xialei.rythm.R;
 import com.fanyunlv.xialei.rythm.presenter.LocationPresenter;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;

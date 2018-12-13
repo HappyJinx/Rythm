@@ -14,7 +14,7 @@ import android.util.Log;
 import com.fanyunlv.xialei.rythm.R;
 import com.fanyunlv.xialei.rythm.fragments.AudioFragment;
 import com.fanyunlv.xialei.rythm.fragments.WifiFragment;
-import com.fanyunlv.xialei.rythm.location.LocationFragment;
+import com.fanyunlv.xialei.rythm.fragments.LocationFragment;
 import com.fanyunlv.xialei.rythm.utils.FragmentUtil;
 import com.fanyunlv.xialei.rythm.utils.PermissionUtil;
 
@@ -99,10 +99,10 @@ public class FunctionActivity extends AppCompatActivity {
         audioFragment = new AudioFragment();
         wifiFragment = new WifiFragment();
         locationFragment = new LocationFragment();
-
-        hashMap.put(FragmentUtil.Fragments[0], audioFragment);
-        hashMap.put(FragmentUtil.Fragments[1], wifiFragment);
-        hashMap.put(FragmentUtil.Fragments[2], locationFragment);
+        String[] fragments = getResources().getStringArray(R.array.fragments_list);
+        hashMap.put(fragments[0], audioFragment);
+        hashMap.put(fragments[1], wifiFragment);
+        hashMap.put(fragments[2], locationFragment);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.fanyunlv.xialei.rythm.location;
+package com.fanyunlv.xialei.rythm.activitys;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.fanyunlv.xialei.rythm.R;
+import com.fanyunlv.xialei.rythm.adapters.LocationTaskAdapter;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
 
 /**

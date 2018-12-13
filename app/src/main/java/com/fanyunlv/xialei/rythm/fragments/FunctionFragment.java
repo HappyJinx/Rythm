@@ -45,9 +45,10 @@ public class FunctionFragment extends Fragment implements LocationIistener,View.
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LocationPresenter.getInstance(getContext()).addLocationListenr(this);
+        String[] framgents = getActivity().getResources().getStringArray(R.array.fragments_list);
         functions = new ArrayList<>();
         for (int i = 0; i < FragmentUtil.Fragments.length; i++) {
-            functions.add(new XFunction(FragmentUtil.Fragments[i]));
+            functions.add(new XFunction(framgents[i]));
         }
     }
 

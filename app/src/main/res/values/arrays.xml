@@ -15,4 +15,10 @@
     <item>开启NFC</item>
   </string-array>
 
+  <string-array name="fragments_list" >
+    <item>响铃模式</item>
+    <item>WiFi信息</item>
+    <item>位置信息</item>
+  </string-array>
+
 </resources>

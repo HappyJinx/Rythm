@@ -111,6 +111,10 @@ public class RythmDatabase extends SQLiteOpenHelper {
 
         mdb = db;
 
+        insertItem(11,50);
+        insertItem(17,50);
+        insetTimeTask(1150);
+        insetTimeTask(1750);
         insertWifi("Rainbow");
     }
 
@@ -120,6 +124,17 @@ public class RythmDatabase extends SQLiteOpenHelper {
         contentValues.put(RythmDatabase.TimeColumes.HOUR,hour);
         contentValues.put(RythmDatabase.TimeColumes.MINUTE,minute);
         mdb.insert(Tables.TIMETABLE,null,contentValues);
+    }
+
+    private void insetTimeTask(int code) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TASK.NAME,"");
+        contentValues.put(TASK.CODE,code);
+        contentValues.put(TASK.AUDIO,1);
+        contentValues.put(TASK.WIFI,0);
+        contentValues.put(TASK.VOLUME,0);
+        contentValues.put(TASK.NFC,0);
+        mdb.insert(Tables.TASK,null,contentValues);
     }
 
     private void insertWifi(String name) {
@@ -139,6 +154,7 @@ public class RythmDatabase extends SQLiteOpenHelper {
         contentValues.put(LOCATIONTABLE.DESCRIB,myLocation.getDescription());
         mdb.insert(Tables.LOCATIONTABLE,null,contentValues);
     }
+
     private void insertLocation(TaskItems taskDetails) {
 
         ContentValues contentValues = new ContentValues();

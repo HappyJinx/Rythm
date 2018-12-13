@@ -41,12 +41,14 @@ public class FunctionRecyclerAdapter extends RecyclerView.Adapter<FunctionRecycl
         holder.functionName.setText(datas.get(position).getName());
 
         holder.staetinfo.setText(getstateInfo(position+1));
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity)mContext).onFragmentSelect(name);
-            }
-        });
+        if (position!=0) { //audio fragment dont touch
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((MainActivity) mContext).onFragmentSelect(name);
+                }
+            });
+        }
     }
 
     @Override

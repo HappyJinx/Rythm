@@ -1,4 +1,4 @@
-package com.fanyunlv.xialei.rythm.location;
+package com.fanyunlv.xialei.rythm.adapters;
 
 import android.content.Context;
 import android.util.Log;

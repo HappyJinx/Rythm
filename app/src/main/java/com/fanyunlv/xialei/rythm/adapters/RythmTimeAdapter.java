@@ -27,11 +27,13 @@ public class RythmTimeAdapter extends RecyclerView.Adapter<RythmTimeAdapter.Ryth
     private List<TimeItem> timeitemlist = new ArrayList<>();
     private Context mcontext;
     private DBhelper dBhelper;
+    private String[] task_list;
 
     public RythmTimeAdapter(Context context, List<TimeItem> itemlist ,DBhelper dBhelper){
         timeitemlist = itemlist;
         mcontext = context;
         this.dBhelper = dBhelper;
+        task_list = mcontext.getResources().getStringArray(R.array.time_task_list);
     }
 
     public void replaceList(List<TimeItem> list) {
@@ -91,25 +93,23 @@ public class RythmTimeAdapter extends RecyclerView.Adapter<RythmTimeAdapter.Ryth
         if (cursor.getCount() == 0) {
             return "无任务";
         }
-        Log.i(TAG, "LineNum:91  Method:getTaskinfo--> cursor="+cursor.getCount());
         StringBuffer stringBuffer = new StringBuffer();
         if (cursor.moveToFirst()) {
-            int audio = cursor.getInt(2);
-            int wifi = cursor.getInt(3);
-            int volume = cursor.getInt(4);
-            int nfc = cursor.getInt(5);
-            Log.i(TAG, "LineNum:98  Method:getTaskinfo--> audio="+audio+"-wifi="+wifi);
+            int audio = cursor.getInt(3);
+            int wifi = cursor.getInt(4);
+            int volume = cursor.getInt(5);
+            int nfc = cursor.getInt(6);
             if (audio == 1) {
-                stringBuffer.append(" 声音模式 ");
+                stringBuffer.append(task_list[1]);
             }
             if (wifi == 1) {
-                stringBuffer.append(" 屏蔽wifi ");
+                stringBuffer.append(task_list[2]);
             }
             if (volume == 1) {
-                stringBuffer.append(" 调节音量 ");
+                stringBuffer.append(task_list[3]);
             }
             if (nfc == 1) {
-                stringBuffer.append(" 开关NFC ");
+                stringBuffer.append(task_list[4]);
             }
             if (audio == 0 && wifi == 0 && volume == 0 && nfc == 0) {
                 stringBuffer.append(" 无任务 ");

@@ -1,4 +1,4 @@
-package com.fanyunlv.xialei.rythm.fragments;
+package com.fanyunlv.xialei.rythm.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

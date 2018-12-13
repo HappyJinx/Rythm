@@ -77,7 +77,7 @@
     <activity android:name=".activitys.ConfigTimeTaskActivity"/>
 
 
-    <activity android:name=".location.SetLocationTaskActivity">
+    <activity android:name=".activitys.SetLocationTaskActivity">
       <intent-filter>
         <action android:name="xialei.action.start.setlocation" />
         <category android:name="android.intent.category.DEFAULT" />
