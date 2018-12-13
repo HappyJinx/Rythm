@@ -113,7 +113,6 @@ public class FunctionFragment extends Fragment implements LocationIistener,View.
             case R.id.setting_by_location:
                 Intent location = new Intent("xialei.action.start.setlocation");
                 getContext().startActivity(location);
-
                 break;
         }
     }

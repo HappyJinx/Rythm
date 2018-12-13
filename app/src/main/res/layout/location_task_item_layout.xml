@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:paddingHorizontal="10dp"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <RelativeLayout
+      android:layout_gravity="center_vertical"
+      android:layout_width="match_parent"
+      android:layout_height="40dp">
+
+      <TextView
+        android:id="@+id/item_setted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:gravity="center_vertical"
+        style="@style/RythmTextStyle"/>
+
+      <ImageButton
+          android:id="@+id/delete_item"
+          android:layout_width="35dp"
+          android:layout_height="35dp"
+          android:layout_alignParentRight="true"
+          android:src="@drawable/delete"
+          android:background="@drawable/button_shape"
+          />
+      <ImageButton
+          android:id="@+id/sett_item"
+          android:layout_width="35dp"
+          android:layout_height="35dp"
+          android:layout_toLeftOf="@id/delete_item"
+          android:gravity="center"
+          android:src="@drawable/setting"
+          android:background="@drawable/button_shape"
+          />
+
+  </RelativeLayout>
+
+    <TextView
+        android:id="@+id/item_setted_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-5dp"
+        android:layout_gravity="bottom"
+        android:gravity="center_vertical"
+        android:textSize="15sp"
+        android:textColor="#757575"
+        />
+
+</LinearLayout>

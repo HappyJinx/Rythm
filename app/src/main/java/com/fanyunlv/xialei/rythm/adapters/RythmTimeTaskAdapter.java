@@ -14,8 +14,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.fanyunlv.xialei.rythm.R;
+import com.fanyunlv.xialei.rythm.beans.MyLocation;
 import com.fanyunlv.xialei.rythm.beans.TaskItems;
-import com.fanyunlv.xialei.rythm.beans.TimeTaskItem;
+import com.fanyunlv.xialei.rythm.beans.TaskStateItem;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
 
 import java.util.ArrayList;
@@ -29,22 +30,23 @@ import java.util.List;
 public class RythmTimeTaskAdapter extends RecyclerView.Adapter<RythmTimeTaskAdapter.RythmViewHolder> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private final String TAG = "RythmTimeTaskAdapter";
-    private static List<TimeTaskItem> timeitemlist = new ArrayList<>();
+    private static List<TaskStateItem> taskList = new ArrayList<>();
     private Context mcontext;
     private DBhelper dBhelper;
+    private boolean islocationtask;
 
     private int hour=0;
     private int minute=0;
 
-    public RythmTimeTaskAdapter(DBhelper Bhelper ,Context context, List<TimeTaskItem> itemlist){
-        timeitemlist = itemlist;
+    public RythmTimeTaskAdapter(DBhelper Bhelper ,Context context, List<TaskStateItem> itemlist){
+        taskList = itemlist;
         mcontext = context;
         dBhelper = Bhelper;
     }
 
-    public void replaceList(List<TimeTaskItem> list) {
-        timeitemlist.clear();
-        timeitemlist.addAll(list);
+    public void replaceList(List<TaskStateItem> list) {
+        taskList.clear();
+        taskList.addAll(list);
     }
 
     @Override
@@ -56,28 +58,33 @@ public class RythmTimeTaskAdapter extends RecyclerView.Adapter<RythmTimeTaskAdap
 
     @Override
     public void onBindViewHolder(RythmViewHolder holder, int position) {
-        TimeTaskItem timeTaskItem = timeitemlist.get(position);
+        TaskStateItem taskStateItem = taskList.get(position);
 
-        holder.item_time.setText(timeTaskItem.getName());
+        holder.item_time.setText(taskStateItem.getName());
         if (position == 0) {
-            holder.checkBox.setVisibility(View.GONE);
-            holder.time_setted.setVisibility(View.VISIBLE);
-            if (timeTaskItem.getTime() == "") {
-                Calendar calendar = Calendar.getInstance();
-                int hourt;
-                if (calendar.get(Calendar.AM_PM) == 0) {
-                    hourt = calendar.get(Calendar.HOUR);
-                } else {
-                    hourt = calendar.get(Calendar.HOUR)+12;
-                }
-                holder.time_setted.setText(hourt+":"+calendar.get(Calendar.MINUTE));
+            if (taskStateItem.getName().equals("开启响铃")) {
+                islocationtask = true;
+                holder.checkBox.setVisibility(View.VISIBLE);
             }else {
-                holder.time_setted.setText(timeTaskItem.getTime());
+                holder.checkBox.setVisibility(View.GONE);
+                holder.time_setted.setVisibility(View.VISIBLE);
+                if (taskStateItem.getTime() == "") {
+                    Calendar calendar = Calendar.getInstance();
+                    int hourt;
+                    if (calendar.get(Calendar.AM_PM) == 0) {
+                        hourt = calendar.get(Calendar.HOUR);
+                    } else {
+                        hourt = calendar.get(Calendar.HOUR) + 12;
+                    }
+                    holder.time_setted.setText(hourt + ":" + calendar.get(Calendar.MINUTE));
+                } else {
+                    holder.time_setted.setText(taskStateItem.getTime());
+                }
             }
         }else {
             holder.checkBox.setVisibility(View.VISIBLE);
         }
-        holder.checkBox.setChecked( (timeTaskItem.getEnabled()==1)?true:false);
+        holder.checkBox.setChecked( (taskStateItem.getEnabled()==1)?true:false);
         holder.checkBox.setOnCheckedChangeListener(this);
         holder.checkBox.setTag(position);
         holder.itemView.setOnClickListener(this);
@@ -86,17 +93,17 @@ public class RythmTimeTaskAdapter extends RecyclerView.Adapter<RythmTimeTaskAdap
 
     @Override
     public int getItemCount() {
-        return timeitemlist.size();
+        return taskList.size();
     }
 
     @Override
     public void onClick(View v) {
         Log.i(TAG, "LineNum:59  Method:onClick--> v.getId()="+v.getTag());
-        if ((int)v.getTag() == 0) {
+        if ((int)v.getTag() == 0 && !islocationtask) {
             showTimepiackdialog();
             return;
         }
-        TimeTaskItem item = timeitemlist.get((int) v.getTag());
+        TaskStateItem item = taskList.get((int) v.getTag());
         item.setEnabled((item.getEnabled()==1)?0:1);
         notifyDataSetChanged();
     }
@@ -124,7 +131,7 @@ public class RythmTimeTaskAdapter extends RecyclerView.Adapter<RythmTimeTaskAdap
                 new TimePickerDialog(mcontext, AlertDialog.THEME_HOLO_LIGHT, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int i, int i1) {
-                        TimeTaskItem item = timeitemlist.get(0);
+                        TaskStateItem item = taskList.get(0);
                         item.setTime(i+":"+i1);
                         hour = i;
                         minute = i1;
@@ -156,12 +163,10 @@ public class RythmTimeTaskAdapter extends RecyclerView.Adapter<RythmTimeTaskAdap
             minute = calendar.get(Calendar.MINUTE);
         }
         Log.i(TAG, "LineNum:134  Method:addtaskdetail--> hour="+hour);
-
         dBhelper.insertdb(hour,minute);
     }
 
     public void addtaskdetail() {
-        Log.i(TAG, "LineNum:149  Method:addtaskdetail--> hour=" + hour);
         if (hour == 0 && minute==0) {
             Calendar calendar = Calendar.getInstance();
             if (calendar.get(Calendar.AM_PM) == 0) {
@@ -171,14 +176,24 @@ public class RythmTimeTaskAdapter extends RecyclerView.Adapter<RythmTimeTaskAdap
             }
             minute = calendar.get(Calendar.MINUTE);
         }
-        Log.i(TAG, "LineNum:149  Method:addtaskdetail--> hour=" + hour);
 
         TaskItems taskDetails = new TaskItems(hour*100+minute);
-        taskDetails.setName(""+taskDetails.getTimecode());
-        taskDetails.setAudio(timeitemlist.get(1).getEnabled());
-        taskDetails.setWifi(timeitemlist.get(2).getEnabled());
-        taskDetails.setVolume(timeitemlist.get(3).getEnabled());
-        taskDetails.setNfc(timeitemlist.get(4).getEnabled());
+        taskDetails.setName(taskDetails.getName());
+        taskDetails.setAudio(taskList.get(1).getEnabled());
+        taskDetails.setWifi(taskList.get(2).getEnabled());
+        taskDetails.setVolume(taskList.get(3).getEnabled());
+        taskDetails.setNfc(taskList.get(4).getEnabled());
+
+        dBhelper.inserttaskDetails(taskDetails);
+    }
+
+    public void addlocationTask(int code ) {
+        TaskItems taskDetails = new TaskItems(code);
+        taskDetails.setName(taskDetails.getName());
+        taskDetails.setAudio(taskList.get(0).getEnabled());
+        taskDetails.setWifi(taskList.get(1).getEnabled());
+        taskDetails.setVolume(taskList.get(2).getEnabled());
+        taskDetails.setNfc(taskList.get(3).getEnabled());
 
         dBhelper.inserttaskDetails(taskDetails);
     }

@@ -12,6 +12,7 @@
   <string name="wifi_disable">已关闭</string>
 
   <string name="deleteitem">删除</string>
+  <string name="configitem">设置</string>
   <string name="additem">添加</string>
   <string name="save_setting">保存</string>
 

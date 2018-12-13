@@ -3,7 +3,7 @@ package com.fanyunlv.xialei.rythm.beans;
 /**
  * Created by xialei on 2018/12/8.
  */
-public class TimeTaskItem {
+public class TaskStateItem {
 
     public String name;
     public int enabled;
@@ -36,7 +36,7 @@ public class TimeTaskItem {
         this.enabled = enabled;
     }
 
-    public TimeTaskItem(String name, int enabled) {
+    public TaskStateItem(String name, int enabled) {
         this.name = name;
         this.enabled = enabled;
     }

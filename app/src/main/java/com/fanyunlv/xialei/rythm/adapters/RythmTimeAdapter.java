@@ -101,15 +101,19 @@ public class RythmTimeAdapter extends RecyclerView.Adapter<RythmTimeAdapter.Ryth
             int nfc = cursor.getInt(6);
             if (audio == 1) {
                 stringBuffer.append(task_list[1]);
+                stringBuffer.append(" ");
             }
             if (wifi == 1) {
                 stringBuffer.append(task_list[2]);
+                stringBuffer.append(" ");
             }
             if (volume == 1) {
                 stringBuffer.append(task_list[3]);
+                stringBuffer.append(" ");
             }
             if (nfc == 1) {
                 stringBuffer.append(task_list[4]);
+                stringBuffer.append(" ");
             }
             if (audio == 0 && wifi == 0 && volume == 0 && nfc == 0) {
                 stringBuffer.append(" 无任务 ");

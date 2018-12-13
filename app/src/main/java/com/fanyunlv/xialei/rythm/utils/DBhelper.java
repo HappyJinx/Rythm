@@ -147,9 +147,6 @@ public class DBhelper {
     public Cursor querytask(int code) {
         return db.query(RythmDatabase.Tables.TASK, null, RythmDatabase.TASK.CODE+"= ?",new String[]{Integer.toString(code)},null,null,null);
     }
-    public Cursor querytask(String name) {
-        return db.query(RythmDatabase.Tables.TASK, null, RythmDatabase.TASK.NAME+"= ?",new String[]{name},null,null,null);
-    }
 
     public String getSelectedTime() {
         Cursor cursor = querytime();
@@ -222,12 +219,11 @@ public class DBhelper {
         return list;
     }
 
-    public ArrayList<TaskItems> getTaskList() {
+    public ArrayList<TaskItems> getLocationTaskList() {
         ArrayList<TaskItems> list = new ArrayList<>();
         db = database.getWritableDatabase();
         //Cursor cursor = db.query(RythmDatabase.Tables.LOCATIONTABLE, null, null, null, null,null, null);
         Cursor cursor = querylocation();
-        Log.i(TAG, "LineNum:198  Method:getLocationList--> cusor ="+cursor.getCount());
         while (cursor.moveToNext()) {
             String name = cursor.getString(1);
             int code = cursor.getInt(1);

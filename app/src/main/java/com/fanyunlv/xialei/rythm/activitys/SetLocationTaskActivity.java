@@ -34,33 +34,38 @@ public class SetLocationTaskActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         Log.i(TAG, "onCreate: actionbar ="+actionBar);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(R.string.setting_by_time);
+        actionBar.setTitle(R.string.setting_by_location);
 
         dBhelper =  DBhelper.getInstance(this);
         recyclerView = findViewById(R.id.recyclerlist);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        locationTaskAdapter = new LocationTaskAdapter(this,dBhelper.getTaskList());
+        locationTaskAdapter = new LocationTaskAdapter(this,dBhelper.getLocationList());
         recyclerView.setAdapter(locationTaskAdapter);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inf = getMenuInflater();
-        inf.inflate(R.menu.rythmmenu,menu);
-        return super.onCreateOptionsMenu(menu);
+    protected void onResume() {
+        super.onResume();
+        locationTaskAdapter.notifyDataSetChanged();
     }
 
+    //    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inf = getMenuInflater();
+//        inf.inflate(R.menu.rythmmenu,menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
+//
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.i(TAG, "onOptionsItemSelected: id ="+item.getItemId());
         switch (item.getItemId()) {
-            case R.id.add_new:
-//                showTimepiackdialog();
-//                Intent intent = new Intent(SetLocationTaskActivity.this, ConfigTimeTaskActivity.class);
-//                startActivityForResult(intent,128);
-                break;
+//            case R.id.add_new:
+//                Intent intent = new Intent(SetLocationTaskActivity.this, ConfigLocationTaskActivity.class);
+//                startActivityForResult(intent,1213);
+//                break;
             case android.R.id.home:
                 finish();
                 break;

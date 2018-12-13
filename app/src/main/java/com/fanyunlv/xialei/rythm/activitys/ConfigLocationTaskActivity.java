@@ -1,7 +1,9 @@
 package com.fanyunlv.xialei.rythm.activitys;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.fanyunlv.xialei.rythm.R;
 import com.fanyunlv.xialei.rythm.adapters.RythmTimeTaskAdapter;
@@ -12,31 +14,39 @@ import java.util.ArrayList;
 /**
  * Created by xialei on 2018/12/13.
  */
-public class ConfigTimeTaskActivity extends ConfigTaskActivity {
+public class ConfigLocationTaskActivity extends ConfigTaskActivity {
     private ArrayList<TaskStateItem> list;
     private RythmTimeTaskAdapter rythmAdapter;
+    private int code;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setActionTitle(R.string.setting_by_time);
+        setActionTitle(R.string.setting_by_location);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent intent = getIntent();
+        code = intent.getIntExtra("code", 0);
     }
 
     @Override
     public void ConfigrecyclerView() {
         list = new ArrayList<>();
-        for (int i = 0; i < task_list.length; i++) {
+        for (int i = 1; i < task_list.length; i++) {
+
             list.add(new TaskStateItem(task_list[i], 0));
         }
-
+        Log.i(TAG, "LineNum:31  Method:ConfigrecyclerView--> size ="+list.size());
         rythmAdapter = new RythmTimeTaskAdapter(dBhelper, this, list);
         recyclerView.setAdapter(rythmAdapter);
     }
 
     @Override
     public void onsaveClick() {
-        rythmAdapter.addTime();
-        rythmAdapter.addtaskdetail();
+        rythmAdapter.addlocationTask(code);
         finish();
     }
 }
