@@ -1,4 +1,4 @@
-package com.fanyunlv.xialei.rythm.sharedpreference;
+package com.fanyunlv.xialei.rythm.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

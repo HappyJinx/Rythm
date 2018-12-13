@@ -8,7 +8,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,32 +18,27 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
-import com.baidu.mapapi.CoordType;
-import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.Marker;
-import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
-import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
-import com.fanyunlv.xialei.rythm.LocationIistener;
+import com.fanyunlv.xialei.rythm.interfaces.LocationIistener;
+import com.fanyunlv.xialei.rythm.beans.MyLocation;
 import com.fanyunlv.xialei.rythm.fragments.BaseFragment;
 import com.fanyunlv.xialei.rythm.R;
+import com.fanyunlv.xialei.rythm.presenter.LocationPresenter;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
 import com.fanyunlv.xialei.rythm.utils.RythmDatabase;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by xialei on 2018/11/24.

@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.fanyunlv.xialei.rythm.R;
-import com.fanyunlv.xialei.rythm.TaskDetails;
+import com.fanyunlv.xialei.rythm.beans.TaskItems;
 
 import java.util.ArrayList;
 
@@ -19,9 +19,9 @@ import java.util.ArrayList;
 public class LocationTaskAdapter extends RecyclerView.Adapter<LocationTaskAdapter.RythmViewHolder> implements View.OnClickListener {
 
     private Context mcontext;
-    private ArrayList<TaskDetails> taskArrayList;
+    private ArrayList<TaskItems> taskArrayList;
 
-    public LocationTaskAdapter(Context context, ArrayList<TaskDetails> taskDetails) {
+    public LocationTaskAdapter(Context context, ArrayList<TaskItems> taskDetails) {
         mcontext = context;
         taskArrayList = taskDetails;
     }

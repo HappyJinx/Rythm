@@ -1,7 +1,6 @@
-package com.fanyunlv.xialei.rythm.viewpager;
+package com.fanyunlv.xialei.rythm.fragments;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;

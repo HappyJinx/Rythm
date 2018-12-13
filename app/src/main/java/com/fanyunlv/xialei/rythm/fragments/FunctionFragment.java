@@ -1,9 +1,6 @@
-package com.fanyunlv.xialei.rythm.function;
+package com.fanyunlv.xialei.rythm.fragments;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,12 +15,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.baidu.location.BDLocation;
-import com.fanyunlv.xialei.rythm.LocationIistener;
+import com.fanyunlv.xialei.rythm.adapters.FunctionRecyclerAdapter;
+import com.fanyunlv.xialei.rythm.interfaces.LocationIistener;
 import com.fanyunlv.xialei.rythm.MainActivity;
 import com.fanyunlv.xialei.rythm.R;
-import com.fanyunlv.xialei.rythm.RingmodePresenter;
-import com.fanyunlv.xialei.rythm.WifiCheckPresenter;
-import com.fanyunlv.xialei.rythm.location.LocationPresenter;
+import com.fanyunlv.xialei.rythm.presenter.RingmodePresenter;
+import com.fanyunlv.xialei.rythm.presenter.WifiCheckPresenter;
+import com.fanyunlv.xialei.rythm.beans.XFunction;
+import com.fanyunlv.xialei.rythm.presenter.LocationPresenter;
 import com.fanyunlv.xialei.rythm.utils.FragmentUtil;
 
 import java.util.ArrayList;

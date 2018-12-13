@@ -48,7 +48,7 @@
       </intent-filter>
     </activity>
 
-    <activity android:name=".FunctionActivity">
+    <activity android:name=".activitys.FunctionActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <action android:name="com.android.rhythm.function"/>
@@ -67,14 +67,14 @@
       </intent-filter>
     </receiver>
 
-    <activity android:name=".SettimeTaskActivity">
+    <activity android:name=".activitys.SettimeTaskActivity">
       <intent-filter>
         <action android:name="xialei.action.start.settime" />
         <category android:name="android.intent.category.DEFAULT" />
       </intent-filter>
     </activity>
 
-    <activity android:name=".ConfigTimeTaskActivity"/>
+    <activity android:name=".activitys.ConfigTimeTaskActivity"/>
 
 
     <activity android:name=".location.SetLocationTaskActivity">
@@ -86,7 +86,7 @@
 
 
 
-    <activity android:name=".SetwifiActivity">
+    <activity android:name=".activitys.SetwifiActivity">
       <intent-filter>
         <action android:name="xialei.action.start.setwifi" />
         <category android:name="android.intent.category.DEFAULT" />

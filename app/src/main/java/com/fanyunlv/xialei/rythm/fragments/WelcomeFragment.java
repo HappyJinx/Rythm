@@ -15,8 +15,7 @@ import android.widget.Button;
 
 import com.fanyunlv.xialei.rythm.MainActivity;
 import com.fanyunlv.xialei.rythm.R;
-import com.fanyunlv.xialei.rythm.sharedpreference.SharePrefUtil;
-import com.fanyunlv.xialei.rythm.viewpager.WelcomPagerAdapter;
+import com.fanyunlv.xialei.rythm.utils.SharePrefUtil;
 
 /**
  * Created by xialei on 2018/11/23.

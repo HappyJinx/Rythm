@@ -13,12 +13,14 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.baidu.location.BDLocation;
+import com.fanyunlv.xialei.rythm.activitys.FunctionActivity;
 import com.fanyunlv.xialei.rythm.fragments.AudioFragment;
 import com.fanyunlv.xialei.rythm.fragments.WifiFragment;
-import com.fanyunlv.xialei.rythm.function.FunctionFragment;
-import com.fanyunlv.xialei.rythm.location.LocationPresenter;
-import com.fanyunlv.xialei.rythm.sharedpreference.SharePrefUtil;
+import com.fanyunlv.xialei.rythm.fragments.FunctionFragment;
+import com.fanyunlv.xialei.rythm.presenter.LocationPresenter;
+import com.fanyunlv.xialei.rythm.presenter.RingmodePresenter;
+import com.fanyunlv.xialei.rythm.presenter.WifiCheckPresenter;
+import com.fanyunlv.xialei.rythm.utils.SharePrefUtil;
 import com.fanyunlv.xialei.rythm.utils.FragmentUtil;
 import com.fanyunlv.xialei.rythm.utils.PermissionUtil;
 import com.fanyunlv.xialei.rythm.fragments.WelcomeFragment;
@@ -88,7 +90,6 @@ public class MainActivity extends AppCompatActivity{
             actionBar.show();
         }
     }
-
     public void showContent() { //main content
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         if (sharePrefUtil.isFirstOpen()) {

@@ -1,4 +1,4 @@
-package com.fanyunlv.xialei.rythm;
+package com.fanyunlv.xialei.rythm.activitys;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.fanyunlv.xialei.rythm.R;
 import com.fanyunlv.xialei.rythm.fragments.AudioFragment;
 import com.fanyunlv.xialei.rythm.fragments.WifiFragment;
 import com.fanyunlv.xialei.rythm.location.LocationFragment;

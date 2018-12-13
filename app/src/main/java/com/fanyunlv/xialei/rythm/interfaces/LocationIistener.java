@@ -1,4 +1,4 @@
-package com.fanyunlv.xialei.rythm;
+package com.fanyunlv.xialei.rythm.interfaces;
 
 import com.baidu.location.BDLocation;
 

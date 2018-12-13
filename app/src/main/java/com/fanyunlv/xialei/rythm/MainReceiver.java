@@ -10,9 +10,7 @@ public class MainReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        // TODO: This method is called when the BroadcastReceiver is receiving
-        // an Intent broadcast.
-        //throw new UnsupportedOperationException("Not yet implemented");
+
         Log.i("Rythm", "MainReceiver onReceive: action ="+intent.getAction());
         if (intent.getAction().equals(Intent.ACTION_MAIN)) {
             Intent intent1 = new Intent("android.intent.action.MAIN");

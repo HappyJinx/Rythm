@@ -1,7 +1,6 @@
-package com.fanyunlv.xialei.rythm.location;
+package com.fanyunlv.xialei.rythm.presenter;
 
 import android.content.Context;
-import android.location.LocationListener;
 import android.util.Log;
 
 import com.baidu.location.BDAbstractLocationListener;
@@ -9,7 +8,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDNotifyListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.fanyunlv.xialei.rythm.LocationIistener;
+import com.fanyunlv.xialei.rythm.interfaces.LocationIistener;
 
 import java.util.ArrayList;
 

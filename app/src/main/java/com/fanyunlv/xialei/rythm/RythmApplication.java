@@ -36,6 +36,4 @@ public class RythmApplication extends Application {
     public static Context getContext() {
         return mContext;
     }
-
-
 }

@@ -1,4 +1,4 @@
-package com.fanyunlv.xialei.rythm;
+package com.fanyunlv.xialei.rythm.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.fanyunlv.xialei.rythm.R;
+import com.fanyunlv.xialei.rythm.beans.TimeItem;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
 
 import java.util.ArrayList;

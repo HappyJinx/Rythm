@@ -1,7 +1,9 @@
-package com.fanyunlv.xialei.rythm;
+package com.fanyunlv.xialei.rythm.activitys;
 
+import android.app.NotificationManager;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.provider.Settings;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -12,53 +14,46 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.fanyunlv.xialei.rythm.R;
+import com.fanyunlv.xialei.rythm.adapters.RythmTimeAdapter;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
 
-import java.util.ArrayList;
 
-/**
- * Created by xialei on 2018/12/8.
- */
-public class ConfigTimeTaskActivity extends AppCompatActivity {
-    private static final String TAG = ConfigTimeTaskActivity.class.getSimpleName();
+public class SettimeTaskActivity extends AppCompatActivity {
+
+    private final String TAG = "SettimeTaskActivity";
 
     private RecyclerView recyclerView;
-    private RythmTimeTaskAdapter rythmAdapter;
-
-    private String[] task_list;
-    private ArrayList<TimeTaskItem> list;
+    private RythmTimeAdapter rythmAdapter;
     private DBhelper dBhelper;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.time_task_layout);
+        setContentView(R.layout.activity_settime);
+        if (!((NotificationManager) getSystemService(NOTIFICATION_SERVICE))
+                .isNotificationPolicyAccessGranted()) {
+            Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+            startActivity(intent);
+        }
         ActionBar actionBar = getSupportActionBar();
         Log.i(TAG, "onCreate: actionbar ="+actionBar);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(R.string.setting_by_time);
 
         dBhelper =  DBhelper.getInstance(this);
-
-        recyclerView = findViewById(R.id.task_list);
+        recyclerView = findViewById(R.id.recyclerlist);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        task_list =getResources().getStringArray(R.array.time_task_list);
-
-        list = new ArrayList<>();
-        for (int i = 0; i < task_list.length; i++) {
-            list.add(new TimeTaskItem(task_list[i], false));
-        }
-
-        rythmAdapter = new RythmTimeTaskAdapter(dBhelper,this,list);
+        rythmAdapter = new RythmTimeAdapter(this,dBhelper.getTimeList(),dBhelper);
         recyclerView.setAdapter(rythmAdapter);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inf = getMenuInflater();
-        inf.inflate(R.menu.rythmmenu_task,menu);
+        inf.inflate(R.menu.rythmmenu,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -66,11 +61,10 @@ public class ConfigTimeTaskActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.i(TAG, "onOptionsItemSelected: id ="+item.getItemId());
         switch (item.getItemId()) {
-            case R.id.save_item:
-                Log.i(TAG, "LineNum:69  Method:onOptionsItemSelected--> ");
-                rythmAdapter.addTime();
-                rythmAdapter.addtaskdetail();
-                finish();
+            case R.id.add_new:
+//                showTimepiackdialog();
+                Intent intent = new Intent(SettimeTaskActivity.this, ConfigTimeTaskActivity.class);
+                startActivityForResult(intent,128);
                 break;
             case android.R.id.home:
                 finish();
@@ -78,4 +72,13 @@ public class ConfigTimeTaskActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.i(TAG, "LineNum:79  Method:onActivityResult--> code="+requestCode);
+        rythmAdapter.replaceList(dBhelper.getTimeList());
+        rythmAdapter.notifyDataSetChanged();
+    }
+
 }

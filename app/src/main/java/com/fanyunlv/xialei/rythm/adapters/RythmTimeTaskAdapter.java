@@ -1,4 +1,4 @@
-package com.fanyunlv.xialei.rythm;
+package com.fanyunlv.xialei.rythm.adapters;
 
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
@@ -8,12 +8,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.fanyunlv.xialei.rythm.R;
+import com.fanyunlv.xialei.rythm.beans.TaskItems;
+import com.fanyunlv.xialei.rythm.beans.TimeTaskItem;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
 
 import java.util.ArrayList;
@@ -54,11 +56,13 @@ public class RythmTimeTaskAdapter extends RecyclerView.Adapter<RythmTimeTaskAdap
 
     @Override
     public void onBindViewHolder(RythmViewHolder holder, int position) {
-        holder.item_time.setText(timeitemlist.get(position).getName());
+        TimeTaskItem timeTaskItem = timeitemlist.get(position);
+
+        holder.item_time.setText(timeTaskItem.getName());
         if (position == 0) {
             holder.checkBox.setVisibility(View.GONE);
             holder.time_setted.setVisibility(View.VISIBLE);
-            if (timeitemlist.get(position).getTime() == "") {
+            if (timeTaskItem.getTime() == "") {
                 Calendar calendar = Calendar.getInstance();
                 int hourt;
                 if (calendar.get(Calendar.AM_PM) == 0) {
@@ -68,12 +72,12 @@ public class RythmTimeTaskAdapter extends RecyclerView.Adapter<RythmTimeTaskAdap
                 }
                 holder.time_setted.setText(hourt+":"+calendar.get(Calendar.MINUTE));
             }else {
-                holder.time_setted.setText(timeitemlist.get(position).getTime());
+                holder.time_setted.setText(timeTaskItem.getTime());
             }
         }else {
             holder.checkBox.setVisibility(View.VISIBLE);
         }
-        holder.checkBox.setChecked(timeitemlist.get(position).isEnabled());
+        holder.checkBox.setChecked( (timeTaskItem.getEnabled()==1)?true:false);
         holder.checkBox.setOnCheckedChangeListener(this);
         holder.checkBox.setTag(position);
         holder.itemView.setOnClickListener(this);
@@ -93,8 +97,7 @@ public class RythmTimeTaskAdapter extends RecyclerView.Adapter<RythmTimeTaskAdap
             return;
         }
         TimeTaskItem item = timeitemlist.get((int) v.getTag());
-        item.setEnabled(!item.isEnabled());
-        Log.i(TAG, "LineNum:96  Method:onClick--> item="+item.isEnabled());
+        item.setEnabled((item.getEnabled()==1)?0:1);
         notifyDataSetChanged();
     }
 
@@ -170,12 +173,12 @@ public class RythmTimeTaskAdapter extends RecyclerView.Adapter<RythmTimeTaskAdap
         }
         Log.i(TAG, "LineNum:149  Method:addtaskdetail--> hour=" + hour);
 
-        TaskDetails taskDetails = new TaskDetails(hour*100+minute);
-        taskDetails.setName(""+taskDetails.getCode());
-        taskDetails.setAudio(timeitemlist.get(1).isEnabled());
-        taskDetails.setWifi(timeitemlist.get(2).isEnabled());
-        taskDetails.setVolume(timeitemlist.get(3).isEnabled());
-        taskDetails.setNfc(timeitemlist.get(4).isEnabled());
+        TaskItems taskDetails = new TaskItems(hour*100+minute);
+        taskDetails.setName(""+taskDetails.getTimecode());
+        taskDetails.setAudio(timeitemlist.get(1).getEnabled());
+        taskDetails.setWifi(timeitemlist.get(2).getEnabled());
+        taskDetails.setVolume(timeitemlist.get(3).getEnabled());
+        taskDetails.setNfc(timeitemlist.get(4).getEnabled());
 
         dBhelper.inserttaskDetails(taskDetails);
     }

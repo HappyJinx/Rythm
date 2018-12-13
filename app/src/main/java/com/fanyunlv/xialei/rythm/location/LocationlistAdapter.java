@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.fanyunlv.xialei.rythm.R;
+import com.fanyunlv.xialei.rythm.beans.MyLocation;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.fanyunlv.xialei.rythm;
+package com.fanyunlv.xialei.rythm.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.fanyunlv.xialei.rythm.R;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
 
 import java.util.ArrayList;

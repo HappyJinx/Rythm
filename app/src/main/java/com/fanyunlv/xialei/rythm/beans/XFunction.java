@@ -1,4 +1,4 @@
-package com.fanyunlv.xialei.rythm.function;
+package com.fanyunlv.xialei.rythm.beans;
 
 /**
  * Created by xialei on 2018/11/24.

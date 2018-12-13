@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
 import com.fanyunlv.xialei.rythm.R;
-import com.fanyunlv.xialei.rythm.WifiCheckPresenter;
+import com.fanyunlv.xialei.rythm.presenter.WifiCheckPresenter;
 
 /**
  * Created by xialei on 2018/11/24.

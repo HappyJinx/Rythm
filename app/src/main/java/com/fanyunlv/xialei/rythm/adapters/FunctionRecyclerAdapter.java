@@ -1,7 +1,6 @@
-package com.fanyunlv.xialei.rythm.function;
+package com.fanyunlv.xialei.rythm.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +9,10 @@ import android.widget.TextView;
 
 import com.fanyunlv.xialei.rythm.MainActivity;
 import com.fanyunlv.xialei.rythm.R;
-import com.fanyunlv.xialei.rythm.RingmodePresenter;
-import com.fanyunlv.xialei.rythm.WifiCheckPresenter;
-import com.fanyunlv.xialei.rythm.location.LocationPresenter;
+import com.fanyunlv.xialei.rythm.presenter.RingmodePresenter;
+import com.fanyunlv.xialei.rythm.presenter.WifiCheckPresenter;
+import com.fanyunlv.xialei.rythm.beans.XFunction;
+import com.fanyunlv.xialei.rythm.presenter.LocationPresenter;
 
 import java.util.ArrayList;
 

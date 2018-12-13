@@ -6,8 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.fanyunlv.xialei.rythm.TaskDetails;
-import com.fanyunlv.xialei.rythm.location.MyLocation;
+import com.fanyunlv.xialei.rythm.beans.TaskItems;
+import com.fanyunlv.xialei.rythm.beans.MyLocation;
 
 /**
  * Created by admin on 2018/8/24.
@@ -139,15 +139,15 @@ public class RythmDatabase extends SQLiteOpenHelper {
         contentValues.put(LOCATIONTABLE.DESCRIB,myLocation.getDescription());
         mdb.insert(Tables.LOCATIONTABLE,null,contentValues);
     }
-    private void insertLocation(TaskDetails taskDetails) {
+    private void insertLocation(TaskItems taskDetails) {
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(TASK.NAME,taskDetails.getCode());
-        contentValues.put(TASK.CODE,taskDetails.getCode());
-        contentValues.put(TASK.AUDIO,taskDetails.isAudio()?1:0);
-        contentValues.put(TASK.WIFI,taskDetails.isWifi()?1:0);
-        contentValues.put(TASK.VOLUME,taskDetails.isVolume()?1:0);
-        contentValues.put(TASK.NFC,taskDetails.isNfc()?1:0);
+        contentValues.put(TASK.NAME,taskDetails.getName());
+        contentValues.put(TASK.CODE,taskDetails.getTimecode());
+        contentValues.put(TASK.AUDIO,taskDetails.getAudio());
+        contentValues.put(TASK.WIFI,taskDetails.getWifi());
+        contentValues.put(TASK.VOLUME,taskDetails.getVolume());
+        contentValues.put(TASK.NFC,taskDetails.getNfc());
         mdb.insert(Tables.TASK,null,contentValues);
     }
 
@@ -163,7 +163,5 @@ public class RythmDatabase extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.i(TAG, "onUpgrade: database");
     }
-
-
 
 }

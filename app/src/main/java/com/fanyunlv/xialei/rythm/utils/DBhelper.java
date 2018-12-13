@@ -6,9 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.fanyunlv.xialei.rythm.TaskDetails;
-import com.fanyunlv.xialei.rythm.location.MyLocation;
-import com.fanyunlv.xialei.rythm.TimeItem;
+import com.fanyunlv.xialei.rythm.beans.TaskItems;
+import com.fanyunlv.xialei.rythm.beans.MyLocation;
+import com.fanyunlv.xialei.rythm.beans.TimeItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,15 +49,15 @@ public class DBhelper {
         db.insert(RythmDatabase.Tables.TIMETABLE, null, values);
     }
 
-    public void inserttaskDetails(TaskDetails details) {
+    public void inserttaskDetails(TaskItems details) {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(RythmDatabase.TASK.NAME,details.getName());
-        contentValues.put(RythmDatabase.TASK.CODE,details.getCode());
-        contentValues.put(RythmDatabase.TASK.AUDIO,details.isAudio()?1:0);
-        contentValues.put(RythmDatabase.TASK.WIFI,details.isWifi()?1:0);
-        contentValues.put(RythmDatabase.TASK.VOLUME,details.isVolume()?1:0);
-        contentValues.put(RythmDatabase.TASK.NFC,details.isNfc()?1:0);
+        contentValues.put(RythmDatabase.TASK.CODE,details.getTimecode());
+        contentValues.put(RythmDatabase.TASK.AUDIO,details.getAudio());
+        contentValues.put(RythmDatabase.TASK.WIFI,details.getWifi());
+        contentValues.put(RythmDatabase.TASK.VOLUME,details.getVolume());
+        contentValues.put(RythmDatabase.TASK.NFC,details.getNfc());
         db.insert(RythmDatabase.Tables.TASK,null,contentValues);
 
     }
@@ -131,9 +131,6 @@ public class DBhelper {
         db.delete(tablename, RythmDatabase.TimeColumes._ID+"= ?", new String[]{Integer.toString(postion)});
     }
 
-    public void deletetask(int postion) {
-        db.delete(RythmDatabase.Tables.TASK, RythmDatabase.TASK._ID+"= ? ", new String[]{Integer.toString(postion)});
-    }
     public void deletetask(String tablename,int postion) {
         db.delete(tablename, RythmDatabase.TASK._ID+"= ? ", new String[]{Integer.toString(postion)});
     }
@@ -225,8 +222,8 @@ public class DBhelper {
         return list;
     }
 
-    public ArrayList<TaskDetails> getTaskList() {
-        ArrayList<TaskDetails> list = new ArrayList<>();
+    public ArrayList<TaskItems> getTaskList() {
+        ArrayList<TaskItems> list = new ArrayList<>();
         db = database.getWritableDatabase();
         //Cursor cursor = db.query(RythmDatabase.Tables.LOCATIONTABLE, null, null, null, null,null, null);
         Cursor cursor = querylocation();
@@ -234,11 +231,11 @@ public class DBhelper {
         while (cursor.moveToNext()) {
             String name = cursor.getString(1);
             int code = cursor.getInt(1);
-            boolean audio = (cursor.getInt(2)==1);
-            boolean wifi = (cursor.getInt(3)==1);
-            boolean volume = (cursor.getInt(4)==1);
-            boolean nfc = (cursor.getInt(5)==1);
-            list.add(new TaskDetails(name,code,audio,wifi,volume,nfc));
+            int audio = cursor.getInt(2);
+            int wifi = cursor.getInt(3);
+            int volume = cursor.getInt(4);
+            int nfc = cursor.getInt(5);
+            list.add(new TaskItems(name,code,audio,wifi,volume,nfc));
         }
         cursor.close();
         return list;

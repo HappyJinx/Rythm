@@ -1,8 +1,9 @@
-package com.fanyunlv.xialei.rythm;
+package com.fanyunlv.xialei.rythm.presenter;
 
 import android.content.Context;
 import android.net.wifi.WifiManager;
 
+import com.fanyunlv.xialei.rythm.R;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.fanyunlv.xialei.rythm;
+package com.fanyunlv.xialei.rythm.activitys;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -15,6 +15,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import com.fanyunlv.xialei.rythm.R;
+import com.fanyunlv.xialei.rythm.adapters.RythmWifiAdapter;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
 import com.fanyunlv.xialei.rythm.utils.RythmDatabase;
 

@@ -1,4 +1,4 @@
-package com.fanyunlv.xialei.rythm.location;
+package com.fanyunlv.xialei.rythm.beans;
 
 
 /**
@@ -6,7 +6,6 @@ package com.fanyunlv.xialei.rythm.location;
  */
 public class MyLocation {
     private String name;
-//    private Location location;
     private double longti;
     private double lati;
     private double radios;

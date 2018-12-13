@@ -1,6 +1,5 @@
 package com.fanyunlv.xialei.rythm.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,7 +11,7 @@ import android.widget.TextView;
 
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
 import com.fanyunlv.xialei.rythm.R;
-import com.fanyunlv.xialei.rythm.RingmodePresenter;
+import com.fanyunlv.xialei.rythm.presenter.RingmodePresenter;
 
 /**
  * Created by xialei on 2018/11/24.
