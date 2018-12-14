@@ -33,7 +33,7 @@ public class LocationTaskAdapter extends RecyclerView.Adapter<LocationTaskAdapte
         mcontext = context;
         dBhelper = DBhelper.getInstance(mcontext);
         locationArrayList = dBhelper.getLocationList();
-        task_list = mcontext.getResources().getStringArray(R.array.time_task_list);
+        task_list = mcontext.getResources().getStringArray(R.array.task_state_list);
     }
 
     @Override
@@ -68,20 +68,20 @@ public class LocationTaskAdapter extends RecyclerView.Adapter<LocationTaskAdapte
             int wifi = cursor.getInt(4);
             int volume = cursor.getInt(5);
             int nfc = cursor.getInt(6);
-            if (audio == 1) {
+            if (audio != 0) {
+                stringBuffer.append(task_list[0]);
+                stringBuffer.append(" ");
+            }
+            if (wifi != 0) {
                 stringBuffer.append(task_list[1]);
                 stringBuffer.append(" ");
             }
-            if (wifi == 1) {
+            if (volume != 0) {
                 stringBuffer.append(task_list[2]);
                 stringBuffer.append(" ");
             }
-            if (volume == 1) {
+            if (nfc != 0) {
                 stringBuffer.append(task_list[3]);
-                stringBuffer.append(" ");
-            }
-            if (nfc == 1) {
-                stringBuffer.append(task_list[4]);
                 stringBuffer.append(" ");
             }
             if (audio == 0 && wifi == 0 && volume == 0 && nfc == 0) {

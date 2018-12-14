@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.fanyunlv.xialei.rythm.R;
-import com.fanyunlv.xialei.rythm.adapters.RythmTimeTaskAdapter;
+import com.fanyunlv.xialei.rythm.adapters.RythmTaskConfigAdapter;
 import com.fanyunlv.xialei.rythm.beans.TaskStateItem;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class ConfigTimeTaskActivity extends ConfigTaskActivity {
     private ArrayList<TaskStateItem> list;
-    private RythmTimeTaskAdapter rythmAdapter;
+    private RythmTaskConfigAdapter rythmAdapter;
     
     private int hour;
     private int minute;
@@ -41,12 +41,14 @@ public class ConfigTimeTaskActivity extends ConfigTaskActivity {
     public void ConfigrecyclerView() {
         list = new ArrayList<>();
         int i = hasAction ? 1 : 0;
+
         Log.i(TAG, "LineNum:43  Method:ConfigrecyclerView--> i ="+i);
+
         for (; i < task_list.length; i++) {
             list.add(new TaskStateItem(task_list[i], 0));
         }
 
-        rythmAdapter = new RythmTimeTaskAdapter(dBhelper, this, list);
+        rythmAdapter = new RythmTaskConfigAdapter(dBhelper, this, list);
         recyclerView.setAdapter(rythmAdapter);
     }
 

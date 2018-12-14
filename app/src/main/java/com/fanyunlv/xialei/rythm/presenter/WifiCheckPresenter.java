@@ -58,20 +58,10 @@ public class WifiCheckPresenter implements OnDBchangedListener {
         return wifiManager.getConnectionInfo().getSSID().replaceAll("\"","");
     }
 
-    public void handlewifi() {
+    public void forbidWifi() {
         if (list.size() > 0) {
-            if (!wifiManager.isWifiEnabled()&& checkcoun != 0) {
-                enableWifi(true);
-                return;
-            }
-            if (checkcoun == COUNT_THREALD) {
-                checkcoun = 0;
-                enableWifi(false);
-                return;
-            }
             for (String item : list) {
                 if (getSSIDname().contains(item)) {
-                    checkcoun += 1;
                     wifiManager.disconnect();
                     break;
                 }

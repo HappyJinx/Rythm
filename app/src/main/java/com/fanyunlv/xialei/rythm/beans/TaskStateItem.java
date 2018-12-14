@@ -6,7 +6,7 @@ package com.fanyunlv.xialei.rythm.beans;
 public class TaskStateItem {
 
     public String name;
-    public int enabled;
+    public int state;
     public String time="";
 
     public String getTime() {
@@ -25,19 +25,21 @@ public class TaskStateItem {
         this.name = name;
     }
 
-    public int getEnabled() {
-        return enabled;
+    public int getState() {
+        return state;
     }
 
-    public void setEnabled(int enabled) {
-        if (enabled > 0) {
-            enabled = 1;
-        }
-        this.enabled = enabled;
+    public void setState(int state) {
+        this.state = state;
     }
 
-    public TaskStateItem(String name, int enabled) {
+    public TaskStateItem(String name, int state, String time) {
         this.name = name;
-        this.enabled = enabled;
+        this.state = state;
+        this.time = time;
+    }
+    public TaskStateItem(String name, int state) {
+        this.name = name;
+        this.state = state;
     }
 }

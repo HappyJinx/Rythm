@@ -46,9 +46,6 @@ public class TaskItems {
     }
 
     public void setAudio(int audio) {
-        if (audio > 0) {
-            audio = 1;
-        }
         this.audio = audio;
     }
 
@@ -57,9 +54,6 @@ public class TaskItems {
     }
 
     public void setWifi(int wifi) {
-        if (wifi > 0) {
-            wifi = 1;
-        }
         this.wifi = wifi;
     }
 
@@ -76,9 +70,6 @@ public class TaskItems {
     }
 
     public void setNfc(int nfc) {
-        if (nfc > 0) {
-            nfc = 1;
-        }
         this.nfc = nfc;
     }
 }

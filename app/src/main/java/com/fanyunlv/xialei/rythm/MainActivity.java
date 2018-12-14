@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity{
                     ||intent.getAction().equals(WifiManager.WIFI_STATE_CHANGED_ACTION)
                     ) {
                 if (fragmentUtil.getCurrentFragment() instanceof WifiFragment) {
-                    WifiCheckPresenter.getInstance(context).handlewifi();
+                    WifiCheckPresenter.getInstance(context).forbidWifi();
                 }
             }
         }

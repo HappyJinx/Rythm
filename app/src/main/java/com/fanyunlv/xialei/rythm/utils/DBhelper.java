@@ -277,7 +277,6 @@ public class DBhelper {
         ArrayList<TaskItems> list = new ArrayList<>();
         db = database.getWritableDatabase();
         Cursor cursor = querytask();
-        Log.i(TAG, "LineNum:229  Method:getLocatiosTaskList--> cursoe="+cursor.getCount());
         while (cursor.moveToNext()) {
             if (cursor.getInt(2) > 10000) {
                 list.add(new TaskItems(

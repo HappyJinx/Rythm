@@ -59,7 +59,7 @@ public class WifiFragment extends BaseFragment implements View.OnClickListener{
     }
 
     public void handlewifi() {
-        wifiCheckPresenter.handlewifi();
+        wifiCheckPresenter.forbidWifi();
     }
 
     @Override

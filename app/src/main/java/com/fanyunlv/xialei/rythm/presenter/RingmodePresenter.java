@@ -88,6 +88,21 @@ public class RingmodePresenter implements OnDBchangedListener{
         }
     }
 
+    /*
+      Reason : set customer mode
+      Author : xialei
+      Date : 2018/12/14
+    */
+    public void setAudioMode(int mode) {
+        if (audioManager.getRingerMode() != mode) {
+            audioManager.setRingerMode(mode);
+        }
+    }
+
+    public void setVolume(int volume) {
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,volume,0);
+    }
+
     public String getTime() {
         Calendar calendar = Calendar.getInstance();
         return calendar.get(Calendar.HOUR_OF_DAY) + " : " + calendar.get(Calendar.MINUTE);

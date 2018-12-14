@@ -31,7 +31,7 @@ public abstract class ConfigTaskActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        task_list = getResources().getStringArray(R.array.time_task_list);
+        task_list = getResources().getStringArray(R.array.task_list);
         ConfigrecyclerView();
     }
 
