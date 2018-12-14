@@ -74,7 +74,12 @@
       </intent-filter>
     </activity>
 
-    <activity android:name=".activitys.ConfigTimeTaskActivity"/>
+    <activity android:name=".activitys.ConfigTimeTaskActivity">
+      <intent-filter>
+        <action android:name="xialei.action.start.configtime"/>
+        <category android:name="android.intent.category.DEFAULT" />
+      </intent-filter>
+    </activity>
 
     <activity android:name=".activitys.SetLocationTaskActivity">
       <intent-filter>

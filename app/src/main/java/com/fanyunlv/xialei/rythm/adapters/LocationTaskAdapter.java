@@ -38,7 +38,7 @@ public class LocationTaskAdapter extends RecyclerView.Adapter<LocationTaskAdapte
 
     @Override
     public RythmViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.location_task_item_layout,null);
+        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_item_layout,null);
         RythmViewHolder holder = new RythmViewHolder(item);
         return holder;
     }

@@ -187,6 +187,17 @@ public class RythmTimeTaskAdapter extends RecyclerView.Adapter<RythmTimeTaskAdap
 
         dBhelper.inserttaskDetails(taskDetails);
     }
+    public void addtaskdetail(int hour,int minute) {
+
+        TaskItems taskDetails = new TaskItems(hour*100+minute);
+        taskDetails.setName(taskDetails.getName());
+        taskDetails.setAudio(taskList.get(0).getEnabled());
+        taskDetails.setWifi(taskList.get(1).getEnabled());
+        taskDetails.setVolume(taskList.get(2).getEnabled());
+        taskDetails.setNfc(taskList.get(3).getEnabled());
+
+        dBhelper.inserttaskDetails(taskDetails);
+    }
 
     public void addlocationTask(int code ) {
         TaskItems taskDetails = new TaskItems(code);

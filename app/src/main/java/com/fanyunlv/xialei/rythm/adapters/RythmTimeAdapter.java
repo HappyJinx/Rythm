@@ -1,6 +1,7 @@
 package com.fanyunlv.xialei.rythm.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.fanyunlv.xialei.rythm.R;
@@ -21,7 +23,7 @@ import java.util.List;
  * Created by admin on 2018/8/24.
  */
 
-public class RythmTimeAdapter extends RecyclerView.Adapter<RythmTimeAdapter.RythmViewHolder> implements View.OnClickListener{
+public class RythmTimeAdapter extends RecyclerView.Adapter<RythmTimeAdapter.RythmViewHolder> implements View.OnClickListener, View.OnLongClickListener {
 
     private final String TAG = "RythmTimeAdapter";
     private List<TimeItem> timeitemlist = new ArrayList<>();
@@ -43,7 +45,7 @@ public class RythmTimeAdapter extends RecyclerView.Adapter<RythmTimeAdapter.Ryth
 
     @Override
     public RythmViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_full_item_layout,null);
+        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_item_layout,null);
         RythmViewHolder holder = new RythmViewHolder(item);
         return holder;
     }
@@ -54,7 +56,10 @@ public class RythmTimeAdapter extends RecyclerView.Adapter<RythmTimeAdapter.Ryth
         Log.i(TAG, "LineNum:50  Method:onBindViewHolder--> ");
         holder.item_setted_info.setText(getTaskinfo(timeitemlist.get(position).getHour()*100+timeitemlist.get(position).getMinute()));
         holder.item_delete.setOnClickListener(this);
+        holder.item_delete.setOnLongClickListener(this);
         holder.item_delete.setTag(position);
+        holder.item_config.setOnClickListener(this);
+        holder.item_config.setTag(position);
     }
 
     @Override
@@ -68,23 +73,46 @@ public class RythmTimeAdapter extends RecyclerView.Adapter<RythmTimeAdapter.Ryth
             case R.id.delete_item:
                 Log.i(TAG, "onClick: v.getTag()="+(v.getTag()));
                 TimeItem timeItem = timeitemlist.get((int) v.getTag());
-                DBhelper.getInstance(mcontext).deleteitem(timeItem.getHour(),timeItem.getMinute());
+//                DBhelper.getInstance(mcontext).deleteitem(timeItem.getHour(),timeItem.getMinute());
                 DBhelper.getInstance(mcontext).deletetask(timeItem.getHour()*100+timeItem.getMinute());
-                timeitemlist.remove((int)v.getTag());
+//                timeitemlist.remove((int)v.getTag());
                 notifyDataSetChanged();
                 break;
+            case R.id.sett_item:
+                Log.i(TAG, "onClick: v.getTag()="+(v.getTag()));
+                TimeItem timeItems = timeitemlist.get((int) v.getTag());
+                Intent intent = new Intent("xialei.action.start.configtime");
+                intent.putExtra("hour",timeItems.getHour());
+                intent.putExtra("minute",timeItems.getMinute());
+                mcontext.startActivity(intent);
+                break;
         }
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        if (v.getId() == R.id.delete_item) {
+            TimeItem timeItem = timeitemlist.get((int) v.getTag());
+            DBhelper.getInstance(mcontext).deleteitem(timeItem.getHour(),timeItem.getMinute());
+            DBhelper.getInstance(mcontext).deletetask(timeItem.getHour()*100+timeItem.getMinute());
+            timeitemlist.remove((int)v.getTag());
+            notifyDataSetChanged();
+            return true;
+        }
+        return false;
     }
 
     public class RythmViewHolder extends RecyclerView.ViewHolder {
         public TextView item_setted;
         public TextView item_setted_info;
-        public Button item_delete;
+        public ImageButton item_delete;
+        public ImageButton item_config;
         public RythmViewHolder(View itemView) {
             super(itemView);
             item_setted = itemView.findViewById(R.id.item_setted);
             item_setted_info = itemView.findViewById(R.id.item_setted_info);
             item_delete = itemView.findViewById(R.id.delete_item);
+            item_config = itemView.findViewById(R.id.sett_item);
         }
     }
 
