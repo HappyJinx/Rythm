@@ -11,6 +11,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,18 +19,29 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.InfoWindow;
+import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.geocode.GeoCodeOption;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.fanyunlv.xialei.rythm.adapters.LocationlistAdapter;
 import com.fanyunlv.xialei.rythm.interfaces.LocationIistener;
 import com.fanyunlv.xialei.rythm.beans.MyLocation;
@@ -43,7 +55,15 @@ import java.util.ArrayList;
 /**
  * Created by xialei on 2018/11/24.
  */
-public class LocationFragment extends BaseFragment implements LocationIistener,View.OnClickListener, SensorEventListener {
+public class LocationFragment extends BaseFragment implements
+        LocationIistener,
+        View.OnClickListener,
+        SensorEventListener,
+        BaiduMap.OnMapClickListener,
+        BaiduMap.OnMarkerClickListener, 
+        OnGetGeoCoderResultListener,
+        BaiduMap.OnMyLocationClickListener
+{
     private static final String TAG = LocationFragment.class.getSimpleName();
 
 //    private TextView locationinfo;
@@ -54,6 +74,12 @@ public class LocationFragment extends BaseFragment implements LocationIistener,V
     private ImageButton centerSelf;
     private AlertDialog chooselocation;
     private LocationPresenter presenter;
+
+    private BitmapDescriptor mNewMarker;
+    private GeoCoder geoCoder;
+    private LatLng mtouchPoint;
+    private String policyName;
+    private String mTouchGeoResultName;
 
     private BDLocation bdLocation;
 
@@ -87,6 +113,11 @@ public class LocationFragment extends BaseFragment implements LocationIistener,V
         sensorManager = (SensorManager) getContext().getSystemService(Context.SENSOR_SERVICE);
         Sensor send = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
         sensorManager.registerListener(this, send,SensorManager.SENSOR_DELAY_NORMAL);
+
+        mNewMarker = BitmapDescriptorFactory
+                .fromResource(R.drawable.icon_gcoding);
+        geoCoder = GeoCoder.newInstance();
+        geoCoder.setOnGetGeoCodeResultListener(this);
     }
 
     private void initdialog() {
@@ -164,7 +195,6 @@ public class LocationFragment extends BaseFragment implements LocationIistener,V
         // 设置定位数据
         baiduMap.setMyLocationData(locData);
 
-        Log.i(TAG, "Method:onLocationReceived--> ");
     }
 
     @Override
@@ -225,6 +255,10 @@ public class LocationFragment extends BaseFragment implements LocationIistener,V
         // 设置定位数据
         baiduMap.setMyLocationData(locData);
 
+        baiduMap.setOnMapClickListener(this);
+        baiduMap.setOnMarkerClickListener(this);
+        baiduMap.setOnMyLocationClickListener(this);
+
         //缩放到指定位置和比例
         MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.newLatLngZoom(new LatLng(presenter.getLastKnowLocation().getLatitude(),presenter.getLastKnowLocation().getLongitude()),18);
         baiduMap.animateMapStatus(mapStatusUpdate);
@@ -251,27 +285,132 @@ public class LocationFragment extends BaseFragment implements LocationIistener,V
                 break;
         }
     }
+    
+    /**
+     *  description : center self with zoom 
+     *  @author : xialei 
+     *  date : 2018/12/15
+     */
     public void centerSelf() {
         //缩放到指定位置和比例
         MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.newLatLngZoom(new LatLng(presenter.getLastKnowLocation().getLatitude(),presenter.getLastKnowLocation().getLongitude()),18);
         baiduMap.animateMapStatus(mapStatusUpdate);
+        baiduMap.clear();
+        mtouchPoint = null;
     }
 
+    @Override
+    public boolean onMapPoiClick(MapPoi mapPoi) {
+        Log.i(TAG, "LineNum:266  Method:onMapPoiClick--> mapPoi="+mapPoi.getName());
+        mtouchPoint = mapPoi.getPosition();
+        policyName = mapPoi.getName();
+        mTouchGeoResultName = policyName;
+        baiduMap.clear();
+        geoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(mtouchPoint));
+        
+        return true;
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        Log.i(TAG, "LineNum:271  Method:onMapClick--> l ="+latLng.toString());
+        mtouchPoint = latLng;
+        MarkerOptions markerOptions = new MarkerOptions().icon(mNewMarker).position(latLng);
+        baiduMap.clear();
+        Marker marker = (Marker) baiduMap.addOverlay(markerOptions);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("latlng",latLng);
+        marker.setExtraInfo(bundle);
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Log.i(TAG, "LineNum:292  Method:onMarkerClick--> ");
+//        Bundle bundle = marker.getExtraInfo();
+        LatLng latLng = marker.getExtraInfo().getParcelable("latlng");
+        geoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(latLng));
+
+        return true;
+    }
+
+//    void onGetGeoCodeResult(GeoCodeResult var1);
+//    void onGetReverseGeoCodeResult(ReverseGeoCodeResult var1);
+    /**
+     *  description : no call
+     *  @author : xialei 
+     *  date : 2018/12/15
+     */
+    @Override
+    public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
+        Log.i(TAG, "LineNum:324  Method:onGetGeoCodeResult--> r ="+geoCodeResult.toString());
+    }
+
+
+    /**
+     *  description : get revers result, show info window
+     *  @author : xialei
+     *  date : 2018/12/15
+     */
+    @Override
+    public void onGetReverseGeoCodeResult(ReverseGeoCodeResult reverseGeoCodeResult) {
+
+        ReverseGeoCodeResult.AddressComponent component = reverseGeoCodeResult.getAddressDetail();
+        String miaoshu = reverseGeoCodeResult.getSematicDescription().split(",")[0];
+
+        if (!TextUtils.isEmpty(policyName)) {
+            miaoshu = policyName;
+            policyName = "";
+        }
+
+        mTouchGeoResultName = miaoshu;
+
+        String desc = component.district + component.street + component.streetNumber +"\n" +miaoshu;
+
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.map_info_window,null,false);
+        TextView addr = view.findViewById(R.id.info_map);
+        addr.setText(desc);
+        final InfoWindow infoWindow = new InfoWindow(view, mtouchPoint, -80);  //自定义view, 位置, y轴偏移量 (dp)
+        baiduMap.showInfoWindow(infoWindow);
+    }
+
+    @Override
+    public boolean onMyLocationClick() {
+        Log.i(TAG, "LineNum:360  Method:onMyLocationClick--> ");
+        mtouchPoint = null;
+        baiduMap.clear();
+        return true;
+    }
+
+    /**
+     *  description : insert location to database
+     *  @author : xialei
+     *  date : 2018/12/15
+     */
     public class Locationchooselistener implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             Log.i(TAG, "onClick which ="+which);
 //            MyLocation myLocation = new MyLocation(locationnames[which], bdLocation.getLatitude(), bdLocation.getLongitude(), bdLocation.getRadius(), bdLocation.getLocationDescribe());
-            bdLocation = presenter.getLastKnowLocation();
-
-            ContentValues values = new ContentValues();
-            values.put(RythmDatabase.LOCATIONTABLE.NAME,locationnames[which]);
-            values.put(RythmDatabase.LOCATIONTABLE.CODE,getcode(bdLocation));
-            values.put(RythmDatabase.LOCATIONTABLE.LONGT,bdLocation.getLongitude());
-            values.put(RythmDatabase.LOCATIONTABLE.LATI,bdLocation.getLatitude());
-            values.put(RythmDatabase.LOCATIONTABLE.RADIOUS,bdLocation.getRadius());
-            values.put(RythmDatabase.LOCATIONTABLE.DESCRIB,bdLocation.getLocationDescribe());
-            DBhelper.getInstance(mcontext).insertLocation(values);
+            if (mtouchPoint == null) {
+                bdLocation = presenter.getLastKnowLocation();
+                ContentValues values = new ContentValues();
+                values.put(RythmDatabase.LOCATIONTABLE.NAME, locationnames[which]);
+                values.put(RythmDatabase.LOCATIONTABLE.CODE, getcode(bdLocation));
+                values.put(RythmDatabase.LOCATIONTABLE.LONGT, bdLocation.getLongitude());
+                values.put(RythmDatabase.LOCATIONTABLE.LATI, bdLocation.getLatitude());
+                values.put(RythmDatabase.LOCATIONTABLE.RADIOUS, bdLocation.getRadius());
+                values.put(RythmDatabase.LOCATIONTABLE.DESCRIB, bdLocation.getLocationDescribe());
+                DBhelper.getInstance(mcontext).insertLocation(values);
+            }else {
+                ContentValues values = new ContentValues();
+                values.put(RythmDatabase.LOCATIONTABLE.NAME, locationnames[which]);
+                values.put(RythmDatabase.LOCATIONTABLE.CODE, getcodeLnt(mtouchPoint));
+                values.put(RythmDatabase.LOCATIONTABLE.LONGT, mtouchPoint.longitudeE6);
+                values.put(RythmDatabase.LOCATIONTABLE.LATI, mtouchPoint.latitudeE6);
+                values.put(RythmDatabase.LOCATIONTABLE.RADIOUS, 30.00);
+                values.put(RythmDatabase.LOCATIONTABLE.DESCRIB, mTouchGeoResultName);
+                DBhelper.getInstance(mcontext).insertLocation(values);
+            }
 
             locations = DBhelper.getInstance(getContext()).getLocationList();
             adapter.setDatas(locations);
@@ -280,7 +419,16 @@ public class LocationFragment extends BaseFragment implements LocationIistener,V
             chooselocation.dismiss();
         }
     }
+
+    /**
+     *  description : get db code from bdlocation
+     *  @author : xialei
+     *  date : 2018/12/15
+     */
     public int getcode(BDLocation location) {
         return ((int)((location.getLatitude() + location.getLongitude()) * 1000000)) % 1000000;
+    }
+    public int getcodeLnt(LatLng location) {
+        return ((int)((location.latitudeE6 + location.longitudeE6) * 1000000)) % 1000000;
     }
 }
