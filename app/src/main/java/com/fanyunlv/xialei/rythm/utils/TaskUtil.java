@@ -5,6 +5,7 @@ import android.media.AudioManager;
 import android.util.Log;
 
 import com.fanyunlv.xialei.rythm.beans.TaskItems;
+import com.fanyunlv.xialei.rythm.presenter.PresenterMain;
 import com.fanyunlv.xialei.rythm.presenter.RingmodePresenter;
 import com.fanyunlv.xialei.rythm.presenter.WifiCheckPresenter;
 
@@ -66,5 +67,8 @@ public class TaskUtil {
 
     public void handNfc(TaskItems task) {
         //TODO
+        if (task.getNfc() == 1) {
+            PresenterMain.getInstance(context).endableNFC();
+        }
     }
 }
