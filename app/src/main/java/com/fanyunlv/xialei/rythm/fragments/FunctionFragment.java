@@ -24,6 +24,7 @@ import com.fanyunlv.xialei.rythm.presenter.WifiCheckPresenter;
 import com.fanyunlv.xialei.rythm.beans.XFunction;
 import com.fanyunlv.xialei.rythm.presenter.LocationPresenter;
 import com.fanyunlv.xialei.rythm.utils.FragmentUtil;
+import com.fanyunlv.xialei.rythm.utils.TaskUtil;
 
 import java.util.ArrayList;
 
@@ -93,8 +94,8 @@ public class FunctionFragment extends Fragment implements LocationIistener,View.
     @Override
     public void onLocationReceived(BDLocation location) {
         madapter.notifyDataSetChanged();
-        Log.i(TAG, "LineNum:96  Method:onLocationReceived--> handle task");
-        RingmodePresenter.getInstance(getContext()).checkTimeTask();
+
+        TaskUtil.getInstance(getContext()).checkTime();
     }
 
     @Override

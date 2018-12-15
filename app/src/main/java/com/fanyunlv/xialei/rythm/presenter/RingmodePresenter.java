@@ -70,16 +70,62 @@ public class RingmodePresenter implements OnDBchangedListener{
         }
     }
 
-    public void checkTimeTask() {
+
+    public int checkTimeTask() {
+        int result = LocationPresenter.SLOW_MODE;
         if (timeTasks.size() > 0) {
             Calendar calendar = Calendar.getInstance();
+            int cTimecode = calendar.get(Calendar.HOUR_OF_DAY) * 100 + calendar.get(Calendar.MINUTE);
+            int det = 0;
+
             for (TaskItems taskItems : timeTasks) {
-                if (calendar.get(Calendar.HOUR_OF_DAY) * 100 + calendar.get(Calendar.MINUTE) == taskItems.getCode()) {
+//                det = Math.abs(cTimecode - taskItems.getCode());
+                int a = getDetTime(cTimecode , taskItems.getCode());
+                if (a < det) {
+                    det = a;
+                }
+                if (det == 0) {
                     Log.i(TAG, "LineNum:76  Method:checkTimeTask--> ");
                     TaskUtil.getInstance(context).handleTask(taskItems);
                 }
             }
+            Log.i(TAG, "LineNum:88  Method:checkTimeTask--> det =" + det);
+            if (det>0 && det < 30){
+                result =  LocationPresenter.FAST_MODE;
+            } else if (det > 30 && det< 60) {
+                result = LocationPresenter.NORMAL_MODE;
+            }
         }
+        return result;
+    }
+
+    public int getDetTime(int a, int b) {
+
+        int ah = a/100;
+        int am = a % 100;
+        int bh = b / 100;
+        int bm = b % 100;
+        int result = 0;
+
+        if (ah < bh && am < bm) {
+            result = (bh - ah) * 60 + (bm - am);
+        } else if (ah < bh && am > bm) {
+            result = (bh - ah) * 60 - (60 - (am - bm));
+        } else if (ah < bh && am == bm) {
+            result = (bh - ah) * 60;
+        } else if (ah == bm && am != bm) {
+            result = Math.abs(bm - am);
+        } else if (ah == bm && am == bm) {
+            result = 0;
+        } else if (ah > bh && am < bm) {
+            result = (ah - bh) * 60 + am - bm;
+        } else if (ah > bh && am == bm) {
+            result = (ah - bh) * 60;
+        } else if (ah > bh && am > bm) {
+            result = (ah - bh) * 60 + (am + 60 - bm);
+        }
+
+        return result;
     }
 
     public void OpenRingmode() {

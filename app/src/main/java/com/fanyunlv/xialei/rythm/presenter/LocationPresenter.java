@@ -24,29 +24,27 @@ public class LocationPresenter implements OnDBchangedListener{
     private static final String TAG = LocationPresenter.class.getSimpleName();
 
     private static double DISTANCE_THRESHOLD = 100.00;
+    private final double R_EARTH=6370996.81;  //地球的半径
+
+    public static final int ONCE_MODE = 0;
+    public static final int FAST_MODE = 5;
+    public static final int NORMAL_MODE = 60;
+    public static final int SLOW_MODE = 600;
+    private int currentmode = 5;
 
     private static LocationPresenter sPresener;
-
     private Context context;
-
     private ArrayList<LocationIistener> listeners;
-
     private ArrayList<TaskItems> taskItems;
-
     private BDLocation bdLocation;
-
     private DBhelper dBhelper;
 
     //baidu location
     public LocationClient mLocationClient = null;
     private MyLocationListener myLocationListener = new MyLocationListener();
     public BDNotifyListener myNotifyListener1 = new MyNotifiListener();
-    public BDNotifyListener myNotifyListener2 = new MyNotifiListener();
-    public BDNotifyListener myNotifyListener3 = new MyNotifiListener();
 
     private BDLocation mLastKnowLocation;
-
-    private final double R_EARTH=6370996.81;  //地球的半径
 
     private LocationPresenter(Context context) {
         this.context = context;
@@ -54,6 +52,12 @@ public class LocationPresenter implements OnDBchangedListener{
         dBhelper = DBhelper.getInstance(context);
         dBhelper.addListener(this);
         taskItems = gettasks();
+
+        mLocationClient = new LocationClient(context);
+        mLocationClient.registerLocationListener(myLocationListener);
+
+        //myNotifyListener.SetNotifyLocation(40.0f, 116.0f, 3000, mLocationClient.getLocOption().getCoorType());
+        mLocationClient.registerNotify(myNotifyListener1);
     }
 
     public static LocationPresenter getInstance(Context context) {
@@ -68,26 +72,10 @@ public class LocationPresenter implements OnDBchangedListener{
     }
 
     public void setNotifyLocation(int id,double lat,double longt,float radio) {
-        if (id == 1) {
-            myNotifyListener1.SetNotifyLocation(lat, longt, radio, mLocationClient.getLocOption().getCoorType());
-        }else if (id == 2){
-            myNotifyListener2.SetNotifyLocation(lat, longt, radio, mLocationClient.getLocOption().getCoorType());
-        } else if (id == 3){
-            myNotifyListener3.SetNotifyLocation(lat, longt, radio, mLocationClient.getLocOption().getCoorType());
-        }
+       myNotifyListener1.SetNotifyLocation(lat, longt, radio, mLocationClient.getLocOption().getCoorType());
     }
 
     public void initBaiduLoaction() {
-        mLocationClient = new LocationClient(context);
-        mLocationClient.registerLocationListener(myLocationListener);
-        //注册监听函数
-//        mLocationClient.registerNotify(myNotifyListener);
-        mLocationClient.registerNotify(myNotifyListener1);
-        mLocationClient.registerNotify(myNotifyListener2);
-        mLocationClient.registerNotify(myNotifyListener3);
-
-        //myNotifyListener.SetNotifyLocation(40.0f, 116.0f, 3000, mLocationClient.getLocOption().getCoorType());
-        //设置位置提醒，四个参数分别是：纬度、精度、半径、坐标类型
 
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
@@ -140,13 +128,19 @@ public class LocationPresenter implements OnDBchangedListener{
 
         mLocationClient.startIndoorMode();
         mLocationClient.start();//开始定位
+        Log.i(TAG, "LineNum:141  Method:initBaiduLoaction--> ");
     }
 
-    public void startFirstLocate() {
+    /**
+     *  description : get seconds option
+     *  @author : xialei
+     *  date : 2018/12/15
+     */
+    public LocationClientOption getLocatOption(int seconds) {
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
         option.setCoorType("bd09ll");
-        option.setScanSpan(0);
+        option.setScanSpan(seconds*1000);
         option.setOpenGps(true);
         option.setLocationNotify(false);
         option.setIgnoreKillProcess(true);
@@ -155,13 +149,32 @@ public class LocationPresenter implements OnDBchangedListener{
         option.setEnableSimulateGps(false);
         option.setIsNeedAddress(true);
         option.setIsNeedLocationDescribe(true);
-        mLocationClient.setLocOption(option);
+        return option;
+    }
+
+    /**
+     *  description : set new option for location
+     *  @author : xialei
+     *  date : 2018/12/15
+     */
+    public void setLocationMode(int mode) {
+        Log.i(TAG, "LineNum:160  Method:setLocationMode--> mode ="+mode);
+        if (mode == currentmode) {
+            return;
+        }
+        currentmode = mode;
+
+        if (mLocationClient.isStarted()) {
+            mLocationClient.stop();
+        }
+        mLocationClient.setLocOption(getLocatOption(mode));
         mLocationClient.start();
     }
 
     public class MyLocationListener extends BDAbstractLocationListener {
         @Override
         public void onReceiveLocation(BDLocation location) {
+            Log.i(TAG, "LineNum:175  Method:onReceiveLocation--> ");
             bdLocation = location;
             for (LocationIistener lis : listeners) {
                 lis.onLocationReceived(location);
@@ -172,6 +185,11 @@ public class LocationPresenter implements OnDBchangedListener{
         }
     }
 
+    /**
+     *  description : check and handle we are close place
+     *  @author : xialei
+     *  date : 2018/12/15
+     */
     public void checkDistance(BDLocation bdLocation) {
         if (taskItems.size() > 0) {
             //check distance

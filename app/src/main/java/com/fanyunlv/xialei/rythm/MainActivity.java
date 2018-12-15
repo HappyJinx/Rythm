@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity{
 
             if (intent.getAction().equals(Intent.ACTION_TIME_TICK)) {
                 if (fragmentUtil.getCurrentFragment() instanceof AudioFragment) {
-                    RingmodePresenter.getInstance(context).checkTimeTask();
+//                    RingmodePresenter.getInstance(context).checkTimeTask();
                 }
             } else if (intent.getAction().equals(WifiManager.RSSI_CHANGED_ACTION)
                     ||intent.getAction().equals(WifiManager.WIFI_STATE_CHANGED_ACTION)
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity{
         showContent();
         initReceiver();
         //init baidu location service
-        LocationPresenter.getInstance(getApplicationContext()).initBaiduLoaction();
+        LocationPresenter.getInstance(getApplicationContext()).setLocationMode(LocationPresenter.ONCE_MODE);
     }
 
     public void setTitle(int resid) {

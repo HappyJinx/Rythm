@@ -5,6 +5,7 @@ import android.media.AudioManager;
 import android.util.Log;
 
 import com.fanyunlv.xialei.rythm.beans.TaskItems;
+import com.fanyunlv.xialei.rythm.presenter.LocationPresenter;
 import com.fanyunlv.xialei.rythm.presenter.PresenterMain;
 import com.fanyunlv.xialei.rythm.presenter.RingmodePresenter;
 import com.fanyunlv.xialei.rythm.presenter.WifiCheckPresenter;
@@ -28,6 +29,11 @@ public class TaskUtil {
             taskUtil = new TaskUtil(context);
         }
         return taskUtil;
+    }
+
+    public void checkTime() {
+        int result = RingmodePresenter.getInstance(context).checkTimeTask();
+        LocationPresenter.getInstance(context).setLocationMode(result);
     }
 
     public void handleTask(TaskItems task) {
@@ -71,4 +77,5 @@ public class TaskUtil {
             PresenterMain.getInstance(context).endableNFC();
         }
     }
+
 }
