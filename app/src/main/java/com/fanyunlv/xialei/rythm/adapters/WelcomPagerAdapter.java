@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.fanyunlv.xialei.rythm.R;
+import com.fanyunlv.xialei.rythm.RythmApplication;
 
 import java.util.ArrayList;
 
@@ -31,7 +32,7 @@ public class WelcomPagerAdapter extends PagerAdapter {
     };
 
     public WelcomPagerAdapter(Context context) {
-        Log.i(TAG, "WelcomPagerAdapter init");
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "WelcomPagerAdapter init");
         this.mContext = context;
         imageViews = new ArrayList<>();
 
@@ -42,7 +43,7 @@ public class WelcomPagerAdapter extends PagerAdapter {
 
 
     private void initAdapter() {
-        Log.i(TAG, "initAdapter ");
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "initAdapter ");
         for (int m : resids) {
             ImageView imageView = new ImageView(mContext);
             imageView.setBackgroundResource(m);
@@ -63,7 +64,7 @@ public class WelcomPagerAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        Log.i(TAG, "instantiateItem position="+position);
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "instantiateItem position="+position);
         ImageView imageView = imageViews.get(position);
         container.addView(imageView);
         return imageView;
@@ -71,7 +72,7 @@ public class WelcomPagerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        Log.i(TAG, "destroyItem position="+position);
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "destroyItem position="+position);
         container.removeView(imageViews.get(position));
     }
 }

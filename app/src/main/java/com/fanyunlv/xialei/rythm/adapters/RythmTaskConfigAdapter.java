@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.fanyunlv.xialei.rythm.R;
+import com.fanyunlv.xialei.rythm.RythmApplication;
 import com.fanyunlv.xialei.rythm.beans.TaskItems;
 import com.fanyunlv.xialei.rythm.beans.TaskStateItem;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
@@ -141,7 +142,7 @@ public class RythmTaskConfigAdapter extends RecyclerView.Adapter<RythmTaskConfig
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Log.i(TAG, "LineNum:106  Method:onItemSelected--> "+parent.getTag()+"postion="+position+" --id="+id+"--tag="+view.getTag());
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:106  Method:onItemSelected--> "+parent.getTag()+"postion="+position+" --id="+id+"--tag="+view.getTag());
         int itemposition = (int)parent.getTag();
         TaskStateItem item = getStateItem(itemposition);
         item.setState(position);
@@ -157,7 +158,7 @@ public class RythmTaskConfigAdapter extends RecyclerView.Adapter<RythmTaskConfig
 
     @Override
     public void onClick(View v) {
-        Log.i(TAG, "LineNum:59  Method:onClick--> v.getId()="+v.getTag());
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:59  Method:onClick--> v.getId()="+v.getTag());
         if ((int)v.getTag() == 0 && isAddTime) {
             showTimepiackdialog();
             return;
@@ -185,7 +186,7 @@ public class RythmTaskConfigAdapter extends RecyclerView.Adapter<RythmTaskConfig
                         item.setTime(i+":"+i1);
                         hour = i;
                         minute = i1;
-                        Log.i(TAG, "LineNum:119  Method:onTimeSet--> hour="+hour);
+                        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:119  Method:onTimeSet--> hour="+hour);
                         notifyDataSetChanged();
                     }
                 }, 0, 0, true);
@@ -243,7 +244,19 @@ public class RythmTaskConfigAdapter extends RecyclerView.Adapter<RythmTaskConfig
 
         dBhelper.inserttaskDetails(taskDetails);
     }
-    public void addlocationTask(int code ) {
+    public void updatetaskdetail(int hour,int minute) {
+
+        TaskItems taskDetails = new TaskItems(hour*100+minute);
+        taskDetails.setName(taskDetails.getName());
+        taskDetails.setAudio(getStateItem(0).getState());
+        taskDetails.setWifi(getStateItem(1).getState());
+        taskDetails.setVolume(getStateItem(2).getState());
+        taskDetails.setNfc(getStateItem(3).getState());
+
+        dBhelper.updatetaskDetails(taskDetails);
+    }
+
+    public void updatelocationTask(int code ) {
         TaskItems taskDetails = new TaskItems(code);
         
         taskDetails.setName(taskDetails.getName());
@@ -252,7 +265,7 @@ public class RythmTaskConfigAdapter extends RecyclerView.Adapter<RythmTaskConfig
         taskDetails.setVolume(getStateItem(2).getState());
         taskDetails.setNfc(getStateItem(3).getState());
 
-        dBhelper.inserttaskDetails(taskDetails);
+        dBhelper.updatetaskDetails(taskDetails);
     }
 
     public TaskStateItem getStateItem(int position) {

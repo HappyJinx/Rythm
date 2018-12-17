@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.fanyunlv.xialei.rythm.RythmApplication;
 import com.fanyunlv.xialei.rythm.beans.TaskItems;
 import com.fanyunlv.xialei.rythm.beans.MyLocation;
 
@@ -74,7 +75,7 @@ public class RythmDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.i(TAG, "onCreate: database");
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onCreate: database");
         dropTables(db);
         String sql = "create table "+Tables.TIMETABLE+"("+
                 TimeColumes._ID+" integer primary key autoincrement,"+
@@ -103,7 +104,7 @@ public class RythmDatabase extends SQLiteOpenHelper {
         String sql4 = "create table "+Tables.TASK+"("+
                 TASK._ID+" integer primary key autoincrement,"+
                 TASK.NAME+" text ,"+
-                TASK.CODE+" integer ,"+
+                TASK.CODE+" integer unique,"+
                 TASK.AUDIO+" integer ,"+
                 TASK.WIFI+" integer ,"+
                 TASK.VOLUME+" integer ,"+
@@ -156,7 +157,7 @@ public class RythmDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.i(TAG, "onUpgrade: database");
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onUpgrade: database");
     }
 
 }

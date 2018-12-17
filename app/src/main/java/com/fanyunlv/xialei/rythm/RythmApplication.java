@@ -19,12 +19,14 @@ import com.baidu.mapapi.SDKInitializer;
 public class RythmApplication extends Application {
     private final String TAG = "Rythm";
 
+    public static final boolean ENABLE_LOG = true;
+
     public static Context mContext;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.i(TAG, "onCreate: ");
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onCreate: ");
         mContext = this;
         //在使用SDK各组件之前初始化context信息，传入ApplicationContext
         SDKInitializer.initialize(this);

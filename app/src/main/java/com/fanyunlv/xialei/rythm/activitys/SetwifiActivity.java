@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 
 import com.fanyunlv.xialei.rythm.R;
+import com.fanyunlv.xialei.rythm.RythmApplication;
 import com.fanyunlv.xialei.rythm.adapters.RythmWifiAdapter;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
 import com.fanyunlv.xialei.rythm.utils.RythmDatabase;
@@ -40,7 +41,7 @@ public class SetwifiActivity extends AppCompatActivity {
         database = RythmDatabase.getInstance(this);
 
         ActionBar actionBar = getSupportActionBar();
-        Log.i(TAG, "onCreate: actionbar ="+actionBar);
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onCreate: actionbar ="+actionBar);
         actionBar.setDisplayHomeAsUpEnabled(true);
         dBhelper = DBhelper.getInstance(SetwifiActivity.this);
 
@@ -61,7 +62,7 @@ public class SetwifiActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.i(TAG, "onOptionsItemSelected: id ="+item.getItemId());
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onOptionsItemSelected: id ="+item.getItemId());
         switch (item.getItemId()) {
             case R.id.add_new:
                 showWifipiackdialog();

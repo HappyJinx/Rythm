@@ -8,6 +8,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDNotifyListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.fanyunlv.xialei.rythm.RythmApplication;
 import com.fanyunlv.xialei.rythm.beans.MyLocation;
 import com.fanyunlv.xialei.rythm.beans.TaskItems;
 import com.fanyunlv.xialei.rythm.interfaces.LocationIistener;
@@ -26,11 +27,14 @@ public class LocationPresenter implements OnDBchangedListener{
     private static double DISTANCE_THRESHOLD = 100.00;
     private final double R_EARTH=6370996.81;  //地球的半径
 
-    public static final int ONCE_MODE = 0;
+    public static final int ONCE_MODE = 1;
     public static final int FAST_MODE = 5;
-    public static final int NORMAL_MODE = 60;
-    public static final int SLOW_MODE = 600;
-    private int currentmode = 5;
+//    public static final int NORMAL_MODE = 60;
+    public static final int NORMAL_MODE = 10;
+    public static final int SLOW_MODE = 15;
+//    public static final int SLOW_MODE = 600;
+
+    private int currentmode = NORMAL_MODE;
 
     private static LocationPresenter sPresener;
     private Context context;
@@ -45,6 +49,7 @@ public class LocationPresenter implements OnDBchangedListener{
     public BDNotifyListener myNotifyListener1 = new MyNotifiListener();
 
     private BDLocation mLastKnowLocation;
+    private TaskItems mLastTask;
 
     private LocationPresenter(Context context) {
         this.context = context;
@@ -128,7 +133,7 @@ public class LocationPresenter implements OnDBchangedListener{
 
         mLocationClient.startIndoorMode();
         mLocationClient.start();//开始定位
-        Log.i(TAG, "LineNum:141  Method:initBaiduLoaction--> ");
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:141  Method:initBaiduLoaction--> ");
     }
 
     /**
@@ -158,7 +163,7 @@ public class LocationPresenter implements OnDBchangedListener{
      *  date : 2018/12/15
      */
     public void setLocationMode(int mode) {
-        Log.i(TAG, "LineNum:160  Method:setLocationMode--> mode ="+mode);
+//        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:160  Method:setLocationMode--> mode ="+mode);
         if (mode == currentmode) {
             return;
         }
@@ -167,6 +172,8 @@ public class LocationPresenter implements OnDBchangedListener{
         if (mLocationClient.isStarted()) {
             mLocationClient.stop();
         }
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:172  Method:setLocationMode--> mode ="+mode);
+
         mLocationClient.setLocOption(getLocatOption(mode));
         mLocationClient.start();
     }
@@ -174,40 +181,57 @@ public class LocationPresenter implements OnDBchangedListener{
     public class MyLocationListener extends BDAbstractLocationListener {
         @Override
         public void onReceiveLocation(BDLocation location) {
-            Log.i(TAG, "LineNum:175  Method:onReceiveLocation--> ");
+            if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:175  Method:onReceiveLocation--> ");
             bdLocation = location;
             for (LocationIistener lis : listeners) {
                 lis.onLocationReceived(location);
             }
 
-            //check if we are close to a place
-            checkDistance(bdLocation);
+//            //check if we are close to a place
+//            checkDistance(bdLocation);
         }
     }
 
     /**
-     *  description : check and handle we are close place
+     *  description : return location mode when close to a place
      *  @author : xialei
-     *  date : 2018/12/15
+     *  date : 2018/12/17
      */
-    public void checkDistance(BDLocation bdLocation) {
+    public int checkDistance(BDLocation bdLocation) {
+        float speed = bdLocation.getSpeed();
         if (taskItems.size() > 0) {
-            //check distance
             for (TaskItems task : taskItems) {
                 double dis = getDistance(bdLocation.getLatitude(), bdLocation.getLongitude(), getLocation(task.getCode()).getLati(), getLocation(task.getCode()).getLongti());
-                if (dis <= DISTANCE_THRESHOLD) {
-                    Log.i(TAG, "LineNum:165  Method:onReceiveLocation-->dis ="+dis);
-                    TaskUtil.getInstance(context).handleTask(task);
+                Log.i(TAG, "LineNum:203  Method:checkDistance-->"+taskItems.size()+"--dis =" + dis);
+                if (dis <= DISTANCE_THRESHOLD) {  // this decide distance
+                    if (mLastTask == null || !mLastTask.equlas(task)) { // this decide equal
+                        mLastTask = task;
+                        if (RythmApplication.ENABLE_LOG) Log.i(TAG, "LineNum:207  Method:checkDistance-->dis =" + dis);
+                        TaskUtil.getInstance(context).handleTask(task);
+                    }
                 }
             }
         }
+
+        if (speed < 2.00) {
+            // staying
+            return SLOW_MODE;
+        }else if (speed > 2.00 && speed < 7.00) {
+            // means  walking
+            return NORMAL_MODE;
+        } else if (speed > 7.00) {
+            // means car
+            return FAST_MODE;
+        }
+        return FAST_MODE;
     }
+
 
     public class MyNotifiListener extends BDNotifyListener {
         @Override
         public void onNotify(BDLocation bdLocation, float v) {
             super.onNotify(bdLocation, v);
-            Log.i(TAG, "LineNum:129  Method:onNotify--> ");
+            if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:129  Method:onNotify--> ");
             for (LocationIistener lis : listeners) {
                 lis.onLocationNeedNotify(bdLocation,v);
             }

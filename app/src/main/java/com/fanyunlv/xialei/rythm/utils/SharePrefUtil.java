@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.fanyunlv.xialei.rythm.RythmApplication;
+
 /**
  * Created by xialei on 2018/11/24.
  */
@@ -31,7 +33,7 @@ public class SharePrefUtil {
 
     public boolean isFirstOpen() {
         boolean isopen = preferences.getBoolean(FIRST_OPEN, true);
-        Log.i(TAG, "isFirstOpen isopen="+isopen);
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "isFirstOpen isopen="+isopen);
         return isopen;
     }
 

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.fanyunlv.xialei.rythm.R;
+import com.fanyunlv.xialei.rythm.RythmApplication;
 import com.fanyunlv.xialei.rythm.adapters.RythmTaskConfigAdapter;
 import com.fanyunlv.xialei.rythm.beans.TaskStateItem;
 
@@ -39,14 +40,14 @@ public class ConfigLocationTaskActivity extends ConfigTaskActivity {
 
             list.add(new TaskStateItem(task_list[i], 0));
         }
-        Log.i(TAG, "LineNum:31  Method:ConfigrecyclerView--> size ="+list.size());
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:31  Method:ConfigrecyclerView--> size ="+list.size());
         rythmAdapter = new RythmTaskConfigAdapter(dBhelper, this, list);
         recyclerView.setAdapter(rythmAdapter);
     }
 
     @Override
     public void onsaveClick() {
-        rythmAdapter.addlocationTask(code);
+        rythmAdapter.updatelocationTask(code);
         finish();
     }
 }

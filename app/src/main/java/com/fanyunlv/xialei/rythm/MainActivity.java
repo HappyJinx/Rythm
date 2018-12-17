@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity{
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.i(TAG, "onReceive: intent=" + intent.getAction());
+            if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onReceive: intent=" + intent.getAction());
 
             if (intent.getAction().equals(Intent.ACTION_TIME_TICK)) {
                 if (fragmentUtil.getCurrentFragment() instanceof AudioFragment) {
@@ -109,12 +109,12 @@ public class MainActivity extends AppCompatActivity{
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.i(TAG, "onRequestPermissionsResult ");
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onRequestPermissionsResult ");
         if (requestCode == 10) {
             for (int i = 0; i < grantResults.length; i++) {
                 if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                     //permissionUtil.requestPermissions(10);
-                    Log.i(TAG, "LineNum:108  Method:onRequestPermissionsResult--> granted");
+                    if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:108  Method:onRequestPermissionsResult--> granted");
                 }
             }
         }

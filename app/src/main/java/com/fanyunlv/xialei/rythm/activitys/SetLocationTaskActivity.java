@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.fanyunlv.xialei.rythm.R;
+import com.fanyunlv.xialei.rythm.RythmApplication;
 import com.fanyunlv.xialei.rythm.adapters.LocationTaskAdapter;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
 
@@ -32,7 +33,7 @@ public class SetLocationTaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settime);
 
         ActionBar actionBar = getSupportActionBar();
-        Log.i(TAG, "onCreate: actionbar ="+actionBar);
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onCreate: actionbar ="+actionBar);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(R.string.setting_by_location);
 
@@ -53,7 +54,7 @@ public class SetLocationTaskActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.i(TAG, "onOptionsItemSelected: id ="+item.getItemId());
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onOptionsItemSelected: id ="+item.getItemId());
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
@@ -65,6 +66,6 @@ public class SetLocationTaskActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.i(TAG, "LineNum:79  Method:onActivityResult--> code="+requestCode);
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:79  Method:onActivityResult--> code="+requestCode);
     }
 }

@@ -72,4 +72,16 @@ public class TaskItems {
     public void setNfc(int nfc) {
         this.nfc = nfc;
     }
+
+    public boolean equlas(TaskItems items) {
+        if(this.getCode() == items.getCode()
+            && this.getAudio() == items.getAudio()
+            && this.getWifi() == items.getWifi()
+            && this.getVolume() == items.getVolume()
+            && this.getNfc() == items.getNfc()
+        ){
+            return true;
+        }
+        return false;
+    }
 }

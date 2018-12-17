@@ -13,8 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
+import com.fanyunlv.xialei.rythm.RythmApplication;
 import com.fanyunlv.xialei.rythm.adapters.FunctionRecyclerAdapter;
 import com.fanyunlv.xialei.rythm.interfaces.LocationIistener;
 import com.fanyunlv.xialei.rythm.MainActivity;
@@ -56,7 +58,7 @@ public class FunctionFragment extends Fragment implements LocationIistener,View.
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.i(TAG, "onCreateView ");
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onCreateView ");
 
         View contentview = inflater.inflate(R.layout.function_fragment, container, false);
         setting_by_time = contentview.findViewById(R.id.setting_by_time);
@@ -85,17 +87,18 @@ public class FunctionFragment extends Fragment implements LocationIistener,View.
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (hidden) {
-            Log.i(TAG, "onHiddenChanged true");
+            if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onHiddenChanged true");
         } else {
-            Log.i(TAG, "onHiddenChanged false");
+            if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onHiddenChanged false");
         }
     }
 
     @Override
     public void onLocationReceived(BDLocation location) {
         madapter.notifyDataSetChanged();
-
-        TaskUtil.getInstance(getContext()).checkTime();
+//        Toast.makeText(getContext(), "receive location ", Toast.LENGTH_SHORT).show();
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:99  Method:onLocationReceived--> ");
+        TaskUtil.getInstance(getContext()).checkTimeandLocation(location);
     }
 
     @Override

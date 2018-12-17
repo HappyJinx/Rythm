@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.fanyunlv.xialei.rythm.R;
+import com.fanyunlv.xialei.rythm.RythmApplication;
 import com.fanyunlv.xialei.rythm.beans.MyLocation;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
 
@@ -28,19 +29,19 @@ public class LocationlistAdapter extends BaseAdapter {
     }
 
     public void setDatas(ArrayList<MyLocation> v) {
-        Log.i(TAG, "setDatas "+v.size());
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "setDatas "+v.size());
         datas = v;
     }
 
     @Override
     public int getCount() {
-        Log.i(TAG, "getCount ");
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "getCount ");
         return datas.size();
     }
 
     @Override
     public MyLocation getItem(int position) {
-        Log.i(TAG, "getItem postion="+position);
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "getItem postion="+position);
         if (datas.size() == 0) {
             return null;
         }
@@ -55,7 +56,7 @@ public class LocationlistAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
-        Log.i(TAG, "getView ");
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "getView ");
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.location_item, parent, false);
@@ -69,7 +70,7 @@ public class LocationlistAdapter extends BaseAdapter {
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Log.i(TAG, "onLongClick ");
+                if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onLongClick ");
                 DBhelper.getInstance(context).deletelocation(getItem(position));
                 datas.remove(position);
                 notifyDataSetChanged();

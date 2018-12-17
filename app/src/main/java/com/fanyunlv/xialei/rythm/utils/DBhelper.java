@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.fanyunlv.xialei.rythm.RythmApplication;
 import com.fanyunlv.xialei.rythm.beans.TaskItems;
 import com.fanyunlv.xialei.rythm.beans.MyLocation;
 import com.fanyunlv.xialei.rythm.beans.TaskStateItem;
@@ -65,7 +66,7 @@ public class DBhelper {
     }
 
     public void inserttaskDetails(TaskItems details) {
-
+        Log.i(TAG, "LineNum:69  Method:inserttaskDetails--> "+details.getCode());
         ContentValues contentValues = new ContentValues();
         contentValues.put(RythmDatabase.TASK.NAME,details.getName());
         contentValues.put(RythmDatabase.TASK.CODE,details.getCode());
@@ -74,6 +75,17 @@ public class DBhelper {
         contentValues.put(RythmDatabase.TASK.VOLUME,details.getVolume());
         contentValues.put(RythmDatabase.TASK.NFC,details.getNfc());
         db.insert(RythmDatabase.Tables.TASK,null,contentValues);
+
+        notifyListenr();
+    }
+    public void updatetaskDetails(TaskItems details) {
+        Log.i(TAG, "LineNum:82  Method:updatetaskDetails--> "+details.getCode());
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(RythmDatabase.TASK.AUDIO,details.getAudio());
+        contentValues.put(RythmDatabase.TASK.WIFI,details.getWifi());
+        contentValues.put(RythmDatabase.TASK.VOLUME,details.getVolume());
+        contentValues.put(RythmDatabase.TASK.NFC,details.getNfc());
+        db.update(RythmDatabase.Tables.TASK,contentValues,RythmDatabase.TASK.CODE+"= ?",new String[]{Integer.toString(details.getCode())});
 
         notifyListenr();
     }
@@ -100,7 +112,7 @@ public class DBhelper {
 
 
     public void insertLocation(ContentValues values) {
-        Log.i(TAG, "LineNum:84  Method:insertLocation--> ");
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:117  Method:insertLocation--> ");
         db.insert(RythmDatabase.Tables.LOCATIONTABLE, null, values);
         notifyListenr();
     }
@@ -249,6 +261,9 @@ public class DBhelper {
 
     public MyLocation getLocation(int code) {
         Cursor cursor = querylocation(code);
+        if (cursor.getCount() == 0) {
+            return null;
+        }
         cursor.moveToFirst();
         MyLocation myLocation = new MyLocation(
                 cursor.getString(1),
@@ -278,6 +293,7 @@ public class DBhelper {
         db = database.getWritableDatabase();
         Cursor cursor = querytask();
         while (cursor.moveToNext()) {
+            Log.i(TAG, "LineNum:298  Method:getLocatiosTaskList--> cursor.getInt(2)="+cursor.getInt(2));
             if (cursor.getInt(2) > 10000) {
                 list.add(new TaskItems(
                         cursor.getString(1),

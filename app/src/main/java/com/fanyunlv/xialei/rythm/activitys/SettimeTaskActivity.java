@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.fanyunlv.xialei.rythm.R;
+import com.fanyunlv.xialei.rythm.RythmApplication;
 import com.fanyunlv.xialei.rythm.adapters.RythmTimeAdapter;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
 
@@ -37,7 +38,7 @@ public class SettimeTaskActivity extends AppCompatActivity {
             startActivity(intent);
         }
         ActionBar actionBar = getSupportActionBar();
-        Log.i(TAG, "onCreate: actionbar ="+actionBar);
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onCreate: actionbar ="+actionBar);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(R.string.setting_by_time);
 
@@ -59,7 +60,7 @@ public class SettimeTaskActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.i(TAG, "onOptionsItemSelected: id ="+item.getItemId());
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onOptionsItemSelected: id ="+item.getItemId());
         switch (item.getItemId()) {
             case R.id.add_new:
                 Intent intent = new Intent(SettimeTaskActivity.this, ConfigTimeTaskActivity.class);

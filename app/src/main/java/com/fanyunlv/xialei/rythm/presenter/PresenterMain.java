@@ -37,7 +37,7 @@ public class PresenterMain {
 //            }
 //
 //            if(mService != null){
-//                Log.i(TAG, "onClick true");
+//                if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onClick true");
 //            }
 
 //            Class<?> clz = Class.forName("android.os.ServiceManager");
@@ -50,7 +50,7 @@ public class PresenterMain {
 //            Object InfcManager = asInterface.invoke(null, nfcService);
 //            Method enableme = InfcManager.getClass().getMethod("enable");
 //            enableme.invoke(InfcManager);
-//            Log.i(TAG, "onClick" + on);
+//            if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onClick" + on);
 
 //            Class<?> clz = Class.forName("com.android.nfc.NfcService$EnableDisableTask");
 //            Constructor constructor = clz.getConstructors();
@@ -58,10 +58,10 @@ public class PresenterMain {
 //            service.getClass().getMethod()
 //            Method method = clz.getDeclaredMethod("enableInternal");
 //            if (null != method) {
-//                Log.i(TAG, "LineNum:58  Method:endableNFC--> me ="+method);
+//                if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:58  Method:endableNFC--> me ="+method);
 //            }
 //        } catch (Exception e) {
-//            Log.i(TAG, "onClick"+on+" e= "+e.toString());
+//            if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onClick"+on+" e= "+e.toString());
 //        }
 
         Toast.makeText(app,"现在去开启NFC",Toast.LENGTH_SHORT).show();

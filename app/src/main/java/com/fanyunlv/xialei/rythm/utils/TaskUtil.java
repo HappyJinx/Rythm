@@ -4,6 +4,8 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.util.Log;
 
+import com.baidu.location.BDLocation;
+import com.fanyunlv.xialei.rythm.RythmApplication;
 import com.fanyunlv.xialei.rythm.beans.TaskItems;
 import com.fanyunlv.xialei.rythm.presenter.LocationPresenter;
 import com.fanyunlv.xialei.rythm.presenter.PresenterMain;
@@ -13,7 +15,7 @@ import com.fanyunlv.xialei.rythm.presenter.WifiCheckPresenter;
 /**
  * Created by xialei on 2018/12/13.
  */
-public class TaskUtil {
+public class TaskUtil implements DBhelper.OnDBchangedListener {
     private static final String TAG = TaskUtil.class.getSimpleName();
 
     Context context;
@@ -22,6 +24,7 @@ public class TaskUtil {
 
     private TaskUtil(Context context) {
         this.context = context;
+        DBhelper.getInstance(context).addListener(this);
     }
 
     public static TaskUtil getInstance(Context context) {
@@ -31,13 +34,23 @@ public class TaskUtil {
         return taskUtil;
     }
 
-    public void checkTime() {
-        int result = RingmodePresenter.getInstance(context).checkTimeTask();
-        LocationPresenter.getInstance(context).setLocationMode(result);
+    @Override
+    public void onDBchanged() {
+        Log.i(TAG, "LineNum:38  Method:onDBchanged--> ");
+        LocationPresenter.getInstance(context).setLocationMode(LocationPresenter.FAST_MODE);
     }
 
+    public void checkTimeandLocation(BDLocation location) {
+        int resultTime = RingmodePresenter.getInstance(context).checkTimeTask();
+        int resultLocation = LocationPresenter.getInstance(context).checkDistance(location);
+
+        Log.i(TAG, "LineNum:45  Method:checkTimeandLocation--> result 1 =" + resultTime + " -- result 2 =" + resultLocation);
+        LocationPresenter.getInstance(context).setLocationMode(Math.min(resultTime, resultLocation));
+    }
+
+
     public void handleTask(TaskItems task) {
-        Log.i(TAG, "LineNum:30  Method:handleTask--> ");
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:30  Method:handleTask--> ");
         handAudio(task);
         handWifi(task);
         handVolume(task);

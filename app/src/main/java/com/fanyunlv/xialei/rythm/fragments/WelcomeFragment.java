@@ -15,6 +15,7 @@ import android.widget.Button;
 
 import com.fanyunlv.xialei.rythm.MainActivity;
 import com.fanyunlv.xialei.rythm.R;
+import com.fanyunlv.xialei.rythm.RythmApplication;
 import com.fanyunlv.xialei.rythm.adapters.WelcomPagerAdapter;
 import com.fanyunlv.xialei.rythm.utils.SharePrefUtil;
 
@@ -63,10 +64,10 @@ public class WelcomeFragment extends Fragment implements OnClickListener, ViewPa
     @Override
     public void onClick(View v) {
         if (v == previous) {
-            Log.i(TAG, "onClick ");
+            if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onClick ");
             viewPager.setCurrentItem(mCurrentpostion-1,true);
         } else {
-            Log.i(TAG, "LineNum:66  Method:onClick--> ");
+            if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:66  Method:onClick--> ");
             if (mCurrentpostion + 1 == adapter.getCount()) {
                 //this means we can start app now
                 SharePrefUtil.getInstance(mContext).setFirstOpen(false);
@@ -79,7 +80,7 @@ public class WelcomeFragment extends Fragment implements OnClickListener, ViewPa
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        Log.i(TAG, "onPageScrolled position="+position);
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onPageScrolled position="+position);
         if (position>0&&previous.getVisibility() == View.GONE) {  //change previous button visibility
             previous.setVisibility(View.VISIBLE);
         }else if (position==0){
@@ -89,7 +90,7 @@ public class WelcomeFragment extends Fragment implements OnClickListener, ViewPa
 
     @Override
     public void onPageSelected(int position) {
-        Log.i(TAG, "onPageSelected position="+position);
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onPageSelected position="+position);
         mCurrentpostion = position;
         if (position + 1 == adapter.getCount()) {
             nextStep.setText(R.string.begin);
@@ -100,6 +101,6 @@ public class WelcomeFragment extends Fragment implements OnClickListener, ViewPa
 
     @Override
     public void onPageScrollStateChanged(int state) {
-        Log.i(TAG, "onPageScrollStateChanged ");
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onPageScrollStateChanged ");
     }
 }

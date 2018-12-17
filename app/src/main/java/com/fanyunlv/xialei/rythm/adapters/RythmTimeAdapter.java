@@ -13,6 +13,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.fanyunlv.xialei.rythm.R;
+import com.fanyunlv.xialei.rythm.RythmApplication;
+import com.fanyunlv.xialei.rythm.beans.TaskItems;
 import com.fanyunlv.xialei.rythm.beans.TimeItem;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
 
@@ -53,7 +55,7 @@ public class RythmTimeAdapter extends RecyclerView.Adapter<RythmTimeAdapter.Ryth
     @Override
     public void onBindViewHolder(RythmViewHolder holder, int position) {
         holder.item_setted.setText(timeitemlist.get(position).toString());
-        Log.i(TAG, "LineNum:50  Method:onBindViewHolder--> ");
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:50  Method:onBindViewHolder--> ");
         holder.item_setted_info.setText(getTaskinfo(timeitemlist.get(position).getHour()*100+timeitemlist.get(position).getMinute()));
         holder.item_delete.setOnClickListener(this);
         holder.item_delete.setOnLongClickListener(this);
@@ -71,15 +73,15 @@ public class RythmTimeAdapter extends RecyclerView.Adapter<RythmTimeAdapter.Ryth
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.delete_item:
-                Log.i(TAG, "onClick: v.getTag()="+(v.getTag()));
+                if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onClick: v.getTag()="+(v.getTag()));
                 TimeItem timeItem = timeitemlist.get((int) v.getTag());
 //                DBhelper.getInstance(mcontext).deleteitem(timeItem.getHour(),timeItem.getMinute());
-                DBhelper.getInstance(mcontext).deletetask(timeItem.getHour()*100+timeItem.getMinute());
+                DBhelper.getInstance(mcontext).updatetaskDetails(new TaskItems("",timeItem.getHour()*100+timeItem.getMinute(),0,0,0,0));
 //                timeitemlist.remove((int)v.getTag());
                 notifyDataSetChanged();
                 break;
             case R.id.sett_item:
-                Log.i(TAG, "onClick: v.getTag()="+(v.getTag()));
+                if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onClick: v.getTag()="+(v.getTag()));
                 TimeItem timeItems = timeitemlist.get((int) v.getTag());
                 Intent intent = new Intent("xialei.action.start.configtime");
                 intent.putExtra("hour",timeItems.getHour());

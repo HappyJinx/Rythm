@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.fanyunlv.xialei.rythm.R;
+import com.fanyunlv.xialei.rythm.RythmApplication;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
 
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class RythmWifiAdapter extends RecyclerView.Adapter<RythmWifiAdapter.Ryth
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.delete_item:
-                Log.i(TAG, "onClick: v.getTag()="+(v.getTag()));
+                if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onClick: v.getTag()="+(v.getTag()));
                 String siten = wifiitemlist.get((int) v.getTag());
                 DBhelper.getInstance(mcontext).deletewifi(siten);
                 wifiitemlist.remove((int)v.getTag());

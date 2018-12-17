@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.fanyunlv.xialei.rythm.R;
+import com.fanyunlv.xialei.rythm.RythmApplication;
 import com.fanyunlv.xialei.rythm.beans.MyLocation;
 import com.fanyunlv.xialei.rythm.beans.TaskItems;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
@@ -57,7 +58,7 @@ public class LocationTaskAdapter extends RecyclerView.Adapter<LocationTaskAdapte
 
     public String getLocationTaskinfo(MyLocation myLocation) {
         int code = getcode(myLocation);
-        Log.i(TAG, "LineNum:57  Method:getLocationTaskinfo--> location ="+myLocation.getLati()+myLocation.getLongti());
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:57  Method:getLocationTaskinfo--> location ="+myLocation.getLati()+myLocation.getLongti());
         Cursor cursor = dBhelper.querytask(code);
         if (cursor.getCount() == 0) {
             return "无任务";

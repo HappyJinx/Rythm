@@ -5,6 +5,7 @@ import android.media.AudioManager;
 import android.util.Log;
 
 import com.fanyunlv.xialei.rythm.R;
+import com.fanyunlv.xialei.rythm.RythmApplication;
 import com.fanyunlv.xialei.rythm.beans.TaskItems;
 import com.fanyunlv.xialei.rythm.beans.TimeItem;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
@@ -76,23 +77,20 @@ public class RingmodePresenter implements OnDBchangedListener{
         if (timeTasks.size() > 0) {
             Calendar calendar = Calendar.getInstance();
             int cTimecode = calendar.get(Calendar.HOUR_OF_DAY) * 100 + calendar.get(Calendar.MINUTE);
-            int det = 0;
-
+            int det = 1440;
             for (TaskItems taskItems : timeTasks) {
-//                det = Math.abs(cTimecode - taskItems.getCode());
-                int a = getDetTime(cTimecode , taskItems.getCode());
-                if (a < det) {
-                    det = a;
+                int adet = getDetTime(cTimecode , taskItems.getCode());
+                if (adet < det) {
+                    det = adet;
                 }
                 if (det == 0) {
-                    Log.i(TAG, "LineNum:76  Method:checkTimeTask--> ");
                     TaskUtil.getInstance(context).handleTask(taskItems);
                 }
             }
-            Log.i(TAG, "LineNum:88  Method:checkTimeTask--> det =" + det);
-            if (det>0 && det < 30){
+            if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:88  Method:checkTimeTask--> det =" + det);
+            if (det < 30){
                 result =  LocationPresenter.FAST_MODE;
-            } else if (det > 30 && det< 60) {
+            } else if (det >= 30 && det< 60) {
                 result = LocationPresenter.NORMAL_MODE;
             }
         }
@@ -100,31 +98,30 @@ public class RingmodePresenter implements OnDBchangedListener{
     }
 
     public int getDetTime(int a, int b) {
-
         int ah = a/100;
         int am = a % 100;
         int bh = b / 100;
         int bm = b % 100;
         int result = 0;
-
+//        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:108  Method:getDetTime--> ah="+ah+"--am="+am+"--bh="+bh+"--bm="+bm);
         if (ah < bh && am < bm) {
             result = (bh - ah) * 60 + (bm - am);
         } else if (ah < bh && am > bm) {
-            result = (bh - ah) * 60 - (60 - (am - bm));
+            result = (bh - ah) * 60 - (am - bm);
         } else if (ah < bh && am == bm) {
             result = (bh - ah) * 60;
-        } else if (ah == bm && am != bm) {
+        } else if (ah == bh && am != bm) {
             result = Math.abs(bm - am);
-        } else if (ah == bm && am == bm) {
+        } else if (ah == bh && am == bm) {
             result = 0;
         } else if (ah > bh && am < bm) {
-            result = (ah - bh) * 60 + am - bm;
+            result = (ah - bh) * 60 - bm + am;
         } else if (ah > bh && am == bm) {
             result = (ah - bh) * 60;
         } else if (ah > bh && am > bm) {
-            result = (ah - bh) * 60 + (am + 60 - bm);
+            result = (ah - bh) * 60 + am - bm;
         }
-
+//        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:103  Method:getDetTime-->  a ="+a+"--b="+b +"--det="+result);
         return result;
     }
 

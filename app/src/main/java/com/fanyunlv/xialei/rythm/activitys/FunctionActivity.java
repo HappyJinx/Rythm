@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.fanyunlv.xialei.rythm.R;
+import com.fanyunlv.xialei.rythm.RythmApplication;
 import com.fanyunlv.xialei.rythm.fragments.AudioFragment;
 import com.fanyunlv.xialei.rythm.fragments.WifiFragment;
 import com.fanyunlv.xialei.rythm.fragments.LocationFragment;
@@ -59,7 +60,7 @@ public class FunctionActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        Log.i(TAG, "LineNum:36  Method:onNewIntent--> ");
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:36  Method:onNewIntent--> ");
 
     }
 

@@ -42,7 +42,9 @@ import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
+import com.fanyunlv.xialei.rythm.RythmApplication;
 import com.fanyunlv.xialei.rythm.adapters.LocationlistAdapter;
+import com.fanyunlv.xialei.rythm.beans.TaskItems;
 import com.fanyunlv.xialei.rythm.interfaces.LocationIistener;
 import com.fanyunlv.xialei.rythm.beans.MyLocation;
 import com.fanyunlv.xialei.rythm.R;
@@ -102,7 +104,7 @@ public class LocationFragment extends BaseFragment implements
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "onCreate ");
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onCreate ");
         mcontext = getContext();
         initdialog();
         presenter = LocationPresenter.getInstance(getContext());
@@ -129,7 +131,7 @@ public class LocationFragment extends BaseFragment implements
 
     @Override
     public void onDestroy() {
-        Log.i(TAG, "LineNum:100  Method:onDestroy--> ");
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:100  Method:onDestroy--> ");
         sensorManager.unregisterListener(this);
         super.onDestroy();
     }
@@ -159,7 +161,7 @@ public class LocationFragment extends BaseFragment implements
 //
 //        //此处的BDLocation为定位结果信息类，通过它的各种get方法可获取定位相关的全部结果
 //        if (location.getFloor() != null) {
-//            Log.i(TAG, "LineNum:115  Method:onReceiveLocation--> ");
+//            if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:115  Method:onReceiveLocation--> ");
 //            // 当前支持高精度室内定位
 //            String buildingID = location.getBuildingID();// 百度内部建筑物ID
 //            String buildingName = location.getBuildingName();// 百度内部建筑物缩写
@@ -199,7 +201,7 @@ public class LocationFragment extends BaseFragment implements
 
     @Override
     public void onLocationNeedNotify(BDLocation bdLocation, float v) {
-        Log.i(TAG, "LineNum:112  Method:onLocationNeedNotify--> bdLocation="+bdLocation.getAddrStr());
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:112  Method:onLocationNeedNotify--> bdLocation="+bdLocation.getAddrStr());
         Toast.makeText(getContext(),"到达指定位置附近了~", Toast.LENGTH_SHORT).show();
     }
 
@@ -208,11 +210,11 @@ public class LocationFragment extends BaseFragment implements
     public void onSensorChanged(SensorEvent event) {
         //float[] values = event.values;
         //for (int i = 0; i < values.length; i++) {
-        //   Log.i(TAG, "LineNum:174  Method:onSensorChanged--> "+values[0]);
+        //   if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:174  Method:onSensorChanged--> "+values[0]);
         //}
         nums += 1;
         if (nums % 25 == 0) {
-//            Log.i(TAG, "LineNum:183  Method:onSensorChanged--> nums="+nums);
+//            if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:183  Method:onSensorChanged--> nums="+nums);
             nums = 0;
             currentOrientation = event.values[0];
             MyLocationData locData = new MyLocationData.Builder()
@@ -230,7 +232,7 @@ public class LocationFragment extends BaseFragment implements
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.i(TAG, "onCreateView ");
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onCreateView ");
 
         View view = inflater.inflate(R.layout.location_fragment, container, false);
         bdmap_view = view.findViewById(R.id.baidu_mapview);
@@ -301,7 +303,7 @@ public class LocationFragment extends BaseFragment implements
 
     @Override
     public boolean onMapPoiClick(MapPoi mapPoi) {
-        Log.i(TAG, "LineNum:266  Method:onMapPoiClick--> mapPoi="+mapPoi.getName());
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:266  Method:onMapPoiClick--> mapPoi="+mapPoi.getName());
         mtouchPoint = mapPoi.getPosition();
         policyName = mapPoi.getName();
         mTouchGeoResultName = policyName;
@@ -313,7 +315,7 @@ public class LocationFragment extends BaseFragment implements
 
     @Override
     public void onMapClick(LatLng latLng) {
-        Log.i(TAG, "LineNum:271  Method:onMapClick--> l ="+latLng.toString());
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:271  Method:onMapClick--> l ="+latLng.toString());
         mtouchPoint = latLng;
         MarkerOptions markerOptions = new MarkerOptions().icon(mNewMarker).position(latLng);
         baiduMap.clear();
@@ -325,7 +327,7 @@ public class LocationFragment extends BaseFragment implements
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Log.i(TAG, "LineNum:292  Method:onMarkerClick--> ");
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:292  Method:onMarkerClick--> ");
 //        Bundle bundle = marker.getExtraInfo();
         LatLng latLng = marker.getExtraInfo().getParcelable("latlng");
         geoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(latLng));
@@ -342,7 +344,7 @@ public class LocationFragment extends BaseFragment implements
      */
     @Override
     public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
-        Log.i(TAG, "LineNum:324  Method:onGetGeoCodeResult--> r ="+geoCodeResult.toString());
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:324  Method:onGetGeoCodeResult--> r ="+geoCodeResult.toString());
     }
 
 
@@ -375,7 +377,7 @@ public class LocationFragment extends BaseFragment implements
 
     @Override
     public boolean onMyLocationClick() {
-        Log.i(TAG, "LineNum:360  Method:onMyLocationClick--> ");
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:360  Method:onMyLocationClick--> ");
         mtouchPoint = null;
         baiduMap.clear();
         return true;
@@ -389,7 +391,7 @@ public class LocationFragment extends BaseFragment implements
     public class Locationchooselistener implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialog, int which) {
-            Log.i(TAG, "onClick which ="+which);
+            if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onClick which ="+which);
 //            MyLocation myLocation = new MyLocation(locationnames[which], bdLocation.getLatitude(), bdLocation.getLongitude(), bdLocation.getRadius(), bdLocation.getLocationDescribe());
             if (mtouchPoint == null) {
                 bdLocation = presenter.getLastKnowLocation();
@@ -401,6 +403,10 @@ public class LocationFragment extends BaseFragment implements
                 values.put(RythmDatabase.LOCATIONTABLE.RADIOUS, bdLocation.getRadius());
                 values.put(RythmDatabase.LOCATIONTABLE.DESCRIB, bdLocation.getLocationDescribe());
                 DBhelper.getInstance(mcontext).insertLocation(values);
+
+                TaskItems task = new TaskItems(locationnames[which], getcode(bdLocation), 0, 0, 0, 0);
+                DBhelper.getInstance(mcontext).inserttaskDetails(task);
+
             }else {
                 ContentValues values = new ContentValues();
                 values.put(RythmDatabase.LOCATIONTABLE.NAME, locationnames[which]);
@@ -410,6 +416,9 @@ public class LocationFragment extends BaseFragment implements
                 values.put(RythmDatabase.LOCATIONTABLE.RADIOUS, 30.00);
                 values.put(RythmDatabase.LOCATIONTABLE.DESCRIB, mTouchGeoResultName);
                 DBhelper.getInstance(mcontext).insertLocation(values);
+
+                TaskItems task = new TaskItems(locationnames[which], getcode(bdLocation), 0, 0, 0, 0);
+                DBhelper.getInstance(mcontext).inserttaskDetails(task);
             }
 
             locations = DBhelper.getInstance(getContext()).getLocationList();
