@@ -29,10 +29,14 @@ public class LocationPresenter implements OnDBchangedListener{
 
     public static final int ONCE_MODE = 1;
     public static final int FAST_MODE = 5;
-//    public static final int NORMAL_MODE = 60;
-    public static final int NORMAL_MODE = 10;
-    public static final int SLOW_MODE = 15;
-//    public static final int SLOW_MODE = 600;
+    public static final int NORMAL_MODE = 15;
+    public static final int SLOW_MODE = 3*60;
+
+    public static final int FAST_TIME_THRESHOLD = 3;  //minute
+    public static final int NORMAL_TIME_THRESHOLD = 10;
+
+    public static final double FAST_LOCATE_SPEED_THRESHOLD = 3.00;
+    public static final double NORMAL_LOCATE_SPEED_THRESHOLD = 7.00;
 
     private int currentmode = NORMAL_MODE;
 
@@ -201,9 +205,7 @@ public class LocationPresenter implements OnDBchangedListener{
         float speed = bdLocation.getSpeed();
         if (taskItems.size() > 0) {
             for (TaskItems task : taskItems) {
-                Log.i(TAG, "LineNum:204  Method:checkDistance--> ");
                 double dis = getDistance(bdLocation.getLatitude(), bdLocation.getLongitude(), getLocation(task.getCode()).getLati(), getLocation(task.getCode()).getLongti());
-                Log.i(TAG, "LineNum:203  Method:checkDistance-->"+taskItems.size()+"--dis =" + dis);
                 if (dis <= DISTANCE_THRESHOLD) {  // this decide distance
                     if (mLastTask == null || !mLastTask.equlas(task)) { // this decide equal
                         mLastTask = task;
@@ -214,16 +216,14 @@ public class LocationPresenter implements OnDBchangedListener{
             }
         }
 
-        if (speed < 2.00) {
+        if (speed < FAST_LOCATE_SPEED_THRESHOLD) {
             // staying
             return SLOW_MODE;
-        }else if (speed > 2.00 && speed < 7.00) {
+        }else if (speed > FAST_LOCATE_SPEED_THRESHOLD && speed < NORMAL_LOCATE_SPEED_THRESHOLD) {
             // means  walking
             return NORMAL_MODE;
-        } else if (speed > 7.00) {
-            // means car
-            return FAST_MODE;
         }
+        // means car
         return FAST_MODE;
     }
 

@@ -88,10 +88,12 @@ public class RingmodePresenter implements OnDBchangedListener{
                 }
             }
             if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:88  Method:checkTimeTask--> det =" + det);
-            if (det < 30){
+            if (det <= LocationPresenter.FAST_TIME_THRESHOLD) {
                 result =  LocationPresenter.FAST_MODE;
-            } else if (det >= 30 && det< 60) {
-                result = LocationPresenter.NORMAL_MODE;
+            } else if (det>= LocationPresenter.FAST_TIME_THRESHOLD && det < LocationPresenter.NORMAL_TIME_THRESHOLD){
+                result =  LocationPresenter.NORMAL_MODE;
+            } else if (det >= LocationPresenter.NORMAL_TIME_THRESHOLD) {
+                result = LocationPresenter.SLOW_MODE;
             }
         }
         return result;

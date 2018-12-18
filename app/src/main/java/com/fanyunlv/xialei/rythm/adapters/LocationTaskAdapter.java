@@ -102,7 +102,6 @@ public class LocationTaskAdapter extends RecyclerView.Adapter<LocationTaskAdapte
     public void onClick(View v) {
         int postion = (int)v.getTag();
         int id = v.getId();
-        Log.i("location", "LineNum:52  Method:onClick--> id ="+id+"--postion ="+postion);
         if (id == R.id.delete_item) {
 //            dBhelper.deletelocation(locationArrayList.get(postion));
             dBhelper.deletetask(getcode(locationArrayList.get(postion)));
