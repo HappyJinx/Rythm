@@ -333,7 +333,7 @@ public class DBhelper {
         TaskItems taskItems = null;
         db = database.getWritableDatabase();
         Cursor cursor = querytask(code);
-        if (cursor != null) {
+        if (cursor != null && cursor.getCount()>0) {
             cursor.moveToFirst();
             taskItems = new TaskItems(
                 cursor.getString(1),
