@@ -104,7 +104,9 @@ public class LocationTaskAdapter extends RecyclerView.Adapter<LocationTaskAdapte
         int id = v.getId();
         if (id == R.id.delete_item) {
 //            dBhelper.deletelocation(locationArrayList.get(postion));
-            dBhelper.deletetask(getcode(locationArrayList.get(postion)));
+//            dBhelper.deletetask(getcode(locationArrayList.get(postion)));
+            MyLocation myLocation = locationArrayList.get(postion);
+            dBhelper.updatetaskDetails(new TaskItems(myLocation.getName(),getcode(myLocation),0,0,0,0));
 //            locationArrayList.remove(postion);
             notifyDataSetChanged();
         } else if (id == R.id.sett_item) {
