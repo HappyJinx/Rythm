@@ -84,4 +84,9 @@ public class TaskItems {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return name+"--"+code+"--"+audio+"--"+wifi+"--"+volume+"--"+nfc;
+    }
 }

@@ -7,11 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.fanyunlv.xialei.rythm.R;
+import com.fanyunlv.xialei.rythm.beans.TaskItems;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
 
 /**
@@ -63,5 +65,38 @@ public abstract class ConfigTaskActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public int getstateInt(TaskItems items,int position) {
+        int result = 0;
+        if (items == null) {
+            return result;
+        }
+//        switch (position) {
+//            case 1:
+//                result = items.getAudio();               //这样写 又会case 穿透
+//            case 2:
+//                result = items.getWifi();
+//            case 3:
+//                result = items.getVolume();
+//            case 4:
+//                result = items.getNfc();
+//        }
+
+        switch (position) {
+            case 1:
+                result = items.getAudio();
+                break;
+            case 2:
+                result = items.getWifi();
+                break;
+            case 3:
+                result = items.getVolume();
+                break;
+            case 4:
+                result = items.getNfc();
+                break;
+        }
+        return result;
     }
 }

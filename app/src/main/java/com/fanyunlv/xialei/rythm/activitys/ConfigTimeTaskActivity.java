@@ -8,6 +8,7 @@ import android.util.Log;
 import com.fanyunlv.xialei.rythm.R;
 import com.fanyunlv.xialei.rythm.RythmApplication;
 import com.fanyunlv.xialei.rythm.adapters.RythmTaskConfigAdapter;
+import com.fanyunlv.xialei.rythm.beans.TaskItems;
 import com.fanyunlv.xialei.rythm.beans.TaskStateItem;
 
 import java.util.ArrayList;
@@ -42,12 +43,13 @@ public class ConfigTimeTaskActivity extends ConfigTaskActivity {
     @Override
     public void ConfigrecyclerView() {
         list = new ArrayList<>();
-        int i = hasAction ? 1 : 0;
 
-        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:43  Method:ConfigrecyclerView--> i ="+i);
-
-        for (; i < task_list.length; i++) {
-            list.add(new TaskStateItem(task_list[i], 0));
+        TaskItems item = dBhelper.getTask(hour * 100 + minute);
+        if (!hasAction) {
+            list.add(new TaskStateItem(task_list[0], 0));
+        }
+        for (int i = 1; i < task_list.length; i++) {
+            list.add(new TaskStateItem(task_list[i], getstateInt(item,i)));
         }
 
         rythmAdapter = new RythmTaskConfigAdapter(dBhelper, this, list);

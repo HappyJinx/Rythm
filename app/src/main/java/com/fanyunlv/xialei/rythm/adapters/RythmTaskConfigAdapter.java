@@ -110,6 +110,7 @@ public class RythmTaskConfigAdapter extends RecyclerView.Adapter<RythmTaskConfig
         holder.state_spinner.setOnItemSelectedListener(this);
         holder.state_spinner.setTag(position);
 
+        holder.state_spinner.setSelection(taskStateItem.getState());
 
         holder.itemView.setOnClickListener(this);
         holder.itemView.setTag(position);
