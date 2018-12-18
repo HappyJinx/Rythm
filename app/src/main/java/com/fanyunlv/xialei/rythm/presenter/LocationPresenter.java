@@ -201,6 +201,7 @@ public class LocationPresenter implements OnDBchangedListener{
         float speed = bdLocation.getSpeed();
         if (taskItems.size() > 0) {
             for (TaskItems task : taskItems) {
+                Log.i(TAG, "LineNum:204  Method:checkDistance--> ");
                 double dis = getDistance(bdLocation.getLatitude(), bdLocation.getLongitude(), getLocation(task.getCode()).getLati(), getLocation(task.getCode()).getLongti());
                 Log.i(TAG, "LineNum:203  Method:checkDistance-->"+taskItems.size()+"--dis =" + dis);
                 if (dis <= DISTANCE_THRESHOLD) {  // this decide distance

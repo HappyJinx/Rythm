@@ -257,6 +257,7 @@ public class RythmTaskConfigAdapter extends RecyclerView.Adapter<RythmTaskConfig
     }
 
     public void updatelocationTask(int code ) {
+        Log.i(TAG, "LineNum:260  Method:updatelocationTask--> code="+code);
         TaskItems taskDetails = new TaskItems(code);
         
         taskDetails.setName(taskDetails.getName());

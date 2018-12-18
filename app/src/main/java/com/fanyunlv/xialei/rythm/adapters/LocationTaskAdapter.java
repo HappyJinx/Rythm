@@ -95,7 +95,7 @@ public class LocationTaskAdapter extends RecyclerView.Adapter<LocationTaskAdapte
 
 
     public int getcode(MyLocation location) {
-        return ((int)((location.getLati() + location.getLongti()) * 1000000)) % 1000000;
+        return (int)((location.getLati() + location.getLongti()) * 1000000);
     }
 
     @Override
