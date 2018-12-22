@@ -41,16 +41,8 @@ public class MainActivity extends AppCompatActivity{
         public void onReceive(Context context, Intent intent) {
             if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onReceive: intent=" + intent.getAction());
 
-            if (intent.getAction().equals(Intent.ACTION_TIME_TICK)) {
-                if (fragmentUtil.getCurrentFragment() instanceof AudioFragment) {
-//                    RingmodePresenter.getInstance(context).checkTimeTask();
-                }
-            } else if (intent.getAction().equals(WifiManager.RSSI_CHANGED_ACTION)
-                    ||intent.getAction().equals(WifiManager.WIFI_STATE_CHANGED_ACTION)
-                    ) {
-                if (fragmentUtil.getCurrentFragment() instanceof WifiFragment) {
-                    WifiCheckPresenter.getInstance(context).forbidWifi();
-                }
+            if (intent.getAction().equals(WifiManager.RSSI_CHANGED_ACTION)) {
+                WifiCheckPresenter.getInstance(context).forbidWifi();
             }
         }
     };
@@ -122,9 +114,9 @@ public class MainActivity extends AppCompatActivity{
 
     private void initReceiver() {
         IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_TIME_TICK);
+//        filter.addAction(Intent.ACTION_TIME_TICK);
+//        filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
         filter.addAction(WifiManager.RSSI_CHANGED_ACTION);
-        filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
         registerReceiver(receiver,filter);
     }
 

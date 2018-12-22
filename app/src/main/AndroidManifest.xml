@@ -56,17 +56,6 @@
       </intent-filter>
     </activity>
 
-    <receiver
-      android:name=".MainReceiver"
-      android:enabled="true"
-      android:exported="true">
-      <intent-filter>
-        <action android:name="android.intent.action.BOOT_COMPLETED" />
-        <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
-        <action android:name="android.net.wifi.RSSI_CHANGED" />
-      </intent-filter>
-    </receiver>
-
     <activity android:name=".activitys.SettimeTaskActivity">
       <intent-filter>
         <action android:name="xialei.action.start.settime" />
