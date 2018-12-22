@@ -72,12 +72,17 @@ public class LocationlistAdapter extends BaseAdapter {
             public boolean onLongClick(View v) {
                 if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onLongClick ");
                 DBhelper.getInstance(context).deletelocation(getItem(position));
+                DBhelper.getInstance(context).deletetask(getcode(getItem(position)));
                 datas.remove(position);
                 notifyDataSetChanged();
                 return true;
             }
         });
         return convertView;
+    }
+
+    public int getcode(MyLocation location) {
+        return (int)((location.getLati() + location.getLongti()) * 1000000);
     }
 
     class ViewHolder{

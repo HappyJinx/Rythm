@@ -15,7 +15,7 @@ import com.fanyunlv.xialei.rythm.presenter.WifiCheckPresenter;
 /**
  * Created by xialei on 2018/12/13.
  */
-public class TaskUtil implements DBhelper.OnDBchangedListener {
+public class TaskUtil implements DBhelper.OnTaskDBchangeListener {
     private static final String TAG = TaskUtil.class.getSimpleName();
 
     Context context;
@@ -24,7 +24,7 @@ public class TaskUtil implements DBhelper.OnDBchangedListener {
 
     private TaskUtil(Context context) {
         this.context = context;
-        DBhelper.getInstance(context).addListener(this);
+        DBhelper.getInstance(context).addtListener(this);
     }
 
     public static TaskUtil getInstance(Context context) {
@@ -34,9 +34,9 @@ public class TaskUtil implements DBhelper.OnDBchangedListener {
         return taskUtil;
     }
 
+
     @Override
-    public void onDBchanged() {
-        Log.i(TAG, "LineNum:38  Method:onDBchanged--> ");
+    public void onTaskChanged() {
         LocationPresenter.getInstance(context).setLocationMode(LocationPresenter.FAST_MODE);
     }
 
@@ -44,7 +44,7 @@ public class TaskUtil implements DBhelper.OnDBchangedListener {
         int resultTime = RingmodePresenter.getInstance(context).checkTimeTask();
         int resultLocation = LocationPresenter.getInstance(context).checkDistance(location);
 
-        Log.i(TAG, "LineNum:45  Method:checkTimeandLocation--> result 1 =" + resultTime + " -- result 2 =" + resultLocation);
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:45  Method:checkTimeandLocation--> result 1 =" + resultTime + " -- result 2 =" + resultLocation);
         LocationPresenter.getInstance(context).setLocationMode(Math.min(resultTime, resultLocation));
     }
 
@@ -87,7 +87,7 @@ public class TaskUtil implements DBhelper.OnDBchangedListener {
     public void handNfc(TaskItems task) {
         //TODO
         if (task.getNfc() == 1) {
-            PresenterMain.getInstance(context).endableNFC();
+            PresenterMain.getInstance(context).endableNFC(task);
         }
     }
 

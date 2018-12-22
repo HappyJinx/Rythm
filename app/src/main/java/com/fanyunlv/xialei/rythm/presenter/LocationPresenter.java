@@ -27,7 +27,7 @@ public class LocationPresenter implements OnDBchangedListener{
     private static double DISTANCE_THRESHOLD = 100.00;
     private final double R_EARTH=6370996.81;  //地球的半径
 
-    public static final int ONCE_MODE = 1;
+    public static final int ONCE_MODE = 5;
     public static final int FAST_MODE = 5;
     public static final int NORMAL_MODE = 15;
     public static final int SLOW_MODE = 3*60;
@@ -167,7 +167,6 @@ public class LocationPresenter implements OnDBchangedListener{
      *  date : 2018/12/15
      */
     public void setLocationMode(int mode) {
-//        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:160  Method:setLocationMode--> mode ="+mode);
         if (mode == currentmode) {
             return;
         }
@@ -190,9 +189,6 @@ public class LocationPresenter implements OnDBchangedListener{
             for (LocationIistener lis : listeners) {
                 lis.onLocationReceived(location);
             }
-
-//            //check if we are close to a place
-//            checkDistance(bdLocation);
         }
     }
 
@@ -205,7 +201,9 @@ public class LocationPresenter implements OnDBchangedListener{
         float speed = bdLocation.getSpeed();
         if (taskItems.size() > 0) {
             for (TaskItems task : taskItems) {
-                double dis = getDistance(bdLocation.getLatitude(), bdLocation.getLongitude(), getLocation(task.getCode()).getLati(), getLocation(task.getCode()).getLongti());
+                if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:204  Method:checkDistance--> task -"+taskItems.size());
+                MyLocation myLocation = getLocation(task.getCode());
+                double dis = getDistance(bdLocation.getLatitude(), bdLocation.getLongitude(), myLocation.getLati(), myLocation.getLongti());
                 if (dis <= DISTANCE_THRESHOLD) {  // this decide distance
                     if (mLastTask == null || !mLastTask.equlas(task)) { // this decide equal
                         mLastTask = task;

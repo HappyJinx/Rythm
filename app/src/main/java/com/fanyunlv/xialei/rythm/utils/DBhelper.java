@@ -26,6 +26,9 @@ public class DBhelper {
     public interface OnDBchangedListener {
         public void onDBchanged();
     };
+    public interface OnTaskDBchangeListener{
+        public void onTaskChanged();
+    }
 
     public static DBhelper dBhelper;
     private Context context;
@@ -33,12 +36,14 @@ public class DBhelper {
     private SQLiteDatabase db;
 
     private List<OnDBchangedListener> listeners;
+    private List<OnTaskDBchangeListener> tlisteners;
 
     private DBhelper(Context context){
         this.context = context;
         database = RythmDatabase.getInstance(context);
         db = database.getWritableDatabase();
         listeners = new ArrayList<>();
+        tlisteners = new ArrayList<>();
     }
 
     public static DBhelper getInstance(Context context) {
@@ -51,6 +56,33 @@ public class DBhelper {
     public void addListener(OnDBchangedListener listener) {
         listeners.add(listener);
     }
+    public void addtListener(OnTaskDBchangeListener listener) {
+        tlisteners.add(listener);
+    }
+
+    public void notifyListenr() {
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:63  Method:notifyListenr--> ");
+        if (listeners.size() > 0) {
+            for (OnDBchangedListener listener : listeners) {
+                listener.onDBchanged();
+            }
+        }
+    }
+
+    public void notifyTaskChange() {
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:71  Method:notifyTaskChange--> ");
+        if (tlisteners.size() > 0) {
+            for (OnTaskDBchangeListener listener : tlisteners) {
+                listener.onTaskChanged();
+            }
+        }
+    }
+
+    //================================
+    public void insertdb(String tablename, ContentValues values) {
+        db.insert(tablename, null, values);
+        notifyListenr();
+    }
 
     public void insertdb(int hour,int minute) {
         ContentValues values = new ContentValues();
@@ -59,9 +91,25 @@ public class DBhelper {
         insertdb(values);
         notifyListenr();
     }
-
     public void insertdb(ContentValues values) {
         db.insert(RythmDatabase.Tables.TIMETABLE, null, values);
+        notifyListenr();
+    }
+
+    public void insertwifi(String name) {
+        ContentValues values = new ContentValues();
+        values.put(RythmDatabase.WifiColumes.NAME,name);
+        insertwifi(values);
+        notifyListenr();
+    }
+    public void insertwifi(ContentValues values) {
+        db.insert(RythmDatabase.Tables.WIFITABLE, null, values);
+        notifyListenr();
+    }
+
+    public void insertLocation(ContentValues values) {
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:117  Method:insertLocation--> ");
+        db.insert(RythmDatabase.Tables.LOCATIONTABLE, null, values);
         notifyListenr();
     }
 
@@ -76,58 +124,19 @@ public class DBhelper {
         contentValues.put(RythmDatabase.TASK.NFC,details.getNfc());
         db.insert(RythmDatabase.Tables.TASK,null,contentValues);
 
-        notifyListenr();
+        notifyTaskChange();
     }
-    public void updatetaskDetails(TaskItems details) {
-        Log.i(TAG, "LineNum:82  Method:updatetaskDetails--> "+details.getCode());
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(RythmDatabase.TASK.AUDIO,details.getAudio());
-        contentValues.put(RythmDatabase.TASK.WIFI,details.getWifi());
-        contentValues.put(RythmDatabase.TASK.VOLUME,details.getVolume());
-        contentValues.put(RythmDatabase.TASK.NFC,details.getNfc());
-        db.update(RythmDatabase.Tables.TASK,contentValues,RythmDatabase.TASK.CODE+"= ?",new String[]{Integer.toString(details.getCode())});
-
-        notifyListenr();
-    }
-
-    public void notifyListenr() {
-        if (listeners.size() > 0) {
-            for (OnDBchangedListener listener : listeners) {
-                listener.onDBchanged();
-            }
-        }
-    }
-
-    public void insertwifi(String name) {
-        ContentValues values = new ContentValues();
-        values.put(RythmDatabase.WifiColumes.NAME,name);
-        insertwifi(values);
-        notifyListenr();
-    }
-
-    public void insertwifi(ContentValues values) {
-        db.insert(RythmDatabase.Tables.WIFITABLE, null, values);
-        notifyListenr();
-    }
-
-
-    public void insertLocation(ContentValues values) {
-        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:117  Method:insertLocation--> ");
-        db.insert(RythmDatabase.Tables.LOCATIONTABLE, null, values);
-        notifyListenr();
-    }
-
-    public void insertdb(String tablename, ContentValues values) {
-        db.insert(tablename, null, values);
-        notifyListenr();
-    }
+    //================================
     public void deleteitem(int hour,int minute) {
         db.delete(RythmDatabase.Tables.TIMETABLE,
                 RythmDatabase.TimeColumes.HOUR+"= ? and "+RythmDatabase.TimeColumes.MINUTE+"= ? ",
                 new String[]{Integer.toString(hour),Integer.toString(minute)});
         notifyListenr();
     }
-
+    public void deleteitem(String tablename,int postion) {
+        db.delete(tablename, RythmDatabase.TimeColumes._ID+"= ?", new String[]{Integer.toString(postion)});
+        notifyListenr();
+    }
     public void deletewifi(String name) {
         db.delete(RythmDatabase.Tables.WIFITABLE,
                 RythmDatabase.WifiColumes.NAME+"= ? ",
@@ -135,6 +144,13 @@ public class DBhelper {
         notifyListenr();
     }
 
+    public void deletelocation(int ID) {
+        db.delete(RythmDatabase.Tables.LOCATIONTABLE,
+                RythmDatabase.LOCATIONTABLE._ID+"= ? ",
+                new String[]{Integer.toString(ID)});
+//        db.execSQL("delete from location where id="+ID);
+        notifyListenr();
+    }
     public void deletelocation(MyLocation myLocation) {
         Log.i("deletelocation", "deletelocation ");
         if (myLocation == null) {
@@ -146,45 +162,40 @@ public class DBhelper {
                 new String[]{myLocation.getName(),Double.toString(myLocation.getLongti())});
         notifyListenr();
     }
-
     public void deletetask(int code) {
         db.delete(RythmDatabase.Tables.TASK,
                 RythmDatabase.TASK.CODE+"= ? ",
                 new String[]{Integer.toString(code)});
-        notifyListenr();
-    }
-
-    public void deletelocation(int ID) {
-        Log.i("deletelocation", "deletelocation ID"+ID);
-
-        db.delete(RythmDatabase.Tables.LOCATIONTABLE,
-                RythmDatabase.LOCATIONTABLE._ID+"= ? ",
-                new String[]{Integer.toString(ID)});
-//        db.execSQL("delete from location where id="+ID);
-        notifyListenr();
-    }
-
-    public void deleteitem(String tablename,int postion) {
-        db.delete(tablename, RythmDatabase.TimeColumes._ID+"= ?", new String[]{Integer.toString(postion)});
-        notifyListenr();
+        notifyTaskChange();
     }
 
     public void deletetask(String tablename,int postion) {
         db.delete(tablename, RythmDatabase.TASK._ID+"= ? ", new String[]{Integer.toString(postion)});
-        notifyListenr();
+        notifyTaskChange();
     }
+    //================================
+    public void updatetaskDetails(TaskItems details) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(RythmDatabase.TASK.AUDIO,details.getAudio());
+        contentValues.put(RythmDatabase.TASK.WIFI,details.getWifi());
+        contentValues.put(RythmDatabase.TASK.VOLUME,details.getVolume());
+        contentValues.put(RythmDatabase.TASK.NFC,details.getNfc());
+        db.update(RythmDatabase.Tables.TASK,contentValues,RythmDatabase.TASK.CODE+"= ?",new String[]{Integer.toString(details.getCode())});
 
+        notifyTaskChange();
+    }
+    //================================
     public Cursor querytime() {
         return db.query(RythmDatabase.Tables.TIMETABLE, null, null,null,null,null,null);
     }
     public Cursor querywifi() {
         return db.query(RythmDatabase.Tables.WIFITABLE, null, null,null,null,null,null);
     }
-    public Cursor querylocation() {
-        return db.query(RythmDatabase.Tables.LOCATIONTABLE, null, null,null,null,null,null);
-    }
     public Cursor querylocation(int code ) {
         return db.query(RythmDatabase.Tables.LOCATIONTABLE, null, RythmDatabase.LOCATIONTABLE.CODE+"= ?",new String[]{Integer.toString(code)},null,null,null);
+    }
+    public Cursor querylocation() {
+        return db.query(RythmDatabase.Tables.LOCATIONTABLE, null, null,null,null,null,null);
     }
     public Cursor querytask(int code) {
         return db.query(RythmDatabase.Tables.TASK, null, RythmDatabase.TASK.CODE+"= ?",new String[]{Integer.toString(code)},null,null,null);
@@ -192,7 +203,7 @@ public class DBhelper {
     public Cursor querytask() {
         return db.query(RythmDatabase.Tables.TASK, null, null,null,null,null,null);
     }
-
+    //================================
     public String getSelectedTime() {
         Cursor cursor = querytime();
         StringBuffer stringBuffer = new StringBuffer();
@@ -229,10 +240,22 @@ public class DBhelper {
         }
 
     }
+
+    public List<TimeItem> getTimeList() {
+        ArrayList<TimeItem> list = new ArrayList<>();
+        db = database.getWritableDatabase();
+//        Cursor cursor = db.query(RythmDatabase.Tables.TIMETABLE, null, null, null, null,null, null);
+        Cursor cursor = querytime();
+        while (cursor.moveToNext()) {
+            list.add(new TimeItem(cursor.getInt(1) ,cursor.getInt(2)));
+        }
+        cursor.close();
+        return list;
+    }
     public List<String> getWifiList() {
         ArrayList<String> list = new ArrayList<>();
         db = database.getWritableDatabase();
-        Cursor cursor = db.query(RythmDatabase.Tables.WIFITABLE, null, null, null, null,null, null);
+        Cursor cursor = querywifi();
         while (cursor.moveToNext()) {
             list.add(cursor.getString(1));
         }
@@ -243,7 +266,6 @@ public class DBhelper {
     public ArrayList<MyLocation> getLocationList() {
         ArrayList<MyLocation> list = new ArrayList<>();
         db = database.getWritableDatabase();
-        //Cursor cursor = db.query(RythmDatabase.Tables.LOCATIONTABLE, null, null, null, null,null, null);
         Cursor cursor = querylocation();
         while (cursor.moveToNext()) {
             list.add(new MyLocation(
@@ -277,23 +299,12 @@ public class DBhelper {
         return myLocation;
     }
 
-    public List<TimeItem> getTimeList() {
-        ArrayList<TimeItem> list = new ArrayList<>();
-        db = database.getWritableDatabase();
-        Cursor cursor = db.query(RythmDatabase.Tables.TIMETABLE, null, null, null, null,null, null);
-        while (cursor.moveToNext()) {
-            list.add(new TimeItem(cursor.getInt(1) ,cursor.getInt(2)));
-        }
-        cursor.close();
-        return list;
-    }
-
     public ArrayList<TaskItems> getLocatiosTaskList() {
         ArrayList<TaskItems> list = new ArrayList<>();
         db = database.getWritableDatabase();
         Cursor cursor = querytask();
         while (cursor.moveToNext()) {
-            Log.i(TAG, "LineNum:298  Method:getLocatiosTaskList--> cursor.getInt(2)="+cursor.getInt(2));
+            if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:298  Method:getLocatiosTaskList--> cursor.getInt(2)="+cursor.getInt(2));
             if (cursor.getInt(2) > 10000) {
                 list.add(new TaskItems(
                         cursor.getString(1),

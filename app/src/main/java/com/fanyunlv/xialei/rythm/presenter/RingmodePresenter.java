@@ -105,7 +105,7 @@ public class RingmodePresenter implements OnDBchangedListener{
         int bh = b / 100;
         int bm = b % 100;
         int result = 0;
-//        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:108  Method:getDetTime--> ah="+ah+"--am="+am+"--bh="+bh+"--bm="+bm);
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:108  Method:getDetTime--> ah="+ah+"--am="+am+"--bh="+bh+"--bm="+bm);
         if (ah < bh && am < bm) {
             result = (bh - ah) * 60 + (bm - am);
         } else if (ah < bh && am > bm) {
@@ -123,7 +123,7 @@ public class RingmodePresenter implements OnDBchangedListener{
         } else if (ah > bh && am > bm) {
             result = (ah - bh) * 60 + am - bm;
         }
-//        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:103  Method:getDetTime-->  a ="+a+"--b="+b +"--det="+result);
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:103  Method:getDetTime-->  a ="+a+"--b="+b +"--det="+result);
         return result;
     }
 

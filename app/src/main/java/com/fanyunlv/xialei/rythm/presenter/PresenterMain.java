@@ -2,8 +2,11 @@ package com.fanyunlv.xialei.rythm.presenter;
 
 import android.app.Application;
 import android.content.Context;
+import android.nfc.NfcManager;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.fanyunlv.xialei.rythm.beans.TaskItems;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -27,7 +30,7 @@ public class PresenterMain {
         return spreMain;
     }
 
-    public void endableNFC() {
+    public void endableNFC(TaskItems items) {
 //        try {
 //            INfcAdapter mService;
 //            method = Class.forName("android.os.ServiceManager").getMethod("getService", String.class);
@@ -64,6 +67,14 @@ public class PresenterMain {
 //            if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onClick"+on+" e= "+e.toString());
 //        }
 
-        Toast.makeText(app,"现在去开启NFC",Toast.LENGTH_SHORT).show();
+        NfcManager nfcManager = (NfcManager) app.getSystemService(Context.NFC_SERVICE);
+        boolean state = nfcManager.getDefaultAdapter().isEnabled();
+        if (!state) {
+            if (!items.getName().isEmpty()) {
+                Toast.makeText(app, "当前位置在" + items.getName() + "附近,现在去开启NFC", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(app, "现在时间是" + items.getCode() / 100 + ":" + items.getCode() % 100 + ",现在去开启NFC", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

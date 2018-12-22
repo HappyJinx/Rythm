@@ -96,15 +96,13 @@ public class FunctionFragment extends Fragment implements LocationIistener,View.
     @Override
     public void onLocationReceived(BDLocation location) {
         madapter.notifyDataSetChanged();
-//        Toast.makeText(getContext(), "receive location ", Toast.LENGTH_SHORT).show();
-        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:99  Method:onLocationReceived--> ");
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:99  Method:onLocationReceived--> location="+location.getLatitude()+"--"+location.getLongitude()+"--"+location.getLocationDescribe());
         TaskUtil.getInstance(getContext()).checkTimeandLocation(location);
     }
 
+    //didn't use
     @Override
-    public void onLocationNeedNotify(BDLocation bdLocation, float v) {
-
-    }
+    public void onLocationNeedNotify(BDLocation bdLocation, float v) {}
 
     @Override
     public void onClick(View v) {

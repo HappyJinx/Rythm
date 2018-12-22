@@ -5,7 +5,7 @@ package com.fanyunlv.xialei.rythm.beans;
  */
 public class TaskItems {
 
-    public String name ;
+    public String name ="";
     public int code = 0;
     public int audio = 0;
     public int wifi = 0;
