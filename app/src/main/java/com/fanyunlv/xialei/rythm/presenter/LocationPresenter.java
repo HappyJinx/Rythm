@@ -21,7 +21,7 @@ import java.util.ArrayList;
 /**
  * Created by xialei on 2018/12/7.
  */
-public class LocationPresenter implements OnDBchangedListener{
+public class LocationPresenter implements DBhelper.OnTaskDBchangeListener {
     private static final String TAG = LocationPresenter.class.getSimpleName();
 
     private static double DISTANCE_THRESHOLD = 100.00;
@@ -59,7 +59,7 @@ public class LocationPresenter implements OnDBchangedListener{
         this.context = context;
         listeners = new ArrayList<>();
         dBhelper = DBhelper.getInstance(context);
-        dBhelper.addListener(this);
+        dBhelper.addtListener(this);
         taskItems = gettasks();
 
         mLocationClient = new LocationClient(context);
@@ -181,6 +181,8 @@ public class LocationPresenter implements OnDBchangedListener{
         mLocationClient.start();
     }
 
+
+
     public class MyLocationListener extends BDAbstractLocationListener {
         @Override
         public void onReceiveLocation(BDLocation location) {
@@ -275,7 +277,8 @@ public class LocationPresenter implements OnDBchangedListener{
     }
 
     @Override
-    public void onDBchanged() {
+    public void onTaskChanged() {
         taskItems = gettasks();
+        Log.i(TAG, "LineNum:282  Method:onTaskChanged--> taskItems="+taskItems.size());
     }
 }

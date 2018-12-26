@@ -5,7 +5,9 @@ import android.media.AudioManager;
 import android.util.Log;
 
 import com.baidu.location.BDLocation;
+import com.baidu.mapapi.model.LatLng;
 import com.fanyunlv.xialei.rythm.RythmApplication;
+import com.fanyunlv.xialei.rythm.beans.MyLocation;
 import com.fanyunlv.xialei.rythm.beans.TaskItems;
 import com.fanyunlv.xialei.rythm.presenter.LocationPresenter;
 import com.fanyunlv.xialei.rythm.presenter.PresenterMain;
@@ -37,6 +39,7 @@ public class TaskUtil implements DBhelper.OnTaskDBchangeListener {
 
     @Override
     public void onTaskChanged() {
+        Log.i(TAG, "LineNum:40  Method:onTaskChanged--> ");
         LocationPresenter.getInstance(context).setLocationMode(LocationPresenter.FAST_MODE);
     }
 
@@ -50,7 +53,7 @@ public class TaskUtil implements DBhelper.OnTaskDBchangeListener {
 
 
     public void handleTask(TaskItems task) {
-        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:30  Method:handleTask--> ");
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:30  Method:handleTask--> task ="+task.toString());
         handAudio(task);
         handWifi(task);
         handVolume(task);
@@ -91,4 +94,22 @@ public class TaskUtil implements DBhelper.OnTaskDBchangeListener {
         }
     }
 
+    public int getcode(LatLng location) {
+        return (int)((get6Num(location.latitude) + get6Num(location.longitude)) * 1000000);
+    }
+    public int getcode(BDLocation location) {
+        return (int)((get6Num(location.getLatitude()) + get6Num(location.getLongitude())) * 1000000);
+    }
+    public int getcode(MyLocation location) {
+        return (int)((get6Num(location.getLati()) + get6Num(location.getLongti())) * 1000000);
+    }
+    public double get6Num(Double dd) {
+//        Log.i(TAG, "LineNum:107  Method:get6Num--> dd =" + dd);
+//        (((int)(dd * 1000000))/1000000)
+//        double dc = (double)(((int)(dd * 10000000) / 10) / 1000000);
+//        Log.i(TAG, "LineNum:109  Method:get6Num--> dc =" + dc);
+//        return dc;
+        String result = String.format("%.6f", dd);
+        return Double.parseDouble(result);
+    }
 }

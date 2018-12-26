@@ -73,6 +73,7 @@ public class DBhelper {
         if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:71  Method:notifyTaskChange--> ");
         if (tlisteners.size() > 0) {
             for (OnTaskDBchangeListener listener : tlisteners) {
+                if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:76  Method:notifyTaskChange--> ");
                 listener.onTaskChanged();
             }
         }
@@ -306,6 +307,8 @@ public class DBhelper {
         while (cursor.moveToNext()) {
             if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:298  Method:getLocatiosTaskList--> cursor.getInt(2)="+cursor.getInt(2));
             if (cursor.getInt(2) > 10000) {
+                if (checktaskIsNone(cursor))
+                    continue;
                 list.add(new TaskItems(
                         cursor.getString(1),
                         cursor.getInt(2),
@@ -326,6 +329,8 @@ public class DBhelper {
         Cursor cursor = querytask();
         while (cursor.moveToNext()) {
             if (cursor.getInt(2) < 10000) {
+                if (checktaskIsNone(cursor))
+                    continue;
                 list.add(new TaskItems(
                         cursor.getString(1),
                         cursor.getInt(2),
@@ -357,6 +362,27 @@ public class DBhelper {
         }
         cursor.close();
         return taskItems;
+    }
+
+    public boolean checktaskIsNone(Cursor cursor) {
+        Log.i(TAG, "LineNum:368  Method:checktaskIsNone--> "+
+                cursor.getString(1)+
+                "\ncursor.getInt(2) ="+ cursor.getInt(2)+
+                "\ncursor.getInt(3) ="+ cursor.getInt(3)+
+                "\ncursor.getInt(4)="+ cursor.getInt(4)+
+                "\ncursor.getInt(5)="+ cursor.getInt(5)+
+                "\ncursor.getInt(6)="+ cursor.getInt(6));
+        if (cursor != null) {
+            if (cursor.getInt(3) == 0 &&
+                cursor.getInt(4) == 0 &&
+                cursor.getInt(5) == 0 &&
+                cursor.getInt(6) == 0) {
+                return true;
+            }else {
+                return false;
+            }
+        }
+        return false;
     }
 
 }

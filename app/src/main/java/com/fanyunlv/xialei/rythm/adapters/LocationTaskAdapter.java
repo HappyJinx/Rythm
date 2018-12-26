@@ -58,7 +58,7 @@ public class LocationTaskAdapter extends RecyclerView.Adapter<LocationTaskAdapte
 
     public String getLocationTaskinfo(MyLocation myLocation) {
         int code = getcode(myLocation);
-        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:57  Method:getLocationTaskinfo--> location ="+myLocation.getLati()+myLocation.getLongti());
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:57  Method:getLocationTaskinfo--> location ="+myLocation.getLati()+"  "+myLocation.getLongti());
         Cursor cursor = dBhelper.querytask(code);
         if (cursor.getCount() == 0) {
             return "无任务";
@@ -95,7 +95,9 @@ public class LocationTaskAdapter extends RecyclerView.Adapter<LocationTaskAdapte
 
 
     public int getcode(MyLocation location) {
-        return (int)((location.getLati() + location.getLongti()) * 1000000);
+        int code = (int) ((location.getLati() + location.getLongti()) * 1000000);
+        Log.i(TAG, "LineNum:99  Method:getcode--> code ="+code);
+        return code;
     }
 
     @Override

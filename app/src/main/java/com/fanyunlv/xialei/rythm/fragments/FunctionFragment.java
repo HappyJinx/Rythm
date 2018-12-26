@@ -43,6 +43,8 @@ public class FunctionFragment extends Fragment implements LocationIistener,View.
     private Button setting_by_time;
     private Button setting_by_location;
 //    private BDLocation bdLocation;
+    private int receiveCount = 0;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,7 +82,7 @@ public class FunctionFragment extends Fragment implements LocationIistener,View.
     public void onResume() {
         super.onResume();
         ((MainActivity) getActivity()).hideActionbar(false);
-        ((MainActivity) getActivity()).setTitle("当前状态");
+        ((MainActivity) getActivity()).setTitle("当前状态  "+receiveCount);
     }
 
     @Override
@@ -98,6 +100,8 @@ public class FunctionFragment extends Fragment implements LocationIistener,View.
         madapter.notifyDataSetChanged();
         if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:99  Method:onLocationReceived--> location="+location.getLatitude()+"--"+location.getLongitude()+"--"+location.getLocationDescribe());
         TaskUtil.getInstance(getContext()).checkTimeandLocation(location);
+        receiveCount += 1;
+        ((MainActivity) getActivity()).setTitle("当前状态  "+receiveCount);
     }
 
     //didn't use

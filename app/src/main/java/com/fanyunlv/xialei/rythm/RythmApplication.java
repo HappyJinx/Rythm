@@ -19,7 +19,7 @@ import com.baidu.mapapi.SDKInitializer;
 public class RythmApplication extends Application {
     private final String TAG = "Rythm";
 
-    public static final boolean ENABLE_LOG = false;
+    public static final boolean ENABLE_LOG = true;
 
     public static Context mContext;
 

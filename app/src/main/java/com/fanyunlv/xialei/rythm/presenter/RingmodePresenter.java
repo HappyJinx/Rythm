@@ -20,7 +20,7 @@ import java.util.List;
  * Created by admin on 2018/8/22.
  */
 
-public class RingmodePresenter implements OnDBchangedListener{
+public class RingmodePresenter implements OnDBchangedListener, DBhelper.OnTaskDBchangeListener {
     private static final String TAG = RingmodePresenter.class.getSimpleName();
 
     public static RingmodePresenter sringmodePresenter;
@@ -43,6 +43,7 @@ public class RingmodePresenter implements OnDBchangedListener{
         strings =  context.getResources().getStringArray(R.array.Ringmodestring);
         dBhelper = DBhelper.getInstance(context);
         dBhelper.addListener(this);
+        dBhelper.addtListener(this);
         timeTasks = dBhelper.getTimeTaskList();
         timeItemList = dBhelper.getTimeList();
     }
@@ -163,7 +164,11 @@ public class RingmodePresenter implements OnDBchangedListener{
 
     @Override
     public void onDBchanged() {
-        timeTasks = dBhelper.getTimeTaskList();
         timeItemList = dBhelper.getTimeList();
+    }
+
+    @Override
+    public void onTaskChanged() {
+        timeTasks = dBhelper.getTimeTaskList();
     }
 }

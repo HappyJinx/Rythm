@@ -51,6 +51,7 @@ import com.fanyunlv.xialei.rythm.R;
 import com.fanyunlv.xialei.rythm.presenter.LocationPresenter;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
 import com.fanyunlv.xialei.rythm.utils.RythmDatabase;
+import com.fanyunlv.xialei.rythm.utils.TaskUtil;
 
 import java.util.ArrayList;
 
@@ -393,31 +394,32 @@ public class LocationFragment extends BaseFragment implements
         public void onClick(DialogInterface dialog, int which) {
             if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onClick which ="+which);
 //            MyLocation myLocation = new MyLocation(locationnames[which], bdLocation.getLatitude(), bdLocation.getLongitude(), bdLocation.getRadius(), bdLocation.getLocationDescribe());
+            TaskUtil util = TaskUtil.getInstance(mcontext);
             if (mtouchPoint == null) {
                 bdLocation = presenter.getLastKnowLocation();
                 ContentValues values = new ContentValues();
                 values.put(RythmDatabase.LOCATIONTABLE.NAME, locationnames[which]);
-                values.put(RythmDatabase.LOCATIONTABLE.CODE, getcode(bdLocation));
+                values.put(RythmDatabase.LOCATIONTABLE.CODE, util.getcode(bdLocation));
                 values.put(RythmDatabase.LOCATIONTABLE.LONGT, bdLocation.getLongitude());
                 values.put(RythmDatabase.LOCATIONTABLE.LATI, bdLocation.getLatitude());
                 values.put(RythmDatabase.LOCATIONTABLE.RADIOUS, bdLocation.getRadius());
                 values.put(RythmDatabase.LOCATIONTABLE.DESCRIB, bdLocation.getLocationDescribe());
                 DBhelper.getInstance(mcontext).insertLocation(values);
 
-                TaskItems task = new TaskItems(locationnames[which], getcode(bdLocation), 0, 0, 0, 0);
+                TaskItems task = new TaskItems(locationnames[which], util.getcode(bdLocation), 0, 0, 0, 0);
                 DBhelper.getInstance(mcontext).inserttaskDetails(task);
 
             }else {
                 ContentValues values = new ContentValues();
                 values.put(RythmDatabase.LOCATIONTABLE.NAME, locationnames[which]);
-                values.put(RythmDatabase.LOCATIONTABLE.CODE, getcodeLnt(mtouchPoint));
-                values.put(RythmDatabase.LOCATIONTABLE.LONGT, revertDouble(mtouchPoint.longitude));
-                values.put(RythmDatabase.LOCATIONTABLE.LATI, revertDouble(mtouchPoint.latitude));
+                values.put(RythmDatabase.LOCATIONTABLE.CODE, util.getcode(mtouchPoint));
+                values.put(RythmDatabase.LOCATIONTABLE.LONGT, util.get6Num(mtouchPoint.longitude));
+                values.put(RythmDatabase.LOCATIONTABLE.LATI, util.get6Num(mtouchPoint.latitude));
                 values.put(RythmDatabase.LOCATIONTABLE.RADIOUS, 30.00);
                 values.put(RythmDatabase.LOCATIONTABLE.DESCRIB, mTouchGeoResultName);
                 DBhelper.getInstance(mcontext).insertLocation(values);
 
-                TaskItems task = new TaskItems(locationnames[which], getcodeLnt(mtouchPoint), 0, 0, 0, 0);
+                TaskItems task = new TaskItems(locationnames[which], util.getcode(mtouchPoint), 0, 0, 0, 0);
                 DBhelper.getInstance(mcontext).inserttaskDetails(task);
             }
 
@@ -429,19 +431,5 @@ public class LocationFragment extends BaseFragment implements
         }
     }
 
-    /**
-     *  description : get db code from bdlocation
-     *  @author : xialei
-     *  date : 2018/12/15
-     */
-    public int getcode(BDLocation location) {
-        return (int)((location.getLatitude() + location.getLongitude()) * 1000000);
-    }
-    public int getcodeLnt(LatLng location) {
-        return (int)((location.latitude + location.longitude) * 1000000);
-    }
-    public double revertDouble(double num) {
-        String result = String.format("%.6f",num);
-        return Double.parseDouble(result);
-    }
+
 }

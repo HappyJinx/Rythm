@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity{
 
     private ActionBar actionBar;
 
+
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity{
         initReceiver();
         //init baidu location service
         LocationPresenter.getInstance(getApplicationContext()).setLocationMode(LocationPresenter.ONCE_MODE);
+
     }
 
     public void setTitle(int resid) {

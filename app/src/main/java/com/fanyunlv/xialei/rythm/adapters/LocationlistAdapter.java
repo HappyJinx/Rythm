@@ -12,6 +12,7 @@ import com.fanyunlv.xialei.rythm.R;
 import com.fanyunlv.xialei.rythm.RythmApplication;
 import com.fanyunlv.xialei.rythm.beans.MyLocation;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
+import com.fanyunlv.xialei.rythm.utils.TaskUtil;
 
 import java.util.ArrayList;
 
@@ -72,7 +73,7 @@ public class LocationlistAdapter extends BaseAdapter {
             public boolean onLongClick(View v) {
                 if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onLongClick ");
                 DBhelper.getInstance(context).deletelocation(getItem(position));
-                DBhelper.getInstance(context).deletetask(getcode(getItem(position)));
+                DBhelper.getInstance(context).deletetask(TaskUtil.getInstance(context).getcode(getItem(position)));
                 datas.remove(position);
                 notifyDataSetChanged();
                 return true;
@@ -81,9 +82,7 @@ public class LocationlistAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public int getcode(MyLocation location) {
-        return (int)((location.getLati() + location.getLongti()) * 1000000);
-    }
+
 
     class ViewHolder{
         public TextView locationinfo;
