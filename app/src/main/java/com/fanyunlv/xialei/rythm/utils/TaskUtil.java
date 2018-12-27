@@ -20,6 +20,17 @@ import com.fanyunlv.xialei.rythm.presenter.WifiCheckPresenter;
 public class TaskUtil implements DBhelper.OnTaskDBchangeListener {
     private static final String TAG = TaskUtil.class.getSimpleName();
 
+    public static final int ONCE_MODE = 5;
+    public static final int FAST_MODE = 5;
+    public static final int NORMAL_MODE = 15;
+    public static final int SLOW_MODE = 3*60;
+
+    public static final int FAST_TIME_THRESHOLD = 3;  //minute
+    public static final int NORMAL_TIME_THRESHOLD = 10;
+
+    public static final double FAST_LOCATE_THRESHOLD = 150.00;  //50M
+    public static final double FAR_LOCATE_THRESHOLD = 500.00; //500M
+
     Context context;
 
     private static TaskUtil taskUtil;
@@ -40,17 +51,64 @@ public class TaskUtil implements DBhelper.OnTaskDBchangeListener {
     @Override
     public void onTaskChanged() {
         Log.i(TAG, "LineNum:40  Method:onTaskChanged--> ");
-        LocationPresenter.getInstance(context).setLocationMode(LocationPresenter.FAST_MODE);
+        LocationPresenter.getInstance(context).setLocationMode(FAST_MODE);
     }
 
     public void checkTimeandLocation(BDLocation location) {
-        int resultTime = RingmodePresenter.getInstance(context).checkTimeTask();
-        int resultLocation = LocationPresenter.getInstance(context).checkDistance(location);
 
-        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "checkTimeandLocation--> time mode = " + resultTime + "s -- location mode = " + resultLocation+"s");
-        LocationPresenter.getInstance(context).setLocationMode(Math.min(resultTime, resultLocation));
+        int minTime = RingmodePresenter.getInstance(context).checkTimeTask();
+        double minDistance = LocationPresenter.getInstance(context).checkDistance(location);
+
+        int howclose = howClose(minTime);
+        int howfar = howFar(minDistance);
+
+        int mode = SLOW_MODE;
+
+        switch (Math.min(howclose, howfar)) {
+            case -1:
+                // no
+                break;
+            case 0:
+                mode = FAST_MODE;
+                break;
+            case 1:
+                mode = NORMAL_MODE;
+                break;
+            case 2:
+                mode = SLOW_MODE;
+                break;
+        }
+
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "checkTimeandLocation--> mode = "+mode+"  minTime = " + minTime + "mins -- minDistance = " + minDistance+"m");
+        LocationPresenter.getInstance(context).setLocationMode(mode);
     }
 
+    public int howFar(double mindis) {
+        int result = -1;
+//        if (mindis < FAST_LOCATE_THRESHOLD) { // x < 100
+//            result = 2;
+//        }
+        if (mindis > FAST_LOCATE_THRESHOLD && mindis < FAR_LOCATE_THRESHOLD) {
+            result = 1;                             // 距离一般
+//        } else if (mindis > FAR_LOCATE_THRESHOLD) { // x > 200   距离太远  就不管了
+        }else {
+            result = 2;
+        }
+        return result;
+    }
+
+    public int howClose(int minTime) {
+        int result = -1;
+        if (minTime <= FAST_TIME_THRESHOLD) {           //  X<3
+            result = 0;
+        } else if (minTime >= FAST_TIME_THRESHOLD
+                && minTime < NORMAL_TIME_THRESHOLD){    //  3<X<10
+            result = 1;
+        } else if (minTime >= NORMAL_TIME_THRESHOLD) {  //  X>10
+            result = 2;
+        }
+        return result;
+    }
 
     public void handleTask(TaskItems task) {
         if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:30  Method:handleTask--> task ="+task.toString());

@@ -24,6 +24,8 @@ public class RingmodePresenter implements OnDBchangedListener, DBhelper.OnTaskDB
     private static final String TAG = RingmodePresenter.class.getSimpleName();
 
     public static RingmodePresenter sringmodePresenter;
+    public int TOTAL_DAY_MINS = 1440;
+    private TaskItems mLastTask;
 
     private Context context;
     private AudioManager audioManager;
@@ -74,7 +76,6 @@ public class RingmodePresenter implements OnDBchangedListener, DBhelper.OnTaskDB
 
 
     public int checkTimeTask() {
-        int result = LocationPresenter.SLOW_MODE;
         if (timeTasks.size() > 0) {
             Calendar calendar = Calendar.getInstance();
             int cTimecode = calendar.get(Calendar.HOUR_OF_DAY) * 100 + calendar.get(Calendar.MINUTE);
@@ -84,20 +85,17 @@ public class RingmodePresenter implements OnDBchangedListener, DBhelper.OnTaskDB
                 if (adet < det) {
                     det = adet;
                 }
-                if (det == 0) {
-                    TaskUtil.getInstance(context).handleTask(taskItems);
+                if ( det == 0 ) {
+                    if (mLastTask == null || !mLastTask.equlas(taskItems)) {
+                        mLastTask = taskItems;
+                        TaskUtil.getInstance(context).handleTask(taskItems);
+                    }
                 }
             }
             if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:88  Method:checkTimeTask--> det =" + det);
-            if (det <= LocationPresenter.FAST_TIME_THRESHOLD) {
-                result =  LocationPresenter.FAST_MODE;
-            } else if (det>= LocationPresenter.FAST_TIME_THRESHOLD && det < LocationPresenter.NORMAL_TIME_THRESHOLD){
-                result =  LocationPresenter.NORMAL_MODE;
-            } else if (det >= LocationPresenter.NORMAL_TIME_THRESHOLD) {
-                result = LocationPresenter.SLOW_MODE;
-            }
+            return det;
         }
-        return result;
+        return TOTAL_DAY_MINS;
     }
 
     public int getDetTime(int a, int b) {

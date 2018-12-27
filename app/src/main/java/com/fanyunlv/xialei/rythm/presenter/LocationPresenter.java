@@ -27,18 +27,7 @@ public class LocationPresenter implements DBhelper.OnTaskDBchangeListener {
     private static double DISTANCE_THRESHOLD = 50.00;
     private final double R_EARTH=6370996.81;  //地球的半径
 
-    public static final int ONCE_MODE = 5;
-    public static final int FAST_MODE = 5;
-    public static final int NORMAL_MODE = 15;
-    public static final int SLOW_MODE = 3*60;
-
-    public static final int FAST_TIME_THRESHOLD = 3;  //minute
-    public static final int NORMAL_TIME_THRESHOLD = 10;
-
-    public static final double FAST_LOCATE_THRESHOLD = 100.00;  //50M
-    public static final double NORMAL_LOCATE_THRESHOLD = 200.00; //200M
-
-    private int currentmode = NORMAL_MODE;
+    private int currentmode = TaskUtil.NORMAL_MODE;
 
     private static LocationPresenter sPresener;
     private Context context;
@@ -197,7 +186,7 @@ public class LocationPresenter implements DBhelper.OnTaskDBchangeListener {
      *  @author : xialei
      *  date : 2018/12/17
      */
-    public int checkDistance(BDLocation bdLocation) {
+    public double checkDistance(BDLocation bdLocation) {
         double minDis = R_EARTH;
         if (taskItems.size() > 0) {
             if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:203  Method:checkDistance--> task.size ="+taskItems.size());
@@ -218,12 +207,14 @@ public class LocationPresenter implements DBhelper.OnTaskDBchangeListener {
             }
         }
         if (RythmApplication.ENABLE_LOG)Log.i(TAG, "checkDistance--> minDis="+minDis);
-        if (minDis < FAST_LOCATE_THRESHOLD) {
-            return SLOW_MODE;
-        }else if (minDis > FAST_LOCATE_THRESHOLD && minDis < NORMAL_LOCATE_THRESHOLD) {
-            return NORMAL_MODE;
-        }
-        return FAST_MODE;
+        return minDis;
+
+//        if (minDis < FAST_LOCATE_THRESHOLD) {
+//            return SLOW_MODE;
+//        }else if (minDis > FAST_LOCATE_THRESHOLD && minDis < NORMAL_LOCATE_THRESHOLD) {
+//            return NORMAL_MODE;
+//        }
+//        return FAST_MODE;
     }
 
 
