@@ -76,7 +76,7 @@ public class LocationPresenter implements DBhelper.OnTaskDBchangeListener {
     public void initBaiduLoaction() {
 
         LocationClientOption option = new LocationClientOption();
-        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+        option.setLocationMode(LocationClientOption.LocationMode.Battery_Saving);
         //可选，设置定位模式，默认高精度
         //LocationMode.Hight_Accuracy：高精度；
         //LocationMode. Battery_Saving：低功耗；
@@ -115,6 +115,8 @@ public class LocationPresenter implements DBhelper.OnTaskDBchangeListener {
         option.setEnableSimulateGps(false);
         //可选，设置是否需要过滤GPS仿真结果，默认需要，即参数为false
 
+        option.setIsNeedAltitude(true);
+
         option.setIsNeedAddress(true);
 
         option.setIsNeedLocationDescribe(true);
@@ -136,11 +138,12 @@ public class LocationPresenter implements DBhelper.OnTaskDBchangeListener {
      */
     public LocationClientOption getLocatOption(int seconds) {
         LocationClientOption option = new LocationClientOption();
-        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+        option.setLocationMode(LocationClientOption.LocationMode.Battery_Saving);
         option.setCoorType("bd09ll");
         option.setScanSpan(seconds*1000);
         option.setOpenGps(true);
         option.setLocationNotify(false);
+        option.setIsNeedAltitude(true);
         option.setIgnoreKillProcess(true);
         option.SetIgnoreCacheException(true);
         option.setWifiCacheTimeOut(5*60*1000);

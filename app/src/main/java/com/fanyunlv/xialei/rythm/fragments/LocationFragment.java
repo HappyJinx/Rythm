@@ -181,12 +181,6 @@ public class LocationFragment extends BaseFragment implements
 //        BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory
 //                .fromResource(R.drawable.icon_gcoding);
 //        MyLocationConfiguration config = new MyLocationConfiguration(MyLocationConfiguration.LocationMode.FOLLOWING, true, null);
-//
-////        LatLng latLng = new LatLng(latitude, longitude);
-////        MarkerOptions markerOptions = new MarkerOptions().icon(mCurrentMarker).position(latLng);
-////        baiduMap.clear();
-////        baiduMap.addOverlay(markerOptions);
-//        baiduMap.setMyLocationConfiguration(config);
 
         // 构造定位数据
         MyLocationData locData = new MyLocationData.Builder()
@@ -214,7 +208,7 @@ public class LocationFragment extends BaseFragment implements
         //   if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:174  Method:onSensorChanged--> "+values[0]);
         //}
         nums += 1;
-        if (nums % 25 == 0) {
+        if (nums % 40 == 0) {
             if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:183  Method:onSensorChanged--> nums="+nums);
             nums = 0;
             currentOrientation = event.values[0];
@@ -244,9 +238,9 @@ public class LocationFragment extends BaseFragment implements
         // 设置定位图层的配置（定位模式，是否允许方向信息，用户自定义定位图标）
         BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory
                 .fromResource(R.drawable.icon_gcoding);
-        MyLocationConfiguration config = new MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, null);
 
-        baiduMap.setMyLocationConfiguration(config);
+        updateLocatConfig(false);
+
         baiduMap.setMyLocationEnabled(true);// 开启定位图层
         // 构造定位数据
         MyLocationData locData = new MyLocationData.Builder()
@@ -275,6 +269,16 @@ public class LocationFragment extends BaseFragment implements
         locationlist = view.findViewById(R.id.location_list);
         locationlist.setAdapter(adapter);
         return view;
+    }
+
+    public void updateLocatConfig(boolean follow) {
+        if (follow) {
+            MyLocationConfiguration config = new MyLocationConfiguration(MyLocationConfiguration.LocationMode.FOLLOWING, true, null);
+            baiduMap.setMyLocationConfiguration(config);
+        }else {
+            MyLocationConfiguration config = new MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, null);
+            baiduMap.setMyLocationConfiguration(config);
+        }
     }
 
     @Override
@@ -431,5 +435,16 @@ public class LocationFragment extends BaseFragment implements
         }
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        Log.i(TAG, "onHiddenChanged--> hidden="+hidden);
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.i(TAG, "onStop--> ");
+        updateLocatConfig(true);
+    }
 }

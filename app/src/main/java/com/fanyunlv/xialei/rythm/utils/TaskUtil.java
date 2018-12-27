@@ -58,6 +58,7 @@ public class TaskUtil implements DBhelper.OnTaskDBchangeListener {
 
         int minTime = RingmodePresenter.getInstance(context).checkTimeTask();
         double minDistance = LocationPresenter.getInstance(context).checkDistance(location);
+        boolean isInOffice = false;
 
         int howclose = howClose(minTime);
         int howfar = howFar(minDistance);
