@@ -215,7 +215,7 @@ public class LocationFragment extends BaseFragment implements
         //}
         nums += 1;
         if (nums % 25 == 0) {
-//            if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:183  Method:onSensorChanged--> nums="+nums);
+            if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:183  Method:onSensorChanged--> nums="+nums);
             nums = 0;
             currentOrientation = event.values[0];
             MyLocationData locData = new MyLocationData.Builder()

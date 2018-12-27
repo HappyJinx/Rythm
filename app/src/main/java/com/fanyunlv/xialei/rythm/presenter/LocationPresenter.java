@@ -35,7 +35,7 @@ public class LocationPresenter implements DBhelper.OnTaskDBchangeListener {
     public static final int FAST_TIME_THRESHOLD = 3;  //minute
     public static final int NORMAL_TIME_THRESHOLD = 10;
 
-    public static final double FAST_LOCATE_THRESHOLD = 50.00;  //50M
+    public static final double FAST_LOCATE_THRESHOLD = 100.00;  //50M
     public static final double NORMAL_LOCATE_THRESHOLD = 200.00; //200M
 
     private int currentmode = NORMAL_MODE;
@@ -180,7 +180,7 @@ public class LocationPresenter implements DBhelper.OnTaskDBchangeListener {
         mLocationClient.setLocOption(getLocatOption(mode));
         mLocationClient.start();
     }
-    
+
     public class MyLocationListener extends BDAbstractLocationListener {
         @Override
         public void onReceiveLocation(BDLocation location) {
@@ -200,10 +200,11 @@ public class LocationPresenter implements DBhelper.OnTaskDBchangeListener {
     public int checkDistance(BDLocation bdLocation) {
         double minDis = R_EARTH;
         if (taskItems.size() > 0) {
+            if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:203  Method:checkDistance--> task.size ="+taskItems.size());
             for (TaskItems task : taskItems) {
-                if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:204  Method:checkDistance--> task -"+taskItems.size());
                 MyLocation myLocation = getLocation(task.getCode());
                 double dis = getDistance(bdLocation.getLatitude(), bdLocation.getLongitude(), myLocation.getLati(), myLocation.getLongti());
+                if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:207  Method:checkDistance--> dis = "+dis);
                 if (dis <= DISTANCE_THRESHOLD) {  // this decide distance
                     if (mLastTask == null || !mLastTask.equlas(task)) { // this decide equal
                         mLastTask = task;
@@ -216,7 +217,7 @@ public class LocationPresenter implements DBhelper.OnTaskDBchangeListener {
                 }
             }
         }
-
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "checkDistance--> minDis="+minDis);
         if (minDis < FAST_LOCATE_THRESHOLD) {
             return SLOW_MODE;
         }else if (minDis > FAST_LOCATE_THRESHOLD && minDis < NORMAL_LOCATE_THRESHOLD) {

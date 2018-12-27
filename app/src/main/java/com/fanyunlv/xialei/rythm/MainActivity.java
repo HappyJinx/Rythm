@@ -33,9 +33,10 @@ public class MainActivity extends AppCompatActivity{
     private FragmentManager fragmentManager;
     private FragmentUtil fragmentUtil;
     private PermissionUtil permissionUtil;
-
     private ActionBar actionBar;
 
+    private FunctionFragment functionFragment;
+    private WelcomeFragment welcomeFragment;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity{
 
             if (intent.getAction().equals(WifiManager.RSSI_CHANGED_ACTION)) {
                 WifiCheckPresenter.getInstance(context).forbidWifi();
+                functionFragment.updateStateInfo();
             }
         }
     };
@@ -66,7 +68,8 @@ public class MainActivity extends AppCompatActivity{
         if (!permissionUtil.checkHaspermissions()) {
             permissionUtil.requestPermissions(10);
         }
-
+        functionFragment = new FunctionFragment();
+        welcomeFragment = new WelcomeFragment();
         showContent();
         initReceiver();
         //init baidu location service
@@ -87,9 +90,9 @@ public class MainActivity extends AppCompatActivity{
     public void showContent() { //main content
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         if (sharePrefUtil.isFirstOpen()) {
-            transaction.add(R.id.content_view,new WelcomeFragment(), "welcome");
+            transaction.add(R.id.content_view,welcomeFragment, "welcome");
         } else if(fragmentUtil.getLastFragment()==null) {
-            transaction.add(R.id.content_view,new FunctionFragment(),"function");
+            transaction.add(R.id.content_view,functionFragment,"function");
         }
         transaction.commitNow();
     }

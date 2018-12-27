@@ -39,11 +39,10 @@ public class FunctionFragment extends Fragment implements LocationIistener,View.
     private RecyclerView mrecyclerView;
     private ArrayList<XFunction> functions;
     private FunctionRecyclerAdapter madapter;
-
     private Button setting_by_time;
     private Button setting_by_location;
-//    private BDLocation bdLocation;
-    private int receiveCount = 0;
+
+    private static int receiveCount = 0;
 
 
     @Override
@@ -78,11 +77,17 @@ public class FunctionFragment extends Fragment implements LocationIistener,View.
         return contentview;
     }
 
+    public void updateStateInfo() {
+        if (madapter != null) {
+            madapter.notifyDataSetChanged();
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
         ((MainActivity) getActivity()).hideActionbar(false);
-        ((MainActivity) getActivity()).setTitle("当前状态  "+receiveCount);
+        getActivity().setTitle("当前状态  "+receiveCount);
     }
 
     @Override
