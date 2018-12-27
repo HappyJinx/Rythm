@@ -47,7 +47,7 @@ public class TaskUtil implements DBhelper.OnTaskDBchangeListener {
         int resultTime = RingmodePresenter.getInstance(context).checkTimeTask();
         int resultLocation = LocationPresenter.getInstance(context).checkDistance(location);
 
-        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:45  Method:checkTimeandLocation--> result 1 =" + resultTime + " -- result 2 =" + resultLocation);
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "checkTimeandLocation--> time mode = " + resultTime + "s -- location mode = " + resultLocation+"s");
         LocationPresenter.getInstance(context).setLocationMode(Math.min(resultTime, resultLocation));
     }
 

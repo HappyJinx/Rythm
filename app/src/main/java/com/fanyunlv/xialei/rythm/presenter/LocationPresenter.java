@@ -24,7 +24,7 @@ import java.util.ArrayList;
 public class LocationPresenter implements DBhelper.OnTaskDBchangeListener {
     private static final String TAG = LocationPresenter.class.getSimpleName();
 
-    private static double DISTANCE_THRESHOLD = 100.00;
+    private static double DISTANCE_THRESHOLD = 50.00;
     private final double R_EARTH=6370996.81;  //地球的半径
 
     public static final int ONCE_MODE = 5;
@@ -35,8 +35,8 @@ public class LocationPresenter implements DBhelper.OnTaskDBchangeListener {
     public static final int FAST_TIME_THRESHOLD = 3;  //minute
     public static final int NORMAL_TIME_THRESHOLD = 10;
 
-    public static final double FAST_LOCATE_SPEED_THRESHOLD = 3.00;
-    public static final double NORMAL_LOCATE_SPEED_THRESHOLD = 7.00;
+    public static final double FAST_LOCATE_THRESHOLD = 50.00;  //50M
+    public static final double NORMAL_LOCATE_THRESHOLD = 200.00; //200M
 
     private int currentmode = NORMAL_MODE;
 
@@ -180,9 +180,7 @@ public class LocationPresenter implements DBhelper.OnTaskDBchangeListener {
         mLocationClient.setLocOption(getLocatOption(mode));
         mLocationClient.start();
     }
-
-
-
+    
     public class MyLocationListener extends BDAbstractLocationListener {
         @Override
         public void onReceiveLocation(BDLocation location) {
@@ -200,7 +198,7 @@ public class LocationPresenter implements DBhelper.OnTaskDBchangeListener {
      *  date : 2018/12/17
      */
     public int checkDistance(BDLocation bdLocation) {
-        float speed = bdLocation.getSpeed();
+        double minDis = R_EARTH;
         if (taskItems.size() > 0) {
             for (TaskItems task : taskItems) {
                 if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:204  Method:checkDistance--> task -"+taskItems.size());
@@ -213,17 +211,17 @@ public class LocationPresenter implements DBhelper.OnTaskDBchangeListener {
                         TaskUtil.getInstance(context).handleTask(task);
                     }
                 }
+                if (dis < minDis) {
+                    minDis = dis;
+                }
             }
         }
 
-        if (speed < FAST_LOCATE_SPEED_THRESHOLD) {
-            // staying
+        if (minDis < FAST_LOCATE_THRESHOLD) {
             return SLOW_MODE;
-        }else if (speed > FAST_LOCATE_SPEED_THRESHOLD && speed < NORMAL_LOCATE_SPEED_THRESHOLD) {
-            // means  walking
+        }else if (minDis > FAST_LOCATE_THRESHOLD && minDis < NORMAL_LOCATE_THRESHOLD) {
             return NORMAL_MODE;
         }
-        // means car
         return FAST_MODE;
     }
 
@@ -279,6 +277,6 @@ public class LocationPresenter implements DBhelper.OnTaskDBchangeListener {
     @Override
     public void onTaskChanged() {
         taskItems = gettasks();
-        Log.i(TAG, "LineNum:282  Method:onTaskChanged--> taskItems="+taskItems.size());
+        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:282  Method:onTaskChanged--> taskItems="+taskItems.size());
     }
 }
