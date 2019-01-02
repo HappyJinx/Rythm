@@ -20,7 +20,7 @@ import com.fanyunlv.xialei.rythm.utils.DBhelper;
 /**
  * Created by xialei on 2018/12/11.
  */
-public class SetLocationTaskActivity extends AppCompatActivity {
+public class SetLocationTaskActivity extends AppCompatActivity implements DBhelper.OnTaskDBchangeListener{
     private final String TAG = "SettimeTaskActivity";
 
     private RecyclerView recyclerView;
@@ -38,11 +38,12 @@ public class SetLocationTaskActivity extends AppCompatActivity {
         actionBar.setTitle(R.string.setting_by_location);
 
         dBhelper =  DBhelper.getInstance(this);
+        dBhelper.addtListener(this);
+
         recyclerView = findViewById(R.id.recyclerlist);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        locationTaskAdapter = new LocationTaskAdapter(this);
+        locationTaskAdapter = new LocationTaskAdapter(getResources(),dBhelper.getLocationList());
         recyclerView.setAdapter(locationTaskAdapter);
     }
 
@@ -50,6 +51,11 @@ public class SetLocationTaskActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         locationTaskAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onTaskChanged() {
+        locationTaskAdapter.replaceData(dBhelper.getLocationList());
     }
 
     @Override

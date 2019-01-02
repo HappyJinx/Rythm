@@ -37,9 +37,9 @@
     </FrameLayout>
 
     <LinearLayout
-        android:padding="@dimen/normal_padding"
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:padding="@dimen/normal_padding"
+        android:layout_width="match_parent"
         android:layout_weight="4"
         android:layout_height="0dp">
 
@@ -51,7 +51,7 @@
             android:text="@string/add_location"
             />
 
-        <ListView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/location_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

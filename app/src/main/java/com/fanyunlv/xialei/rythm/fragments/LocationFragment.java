@@ -11,6 +11,9 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -65,7 +68,8 @@ public class LocationFragment extends BaseFragment implements
         BaiduMap.OnMapClickListener,
         BaiduMap.OnMarkerClickListener, 
         OnGetGeoCoderResultListener,
-        BaiduMap.OnMyLocationClickListener
+        BaiduMap.OnMyLocationClickListener,
+        DBhelper.OnDBchangedListener
 {
     private static final String TAG = LocationFragment.class.getSimpleName();
 
@@ -90,9 +94,9 @@ public class LocationFragment extends BaseFragment implements
     private float currentOrientation;
 
     private Context mcontext;
+    private DBhelper dBhelper;
 
-    public static ArrayList<MyLocation> locations;
-    private ListView locationlist;
+    private RecyclerView locationlist;
     private LocationlistAdapter adapter;
 
     private String[] locationnames = {
@@ -111,8 +115,11 @@ public class LocationFragment extends BaseFragment implements
         presenter = LocationPresenter.getInstance(getContext());
         presenter.addLocationListenr(this);
 
-        locations = new ArrayList<>();
-        adapter = new LocationlistAdapter(getContext(), DBhelper.getInstance(getContext()).getLocationList());
+        dBhelper = DBhelper.getInstance(getContext());
+        dBhelper.addListener(this);
+
+        adapter = new LocationlistAdapter(dBhelper.getLocationList());
+
         sensorManager = (SensorManager) getContext().getSystemService(Context.SENSOR_SERVICE);
         Sensor send = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
         sensorManager.registerListener(this, send,SensorManager.SENSOR_DELAY_NORMAL);
@@ -194,12 +201,6 @@ public class LocationFragment extends BaseFragment implements
 
     }
 
-    @Override
-    public void onLocationNeedNotify(BDLocation bdLocation, float v) {
-        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:112  Method:onLocationNeedNotify--> bdLocation="+bdLocation.getAddrStr());
-        Toast.makeText(getContext(),"到达指定位置附近了~", Toast.LENGTH_SHORT).show();
-    }
-
     int nums = 0;
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -209,7 +210,7 @@ public class LocationFragment extends BaseFragment implements
         //}
         nums += 1;
         if (nums % 40 == 0) {
-            if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:183  Method:onSensorChanged--> nums="+nums);
+//            if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:183  Method:onSensorChanged--> nums="+nums);
             nums = 0;
             currentOrientation = event.values[0];
             MyLocationData locData = new MyLocationData.Builder()
@@ -267,6 +268,8 @@ public class LocationFragment extends BaseFragment implements
         centerSelf.setOnClickListener(this);
 
         locationlist = view.findViewById(R.id.location_list);
+        locationlist.setLayoutManager(new LinearLayoutManager(getContext()));
+        locationlist.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         locationlist.setAdapter(adapter);
         return view;
     }
@@ -288,6 +291,7 @@ public class LocationFragment extends BaseFragment implements
                 centerSelf();
                 break;
             case R.id.add_location:
+                baiduMap.clear();
                 chooselocation.show();
                 break;
         }
@@ -408,10 +412,10 @@ public class LocationFragment extends BaseFragment implements
                 values.put(RythmDatabase.LOCATIONTABLE.LATI, bdLocation.getLatitude());
                 values.put(RythmDatabase.LOCATIONTABLE.RADIOUS, bdLocation.getRadius());
                 values.put(RythmDatabase.LOCATIONTABLE.DESCRIB, bdLocation.getLocationDescribe());
-                DBhelper.getInstance(mcontext).insertLocation(values);
+                dBhelper.insertLocation(values);
 
                 TaskItems task = new TaskItems(locationnames[which], util.getcode(bdLocation), 0, 0, 0, 0);
-                DBhelper.getInstance(mcontext).inserttaskDetails(task);
+                dBhelper.inserttaskDetails(task);
 
             }else {
                 ContentValues values = new ContentValues();
@@ -421,18 +425,21 @@ public class LocationFragment extends BaseFragment implements
                 values.put(RythmDatabase.LOCATIONTABLE.LATI, util.get6Num(mtouchPoint.latitude));
                 values.put(RythmDatabase.LOCATIONTABLE.RADIOUS, 30.00);
                 values.put(RythmDatabase.LOCATIONTABLE.DESCRIB, mTouchGeoResultName);
-                DBhelper.getInstance(mcontext).insertLocation(values);
+                dBhelper.insertLocation(values);
 
                 TaskItems task = new TaskItems(locationnames[which], util.getcode(mtouchPoint), 0, 0, 0, 0);
-                DBhelper.getInstance(mcontext).inserttaskDetails(task);
+                dBhelper.inserttaskDetails(task);
             }
-
-            locations = DBhelper.getInstance(getContext()).getLocationList();
-            adapter.setDatas(locations);
-            adapter.notifyDataSetChanged();
 
             chooselocation.dismiss();
         }
+    }
+
+    @Override
+    public void onDBchanged() {
+
+        adapter.replaceData(dBhelper.getLocationList());
+
     }
 
     @Override

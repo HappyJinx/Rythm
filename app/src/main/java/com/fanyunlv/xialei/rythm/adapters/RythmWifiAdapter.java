@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.fanyunlv.xialei.rythm.R;
 import com.fanyunlv.xialei.rythm.RythmApplication;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
@@ -20,62 +22,69 @@ import java.util.List;
  * Created by admin on 2018/8/24.
  */
 
-public class RythmWifiAdapter extends RecyclerView.Adapter<RythmWifiAdapter.RythmViewHolder> implements View.OnClickListener{
+public class RythmWifiAdapter extends BaseQuickAdapter<String, BaseViewHolder> implements BaseQuickAdapter.OnItemChildClickListener {
 
     private final String TAG = "Rythm";
-    private List<String> wifiitemlist = new ArrayList<>();
-    private Context mcontext;
+    private List<String> wifiitemlist ;
 
-    public RythmWifiAdapter(Context context, List<String> itemlist){
+    public RythmWifiAdapter(List<String> itemlist){
+        super(R.layout.wifi_item_layout, itemlist);
         wifiitemlist = itemlist;
-        mcontext = context;
-    }
-
-    public void replaceList(List<String> list) {
-        wifiitemlist.clear();
-        wifiitemlist.addAll(list);
+        setOnItemChildClickListener(this);
     }
 
     @Override
-    public RythmViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.wifi_item_layout,null);
-        RythmViewHolder holder = new RythmViewHolder(item);
-        return holder;
+    protected void convert(BaseViewHolder helper, String item) {
+        helper.setText(R.id.wifi_setted, item);
+        helper.addOnClickListener(R.id.delete_item);
     }
 
     @Override
-    public void onBindViewHolder(RythmViewHolder holder, int position) {
-        holder.item_wifi.setText(wifiitemlist.get(position));
-        holder.item_delete.setOnClickListener(this);
-        holder.item_delete.setTag(position);
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        DBhelper.getInstance(mContext).deletewifi(getItem(position));
+        remove(position);
     }
 
-    @Override
-    public int getItemCount() {
-        return wifiitemlist.size();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.delete_item:
-                if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onClick: v.getTag()="+(v.getTag()));
-                String siten = wifiitemlist.get((int) v.getTag());
-                DBhelper.getInstance(mcontext).deletewifi(siten);
-                wifiitemlist.remove((int)v.getTag());
-                notifyDataSetChanged();
-                break;
-        }
-    }
-
-    public class RythmViewHolder extends RecyclerView.ViewHolder {
-        public TextView item_wifi;
-        public Button item_delete;
-        public RythmViewHolder(View itemView) {
-            super(itemView);
-            item_wifi = itemView.findViewById(R.id.wifi_setted);
-            item_delete = itemView.findViewById(R.id.delete_item);
-        }
-    }
+    //    @Override
+//    public RythmViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+//        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.wifi_item_layout,null);
+//        RythmViewHolder holder = new RythmViewHolder(item);
+//        return holder;
+//    }
+//
+//    @Override
+//    public void onBindViewHolder(RythmViewHolder holder, int position) {
+//        holder.item_wifi.setText(wifiitemlist.get(position));
+//        holder.item_delete.setOnClickListener(this);
+//        holder.item_delete.setTag(position);
+//    }
+//
+//    @Override
+//    public int getItemCount() {
+//        return wifiitemlist.size();
+//    }
+//
+//    @Override
+//    public void onClick(View v) {
+//        switch (v.getId()) {
+//            case R.id.delete_item:
+//                if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onClick: v.getTag()="+(v.getTag()));
+//                String siten = wifiitemlist.get((int) v.getTag());
+//                DBhelper.getInstance(mcontext).deletewifi(siten);
+//                wifiitemlist.remove((int)v.getTag());
+//                notifyDataSetChanged();
+//                break;
+//        }
+//    }
+//
+//    public class RythmViewHolder extends RecyclerView.ViewHolder {
+//        public TextView item_wifi;
+//        public Button item_delete;
+//        public RythmViewHolder(View itemView) {
+//            super(itemView);
+//            item_wifi = itemView.findViewById(R.id.wifi_setted);
+//            item_delete = itemView.findViewById(R.id.delete_item);
+//        }
+//    }
 
 }

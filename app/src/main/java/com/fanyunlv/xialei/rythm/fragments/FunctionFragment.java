@@ -29,6 +29,8 @@ import com.fanyunlv.xialei.rythm.utils.FragmentUtil;
 import com.fanyunlv.xialei.rythm.utils.TaskUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by xialei on 2018/11/24.
@@ -37,7 +39,8 @@ public class FunctionFragment extends Fragment implements LocationIistener,View.
     private static final String TAG = FunctionFragment.class.getSimpleName();
 
     private RecyclerView mrecyclerView;
-    private ArrayList<XFunction> functions;
+    private List<String> functions;
+
     private FunctionRecyclerAdapter madapter;
     private Button setting_by_time;
     private Button setting_by_location;
@@ -50,10 +53,7 @@ public class FunctionFragment extends Fragment implements LocationIistener,View.
         super.onCreate(savedInstanceState);
         LocationPresenter.getInstance(getContext()).addLocationListenr(this);
         String[] framgents = getActivity().getResources().getStringArray(R.array.fragments_list);
-        functions = new ArrayList<>();
-        for (int i = 0; i < FragmentUtil.Fragments.length; i++) {
-            functions.add(new XFunction(framgents[i]));
-        }
+        functions = Arrays.asList(framgents);
     }
 
     @Nullable
@@ -62,18 +62,18 @@ public class FunctionFragment extends Fragment implements LocationIistener,View.
         if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onCreateView ");
 
         View contentview = inflater.inflate(R.layout.function_fragment, container, false);
+
         setting_by_time = contentview.findViewById(R.id.setting_by_time);
         setting_by_location = contentview.findViewById(R.id.setting_by_location);
         setting_by_time.setOnClickListener(this);
         setting_by_location.setOnClickListener(this);
+
         mrecyclerView = contentview.findViewById(R.id.function_list);
-        madapter = new FunctionRecyclerAdapter(functions,getContext());
+        madapter = new FunctionRecyclerAdapter(functions);
         mrecyclerView.setAdapter(madapter);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        mrecyclerView.setLayoutManager(linearLayoutManager);
-//        DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL);
-//        itemDecoration.setDrawable(new ColorDrawable(Color.RED));
+        mrecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mrecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));//attention this is vertical
+
         return contentview;
     }
 
@@ -91,16 +91,6 @@ public class FunctionFragment extends Fragment implements LocationIistener,View.
     }
 
     @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (hidden) {
-            if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onHiddenChanged true");
-        } else {
-            if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onHiddenChanged false");
-        }
-    }
-
-    @Override
     public void onLocationReceived(BDLocation location) {
         madapter.notifyDataSetChanged();
         if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:99  Method:onLocationReceived--> location="+location.getLatitude()+"--"+location.getLongitude()+"--"+location.getLocationDescribe());
@@ -108,10 +98,6 @@ public class FunctionFragment extends Fragment implements LocationIistener,View.
         receiveCount += 1;
         ((MainActivity) getActivity()).setTitle("当前状态  "+receiveCount);
     }
-
-    //didn't use
-    @Override
-    public void onLocationNeedNotify(BDLocation bdLocation, float v) {}
 
     @Override
     public void onClick(View v) {

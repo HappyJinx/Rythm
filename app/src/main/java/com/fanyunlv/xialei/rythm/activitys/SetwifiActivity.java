@@ -46,10 +46,9 @@ public class SetwifiActivity extends AppCompatActivity {
         dBhelper = DBhelper.getInstance(SetwifiActivity.this);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerlist);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        rythmAdapter = new RythmWifiAdapter(this,dBhelper.getWifiList());
+        rythmAdapter = new RythmWifiAdapter(dBhelper.getWifiList());
         recyclerView.setAdapter(rythmAdapter);
     }
 
@@ -89,8 +88,9 @@ public class SetwifiActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dBhelper.insertwifi(editText.getText().toString());
-                rythmAdapter.replaceList(dBhelper.getWifiList());
-                rythmAdapter.notifyDataSetChanged();
+                rythmAdapter.replaceData(dBhelper.getWifiList());
+//                rythmAdapter.replaceList(dBhelper.getWifiList());
+//                rythmAdapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
         });

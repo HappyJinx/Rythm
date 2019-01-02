@@ -20,7 +20,7 @@ import com.fanyunlv.xialei.rythm.adapters.RythmTimeAdapter;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
 
 
-public class SettimeTaskActivity extends AppCompatActivity {
+public class SettimeTaskActivity extends AppCompatActivity implements DBhelper.OnTaskDBchangeListener {
 
     private final String TAG = "SettimeTaskActivity";
 
@@ -43,12 +43,17 @@ public class SettimeTaskActivity extends AppCompatActivity {
         actionBar.setTitle(R.string.setting_by_time);
 
         dBhelper =  DBhelper.getInstance(this);
+        dBhelper.addtListener(this);
         recyclerView = findViewById(R.id.recyclerlist);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        rythmAdapter = new RythmTimeAdapter(this,dBhelper);
+        rythmAdapter = new RythmTimeAdapter(getResources(),dBhelper.getTimeList());
         recyclerView.setAdapter(rythmAdapter);
+    }
+
+    @Override
+    public void onTaskChanged() {
+        rythmAdapter.replaceData(dBhelper.getTimeList());
     }
 
     @Override
@@ -73,9 +78,4 @@ public class SettimeTaskActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        rythmAdapter.freshList();
-    }
 }

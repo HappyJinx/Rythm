@@ -2,6 +2,7 @@ package com.fanyunlv.xialei.rythm.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,54 +13,62 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.fanyunlv.xialei.rythm.R;
 import com.fanyunlv.xialei.rythm.RythmApplication;
 import com.fanyunlv.xialei.rythm.beans.MyLocation;
 import com.fanyunlv.xialei.rythm.beans.TaskItems;
+import com.fanyunlv.xialei.rythm.beans.TimeItem;
 import com.fanyunlv.xialei.rythm.utils.DBhelper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by xialei on 2018/12/11.
  */
-public class LocationTaskAdapter extends RecyclerView.Adapter<LocationTaskAdapter.RythmViewHolder> implements View.OnClickListener {
+public class LocationTaskAdapter extends BaseQuickAdapter<MyLocation, BaseViewHolder>
+        implements BaseQuickAdapter.OnItemChildClickListener{
+
     private static final String TAG = LocationTaskAdapter.class.getSimpleName();
-    private Context mcontext;
     private ArrayList<MyLocation> locationArrayList;
-    private DBhelper dBhelper ;
     private String[] task_list;
 
-    public LocationTaskAdapter(Context context) {
-        mcontext = context;
-        dBhelper = DBhelper.getInstance(mcontext);
-        locationArrayList = dBhelper.getLocationList();
-        task_list = mcontext.getResources().getStringArray(R.array.task_state_list);
+    public LocationTaskAdapter(Resources res,ArrayList<MyLocation> datas) {
+        super(R.layout.task_item_layout,datas);
+        locationArrayList = datas;
+        task_list = res.getStringArray(R.array.task_state_list);
+        setOnItemChildClickListener(this);
     }
 
     @Override
-    public RythmViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_item_layout,null);
-        RythmViewHolder holder = new RythmViewHolder(item);
-        return holder;
+    protected void convert(BaseViewHolder helper, MyLocation item) {
+        helper.setText(R.id.item_setted, item.getName());
+        helper.setText(R.id.item_setted_info, getLocationTaskinfo(item));
+        helper.addOnClickListener(R.id.delete_item);
+        helper.addOnClickListener(R.id.sett_item);
     }
 
     @Override
-    public void onBindViewHolder(RythmViewHolder holder, int position) {
-        holder.item_setted.setText(locationArrayList.get(position).getName());
-        holder.item_setted_info.setText(getLocationTaskinfo(locationArrayList.get(position)));
-//        holder.itemView.setOnClickListener(this);
-//        holder.itemView.setTag(position);
-        holder.item_delete.setOnClickListener(this);
-        holder.item_delete.setTag(position);
-        holder.item_config.setOnClickListener(this);
-        holder.item_config.setTag(position);
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        switch (view.getId()) {
+            case R.id.delete_item:
+                MyLocation myLocation = locationArrayList.get(position);
+                DBhelper.getInstance(mContext).updatetaskDetails(new TaskItems(myLocation.getName(),getcode(myLocation),0,0,0,0));
+                break;
+            case R.id.sett_item:
+                Intent intent = new Intent("xialei.action.start.configlocation");
+                intent.putExtra("code",getcode(locationArrayList.get(position)));
+                mContext.startActivity(intent);
+                break;
+        }
     }
 
     public String getLocationTaskinfo(MyLocation myLocation) {
         int code = getcode(myLocation);
         if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:57  Method:getLocationTaskinfo--> location ="+myLocation.getLati()+"  "+myLocation.getLongti());
-        Cursor cursor = dBhelper.querytask(code);
+        Cursor cursor = DBhelper.getInstance(mContext).querytask(code);
         if (cursor.getCount() == 0) {
             return "无任务";
         }
@@ -93,48 +102,10 @@ public class LocationTaskAdapter extends RecyclerView.Adapter<LocationTaskAdapte
         return stringBuffer.toString();
     }
 
-
     public int getcode(MyLocation location) {
         int code = (int) ((location.getLati() + location.getLongti()) * 1000000);
         Log.i(TAG, "LineNum:99  Method:getcode--> code ="+code);
         return code;
     }
 
-    @Override
-    public void onClick(View v) {
-        int postion = (int)v.getTag();
-        int id = v.getId();
-        if (id == R.id.delete_item) {
-//            dBhelper.deletelocation(locationArrayList.get(postion));
-//            dBhelper.deletetask(getcode(locationArrayList.get(postion)));
-            MyLocation myLocation = locationArrayList.get(postion);
-            dBhelper.updatetaskDetails(new TaskItems(myLocation.getName(),getcode(myLocation),0,0,0,0));
-//            locationArrayList.remove(postion);
-            notifyDataSetChanged();
-        } else if (id == R.id.sett_item) {
-            Intent intent = new Intent("xialei.action.start.configlocation");
-            intent.putExtra("code",getcode(locationArrayList.get(postion)));
-            mcontext.startActivity(intent);
-        }
-    }
-
-    @Override
-    public int getItemCount() {
-        return locationArrayList.size();
-    }
-
-    public class RythmViewHolder extends RecyclerView.ViewHolder {
-
-        public TextView item_setted;
-        public TextView item_setted_info;
-        public ImageButton item_delete;
-        public ImageButton item_config;
-        public RythmViewHolder(View itemView) {
-            super(itemView);
-            item_setted = itemView.findViewById(R.id.item_setted);
-            item_setted_info = itemView.findViewById(R.id.item_setted_info);
-            item_delete = itemView.findViewById(R.id.delete_item);
-            item_config = itemView.findViewById(R.id.sett_item);
-        }
-    }
 }

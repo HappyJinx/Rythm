@@ -226,9 +226,7 @@ public class LocationPresenter implements DBhelper.OnTaskDBchangeListener {
         public void onNotify(BDLocation bdLocation, float v) {
             super.onNotify(bdLocation, v);
             if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:129  Method:onNotify--> ");
-            for (LocationIistener lis : listeners) {
-                lis.onLocationNeedNotify(bdLocation,v);
-            }
+
         }
     }
 

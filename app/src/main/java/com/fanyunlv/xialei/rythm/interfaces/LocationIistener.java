@@ -7,5 +7,5 @@ import com.baidu.location.BDLocation;
  */
 public interface LocationIistener {
     public void onLocationReceived(BDLocation location);
-    public void onLocationNeedNotify(BDLocation bdLocation, float v);
+//    public void onLocationNeedNotify(BDLocation bdLocation, float v);
 }

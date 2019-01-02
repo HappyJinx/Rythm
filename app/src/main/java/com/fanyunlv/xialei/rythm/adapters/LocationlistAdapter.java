@@ -1,6 +1,7 @@
 package com.fanyunlv.xialei.rythm.adapters;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.fanyunlv.xialei.rythm.R;
 import com.fanyunlv.xialei.rythm.RythmApplication;
 import com.fanyunlv.xialei.rythm.beans.MyLocation;
@@ -19,14 +22,13 @@ import java.util.ArrayList;
 /**
  * Created by xialei on 2018/11/27.
  */
-public class LocationlistAdapter extends BaseAdapter {
+public class LocationlistAdapter extends BaseQuickAdapter<MyLocation, BaseViewHolder> implements BaseQuickAdapter.OnItemChildLongClickListener{
     private static final String TAG = "LocationlistAdapter";
     private ArrayList<MyLocation> datas;
-    private Context context;
-
-    public LocationlistAdapter(Context context,ArrayList<MyLocation> v) {
+    public LocationlistAdapter(ArrayList<MyLocation> v) {
+        super(R.layout.location_item, v);
         datas = v;
-        this.context = context;
+        setOnItemChildLongClickListener(this);
     }
 
     public void setDatas(ArrayList<MyLocation> v) {
@@ -35,56 +37,15 @@ public class LocationlistAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
-        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "getCount ");
-        return datas.size();
+    protected void convert(BaseViewHolder helper, MyLocation item) {
+        helper.setText(R.id.location_info, item.getName() + ":  " + item.getDescription());
+        helper.addOnLongClickListener(R.id.location_detail);
     }
 
     @Override
-    public MyLocation getItem(int position) {
-        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "getItem postion="+position);
-        if (datas.size() == 0) {
-            return null;
-        }
-        return datas.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        if (RythmApplication.ENABLE_LOG)Log.i(TAG, "getView ");
-        if (convertView == null) {
-            holder = new ViewHolder();
-            convertView = LayoutInflater.from(context).inflate(R.layout.location_item, parent, false);
-            holder.locationinfo = convertView.findViewById(R.id.location_info);
-            holder.locationinfo.setText(datas.get(position).getName()+":  "+datas.get(position).getDescription());
-            convertView.setTag(holder);
-        }else{
-            holder = (ViewHolder) convertView.getTag();
-            holder.locationinfo.setText(datas.get(position).getName()+":  "+datas.get(position).getDescription());
-        }
-        convertView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (RythmApplication.ENABLE_LOG)Log.i(TAG, "onLongClick ");
-                DBhelper.getInstance(context).deletelocation(getItem(position));
-                DBhelper.getInstance(context).deletetask(TaskUtil.getInstance(context).getcode(getItem(position)));
-                datas.remove(position);
-                notifyDataSetChanged();
-                return true;
-            }
-        });
-        return convertView;
-    }
-
-
-
-    class ViewHolder{
-        public TextView locationinfo;
+    public boolean onItemChildLongClick(BaseQuickAdapter adapter, View view, int position) {
+        DBhelper.getInstance(mContext).deletetask(TaskUtil.getInstance(mContext).getcode(getItem(position)));
+        DBhelper.getInstance(mContext).deletelocation(getItem(position));
+        return true;
     }
 }
