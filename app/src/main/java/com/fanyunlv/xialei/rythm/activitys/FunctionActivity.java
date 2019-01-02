@@ -37,6 +37,8 @@ public class FunctionActivity extends AppCompatActivity {
 
     private PermissionUtil permissionUtil;
 
+    private String[] fragments;
+
     private HashMap<String, Fragment> hashMap = new HashMap();
 
     public static final String FRGMENT_TAG ="frgment_tag";
@@ -53,7 +55,7 @@ public class FunctionActivity extends AppCompatActivity {
         setContentView(R.layout.main_activity);
         fragmentManager = getSupportFragmentManager();
         permissionUtil = PermissionUtil.getInstance(this);
-
+        fragments = getResources().getStringArray(R.array.fragments_list);
         initfragments();
     }
 
@@ -100,7 +102,6 @@ public class FunctionActivity extends AppCompatActivity {
         audioFragment = new AudioFragment();
         wifiFragment = new WifiFragment();
         locationFragment = new LocationFragment();
-        String[] fragments = getResources().getStringArray(R.array.fragments_list);
         hashMap.put(fragments[0], audioFragment);
         hashMap.put(fragments[1], wifiFragment);
         hashMap.put(fragments[2], locationFragment);

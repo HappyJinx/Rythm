@@ -99,6 +99,9 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void onFragmentSelect(String name) {
+        if (name.equals("响铃模式")) {
+            return;
+        }
         Intent intent = new Intent("com.android.rhythm.function");
         intent.putExtra(FunctionActivity.FRGMENT_TAG, name);
         startActivity(intent);
