@@ -92,11 +92,14 @@ public class FunctionFragment extends Fragment implements LocationIistener,View.
 
     @Override
     public void onLocationReceived(BDLocation location) {
-        madapter.notifyDataSetChanged();
         if (RythmApplication.ENABLE_LOG)Log.i(TAG, "LineNum:99  Method:onLocationReceived--> location="+location.getLatitude()+"--"+location.getLongitude()+"--"+location.getLocationDescribe());
-        TaskUtil.getInstance(getContext()).checkTimeandLocation(location);
+
+        madapter.notifyItemChanged(2);
+
         receiveCount += 1;
-        ((MainActivity) getActivity()).setTitle("当前状态  "+receiveCount);
+        getActivity().setTitle("当前状态    次数:"+receiveCount+"--海拔:"+location.getAltitude()+"米");
+
+        TaskUtil.getInstance(getContext()).checkTimeandLocation(location);
     }
 
     @Override

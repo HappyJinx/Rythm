@@ -20,7 +20,6 @@ import com.fanyunlv.xialei.rythm.presenter.WifiCheckPresenter;
 public class TaskUtil implements DBhelper.OnTaskDBchangeListener {
     private static final String TAG = TaskUtil.class.getSimpleName();
 
-    public static final int ONCE_MODE = 5;
     public static final int FAST_MODE = 5;
     public static final int NORMAL_MODE = 15;
     public static final int SLOW_MODE = 3*60;
@@ -58,7 +57,6 @@ public class TaskUtil implements DBhelper.OnTaskDBchangeListener {
 
         int minTime = RingmodePresenter.getInstance(context).checkTimeTask();
         double minDistance = LocationPresenter.getInstance(context).checkDistance(location);
-        boolean isInOffice = false;
 
         int howclose = howClose(minTime);
         int howfar = howFar(minDistance);
@@ -86,12 +84,9 @@ public class TaskUtil implements DBhelper.OnTaskDBchangeListener {
 
     public int howFar(double mindis) {
         int result = -1;
-//        if (mindis < FAST_LOCATE_THRESHOLD) { // x < 100
-//            result = 2;
-//        }
+
         if (mindis > FAST_LOCATE_THRESHOLD && mindis < FAR_LOCATE_THRESHOLD) {
             result = 1;                             // 距离一般
-//        } else if (mindis > FAR_LOCATE_THRESHOLD) { // x > 200   距离太远  就不管了
         }else {
             result = 2;
         }

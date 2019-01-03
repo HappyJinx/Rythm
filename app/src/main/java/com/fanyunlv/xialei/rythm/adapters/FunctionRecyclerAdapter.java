@@ -45,6 +45,7 @@ public class FunctionRecyclerAdapter extends BaseQuickAdapter<String, BaseViewHo
 
         helper.setText(R.id.function_name,item);
         helper.setText(R.id.state_info,getstateInfo(item));
+
         Log.i(TAG, "convert--> ");
         helper.addOnClickListener(R.id.function_detail);
     }

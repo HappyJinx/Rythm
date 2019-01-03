@@ -32,9 +32,10 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/Theme.AppCompat.Light">
+
     <meta-data
         android:name="com.baidu.lbsapi.API_KEY"
-        android:value="Qj5OBkVBVpbtuVGFus05FmA9467K3drH" >
+        android:value="GD4YZgSi5cTZMhK5wfGCrKttDkK7fmRl" >  <!--android:value="Qj5OBkVBVpbtuVGFus05FmA9467K3drH" >  公司的-->
     </meta-data>
 
     <activity

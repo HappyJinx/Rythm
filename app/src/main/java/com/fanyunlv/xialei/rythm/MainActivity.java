@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity{
         showContent();
         initReceiver();
         //init baidu location service
-        LocationPresenter.getInstance(getApplicationContext()).setLocationMode(TaskUtil.ONCE_MODE);
+        LocationPresenter.getInstance(getApplicationContext()).setLocationMode(TaskUtil.FAST_MODE);
 
     }
 
